@@ -22,7 +22,10 @@ app.use('/js',express.static(path.join(__dirname ,'..', 'node_modules/bootstrap/
 app.use('/js', express.static(path.join(__dirname ,'..', 'node_modules/jquery/dist')))
 
 //Set up view engine
-app.engine('hbs', engine());
+app.engine('hbs', engine({
+  defaultLayout: 'main.handlebars'
+  
+}));
 app.set('view engine', 'hbs');
 app.set('views', __dirname + '/views');
 
