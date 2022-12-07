@@ -39,5 +39,9 @@ body {
     line-height: 1.7;
     font-family: 'Poppins', sans-serif;
     color: var(--black-color);
+    padding-bottom: 70px;
+}
+.footer {
+    margin-top: auto;
 }
 
