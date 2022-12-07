@@ -12,6 +12,8 @@ import detailsRouter from './routes/details.route.js'
 
 //Const variable
 const app = express();
+app.use('/public', express.static('public'));
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PORT = 5000;
 
