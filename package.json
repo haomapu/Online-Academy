@@ -8,9 +8,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./src/app"
   },
-  
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "bootstrap": "^5.2.3",
     "express": "^4.18.2",
     "express-handlebars": "^6.0.6",
     "express-handlebars-sections": "^1.0.1",
