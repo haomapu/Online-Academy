@@ -41,5 +41,5 @@ app.use('/details', detailsRouter)
 
 //Start App
 app.listen(PORT, function () {
-  console.log(`E-Commerce App listening at http://localhost:${PORT}`);
+  console.log(`Online Academy listening at http://localhost:${PORT}`);
 });
