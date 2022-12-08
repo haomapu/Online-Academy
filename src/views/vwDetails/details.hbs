@@ -1,6 +1,197 @@
-<div class="jumbotron jumbotron-fluid">
-  <div class="container bg-light">
-    <h1 class="display-4">Whereas recognition of the inherent dignity</h1>
-    <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+{{!-- Background --}}
+
+<div class="text-center bg-image w-75 mx-auto my-4"><img src='public/images/details.jpg' 
+    style="background-repeat: no-repeat; height: 500px; width: 100%; "
+    class="rounded"
+></div>
+
+{{!-- Buy in and description --}}
+
+<div class="bg-grey d-flex w-75 mx-auto rounded">
+    <div class="py-5 text-start mx-auto">
+      <h1 class="fw-bold">Web development</h1>
+      <p class="fs-5 m-0">Learn Full Stack Web Development Building Over 40+ Projects (Co chu more de tu navigate toi body)</p>
+      <p class="fs-5 m-0">Rating: 4.4 out of 5 (2,774 ratings) 13,860 students</p>
+      <div class="d-flex">
+        <p class="fs-5 m-0 f-cyan me-1">Lecturers: </p>
+        <p class="fs-5 m-0">Hao Pham, Huy Hoang, Duc Hai, Gia Hai, Gia Bao</p>
+      </div>
+    </div>
+    <div class="bg-lgrey my-5 mx-auto rounded d-flex align-items-center">
+      <div class="py-3 text-start mx-5">
+        <p class="text-center f-cyan fw-bold fs-3">10.000 VND</p>
+        <button type="button" class="btn btn-cyan btn-lg px-5 mx-auto" style="width: 200px">Buy</button>
+      </div>
+    </div>
+</div>
+
+
+{{!-- Body --}}
+
+<div class="container my-3 p-4 bg-lgrey">
+ <div class="accordion open" id="accordionExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingOne">
+      <button class="accordion-button fw-bold fs-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        Chapter 1: Introduction
+      </button>
+    </h2>
+    <div id="collapseOne" class="accordion-collapse fs-5 collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        Overall
+      </div>
+    </div>
   </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingTwo">
+      <button class="accordion-button fw-bold fs-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+        Chapter 2: HTML
+      </button>
+    </h2>
+    <div id="collapseTwo" class="accordion-collapse fs-5 collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        Introduction about HTML
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingThree">
+      <button class="accordion-button fw-bold fs-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+        Chapter 3: CSS
+      </button>
+    </h2>
+    <div id="collapseThree" class="accordion-collapse fs-5 collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        Introduction about CSS
+      </div>
+    </div>
+  </div>
+</div>
+
+{{!-- Comment --}}
+
+<section class="bg-cyan">
+  <div class="container my-5 py-5">
+    <div class="row d-flex justify-content-center">
+      <div class="col-md-12 col-lg-10">
+        <div class="card text-dark">
+          <div class="card-body p-4">
+            <h4 class="mb-0">Recent comments</h4>
+            <p class="fw-light mb-4 pb-2">Latest Comments section by users</p>
+
+            <div class="d-flex flex-start">
+              <img class="rounded-circle shadow-1-strong me-3"
+                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(23).webp" alt="avatar" width="60"
+                height="60" />
+              <div>
+                <h6 class="fw-bold mb-1">Maggie Marsh</h6>
+                <div class="d-flex align-items-center mb-3">
+                  <p class="mb-0">
+                    March 07, 2021
+                    <span class="badge bg-primary">Pending</span>
+                  </p>
+                  <a href="#!" class="link-muted"><i class="fas fa-pencil-alt ms-2"></i></a>
+                  <a href="#!" class="link-muted"><i class="fas fa-redo-alt ms-2"></i></a>
+                  <a href="#!" class="link-muted"><i class="fas fa-heart ms-2"></i></a>
+                </div>
+                <p class="mb-0">
+                  Lorem Ipsum is simply dummy text of the printing and typesetting
+                  industry. Lorem Ipsum has been the industry's standard dummy text ever
+                  since the 1500s, when an unknown printer took a galley of type and
+                  scrambled it.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-0" />
+
+          <div class="card-body p-4">
+            <div class="d-flex flex-start">
+              <img class="rounded-circle shadow-1-strong me-3"
+                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(26).webp" alt="avatar" width="60"
+                height="60" />
+              <div>
+                <h6 class="fw-bold mb-1">Lara Stewart</h6>
+                <div class="d-flex align-items-center mb-3">
+                  <p class="mb-0">
+                    March 15, 2021
+                    <span class="badge bg-success">Approved</span>
+                  </p>
+                  <a href="#!" class="link-muted"><i class="fas fa-pencil-alt ms-2"></i></a>
+                  <a href="#!" class="text-success"><i class="fas fa-redo-alt ms-2"></i></a>
+                  <a href="#!" class="link-danger"><i class="fas fa-heart ms-2"></i></a>
+                </div>
+                <p class="mb-0">
+                  Contrary to popular belief, Lorem Ipsum is not simply random text. It
+                  has roots in a piece of classical Latin literature from 45 BC, making it
+                  over 2000 years old. Richard McClintock, a Latin professor at
+                  Hampden-Sydney College in Virginia, looked up one of the more obscure
+                  Latin words, consectetur, from a Lorem Ipsum passage, and going through
+                  the cites.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-0" style="height: 1px;" />
+
+          <div class="card-body p-4">
+            <div class="d-flex flex-start">
+              <img class="rounded-circle shadow-1-strong me-3"
+                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(33).webp" alt="avatar" width="60"
+                height="60" />
+              <div>
+                <h6 class="fw-bold mb-1">Alexa Bennett</h6>
+                <div class="d-flex align-items-center mb-3">
+                  <p class="mb-0">
+                    March 24, 2021
+                    <span class="badge bg-danger">Rejected</span>
+                  </p>
+                  <a href="#!" class="link-muted"><i class="fas fa-pencil-alt ms-2"></i></a>
+                  <a href="#!" class="link-muted"><i class="fas fa-redo-alt ms-2"></i></a>
+                  <a href="#!" class="link-muted"><i class="fas fa-heart ms-2"></i></a>
+                </div>
+                <p class="mb-0">
+                  There are many variations of passages of Lorem Ipsum available, but the
+                  majority have suffered alteration in some form, by injected humour, or
+                  randomised words which don't look even slightly believable. If you are
+                  going to use a passage of Lorem Ipsum, you need to be sure.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-0" />
+
+          <div class="card-body p-4">
+            <div class="d-flex flex-start">
+              <img class="rounded-circle shadow-1-strong me-3"
+                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(24).webp" alt="avatar" width="60"
+                height="60" />
+              <div>
+                <h6 class="fw-bold mb-1">Betty Walker</h6>
+                <div class="d-flex align-items-center mb-3">
+                  <p class="mb-0">
+                    March 30, 2021
+                    <span class="badge bg-primary">Pending</span>
+                  </p>
+                  <a href="#!" class="link-muted"><i class="fas fa-pencil-alt ms-2"></i></a>
+                  <a href="#!" class="link-muted"><i class="fas fa-redo-alt ms-2"></i></a>
+                  <a href="#!" class="link-muted"><i class="fas fa-heart ms-2"></i></a>
+                </div>
+                <p class="mb-0">
+                  It uses a dictionary of over 200 Latin words, combined with a handful of
+                  model sentence structures, to generate Lorem Ipsum which looks
+                  reasonable. The generated Lorem Ipsum is therefore always free from
+                  repetition, injected humour, or non-characteristic words etc.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 </div>
