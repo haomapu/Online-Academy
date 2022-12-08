@@ -14,7 +14,7 @@ code {
       monospace;
 }
 /* Root Background Color*/
-.bg-black{
+.bg-grey{
     background-color: #252A34;
     color:#EAEAEA
 }
@@ -25,6 +25,30 @@ code {
 }
 
 .bg-pink {
+    background-color: #FF2E63;
+    color:#252A34
+}
+.bg-lgrey {
+    background-color: #EAEAEA;
+    color:#252A34
+}
+
+
+/* Root Button Color */
+.btn-grey{
+    background-color: #252A34;
+    color:#EAEAEA
+}
+
+.btn-cyan, .btn-cyan:active,.btn-cyan:visited {
+    background-color: #08D9D6;
+}
+
+.btn-cyan:hover{
+    background-color: #069f9c;
+}
+
+.btn-pink {
     background-color: #FF2E63;
     color:#252A34
 }
@@ -45,3 +69,7 @@ body {
     margin-top: auto;
 }
 
+/* Font color */
+.f-cyan{
+    color: #08D9D6;
+}
