@@ -48,6 +48,16 @@ code {
     background-color: #069f9c;
 }
 
+.btn-outline-cyan, .btn-cyan:active,.btn-cyan:visited {
+    border-color: #08D9D6;
+    color: #252A34;
+}
+
+.btn-outline-cyan:hover{
+    background-color: #069f9c;
+    color: #252A34;
+}
+
 .btn-pink {
     background-color: #FF2E63;
     color:#252A34
