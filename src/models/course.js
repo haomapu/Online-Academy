@@ -55,5 +55,7 @@ const courseSchema = new mongoose.Schema({
         type: [mongoose.Schema.Types.ObjectId],
         ref: "Feedback"
     }
-
 });
+
+const Course = mongoose.model("Course", courseSchema);
+module.exports = Course;
