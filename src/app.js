@@ -8,6 +8,19 @@ import path from "path";
 import homepageRouter from "./routes/homepage.route.js";
 import detailsRouter from "./routes/details.route.js";
 import searchPageRouter from "./routes/searchPage.route.js";
+import express from 'express';
+import { engine } from 'express-handlebars';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+import path from 'path'
+import hbs_sections from 'express-handlebars-sections';
+
+
+//Import Router
+import mongoose from 'mongoose';
+import homepageRouter from './routes/homepage.route.js'
+import detailsRouter from './routes/details.route.js'
+
 
 //Const variable
 const app = express();
@@ -17,30 +30,16 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const PORT = 8080;
 
 //Set up bootstrap
-app.use(
-    "/css",
-    express.static(
-        path.join(__dirname, "..", "node_modules/bootstrap/dist/css")
-    )
-);
-app.use(
-    "/js",
-    express.static(path.join(__dirname, "..", "node_modules/bootstrap/dist/js"))
-);
-app.use(
-    "/js",
-    express.static(path.join(__dirname, "..", "node_modules/jquery/dist"))
-);
+app.use('/css',express.static(path.join(__dirname ,'..', 'node_modules/bootstrap/dist/css')))
+app.use('/js',express.static(path.join(__dirname ,'..', 'node_modules/bootstrap/dist/js')))
 
 //Set up view engine
-app.engine(
-    "hbs",
-    engine({
-        defaultLayout: "main.handlebars",
-    })
-);
-app.set("view engine", "hbs");
-app.set("views", __dirname + "/views");
+app.engine('hbs', engine({
+  defaultLayout: 'main.handlebars',
+  section: hbs_sections()  
+}));
+app.set('view engine', 'hbs');
+app.set('views', __dirname + '/views');
 
 //Default homepage
 app.get("/", (req, res) => {
