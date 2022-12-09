@@ -3,7 +3,14 @@ import { engine } from 'express-handlebars';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import path from 'path'
+<<<<<<< HEAD
+import hbs_sections from 'express-handlebars-sections';
+
+
+//Import Router
+=======
 import mongoose from 'mongoose';
+>>>>>>> 23b0ef0142b30a18207ccb0593df923b1bc18788
 import homepageRouter from './routes/homepage.route.js'
 import detailsRouter from './routes/details.route.js'
 
@@ -22,8 +29,8 @@ app.use('/js',express.static(path.join(__dirname ,'..', 'node_modules/bootstrap/
 
 //Set up view engine
 app.engine('hbs', engine({
-  defaultLayout: 'main.handlebars'
-  
+  defaultLayout: 'main.handlebars',
+  section: hbs_sections()  
 }));
 app.set('view engine', 'hbs');
 app.set('views', __dirname + '/views');
