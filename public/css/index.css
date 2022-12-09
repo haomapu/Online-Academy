@@ -14,9 +14,9 @@ code {
         monospace;
 }
 /* Root Background Color*/
-.bg-grey{
-    background-color: #252A34;
-    color:#EAEAEA
+.bg-grey {
+    background-color: #252a34;
+    color: #eaeaea;
 }
 
 .bg-cyan {
@@ -34,38 +34,41 @@ code {
     color: #ff2e63;
 }
 .bg-lgrey {
-    background-color: #EAEAEA;
-    color:#252A34
+    background-color: #eaeaea;
+    color: #252a34;
 }
-
 
 /* Root Button Color */
-.btn-grey{
-    background-color: #252A34;
-    color:#EAEAEA
+.btn-grey {
+    background-color: #252a34;
+    color: #eaeaea;
 }
 
-.btn-cyan, .btn-cyan:active,.btn-cyan:visited {
-    background-color: #08D9D6;
+.btn-cyan,
+.btn-cyan:active,
+.btn-cyan:visited {
+    background-color: #08d9d6;
 }
 
-.btn-cyan:hover{
+.btn-cyan:hover {
     background-color: #069f9c;
 }
 
-.btn-outline-cyan, .btn-cyan:active,.btn-cyan:visited {
-    border-color: #08D9D6;
-    color: #252A34;
+.btn-outline-cyan,
+.btn-cyan:active,
+.btn-cyan:visited {
+    border-color: #08d9d6;
+    color: #252a34;
 }
 
-.btn-outline-cyan:hover{
+.btn-outline-cyan:hover {
     background-color: #069f9c;
-    color: #252A34;
+    color: #252a34;
 }
 
 .btn-pink {
-    background-color: #FF2E63;
-    color:#252A34
+    background-color: #ff2e63;
+    color: #252a34;
 }
 
 * {
@@ -78,13 +81,13 @@ body {
     line-height: 1.7;
     font-family: "Poppins", sans-serif;
     color: var(--black-color);
-    padding-bottom: 70px;
+    /* padding-bottom: 70px; */
 }
 .footer {
     margin-top: auto;
 }
 
 /* Font color */
-.f-cyan{
-    color: #08D9D6;
+.f-cyan {
+    color: #08d9d6;
 }
