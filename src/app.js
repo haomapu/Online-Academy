@@ -3,6 +3,7 @@ import { engine } from 'express-handlebars';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import path from 'path'
+import hbs_sections from 'express-handlebars-sections';
 
 
 //Import Router
@@ -24,8 +25,8 @@ app.use('/js',express.static(path.join(__dirname ,'..', 'node_modules/bootstrap/
 
 //Set up view engine
 app.engine('hbs', engine({
-  defaultLayout: 'main.handlebars'
-  
+  defaultLayout: 'main.handlebars',
+  section: hbs_sections()  
 }));
 app.set('view engine', 'hbs');
 app.set('views', __dirname + '/views');
