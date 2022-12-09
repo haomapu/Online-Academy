@@ -3,9 +3,7 @@ import { engine } from 'express-handlebars';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import path from 'path'
-
-
-//Import Router
+import mongoose from 'mongoose';
 import homepageRouter from './routes/homepage.route.js'
 import detailsRouter from './routes/details.route.js'
 
