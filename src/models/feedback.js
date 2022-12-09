@@ -6,6 +6,13 @@ const feedbackSchema = new mongoose.Schema({
         required: true,
     },
 
+    star: {
+        type: Number,
+        require: true,
+        min: 1,
+        max: 5,
+    },
+
     author: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
