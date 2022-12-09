@@ -10,17 +10,31 @@
 <div class="bg-grey d-flex w-75 mx-auto rounded">
     <div class="py-5 text-start mx-auto">
       <h1 class="fw-bold">Web development</h1>
-      <p class="fs-5 m-0">Learn Full Stack Web Development Building Over 40+ Projects (Co chu more de tu navigate toi body)</p>
-      <p class="fs-5 m-0">Rating: 4.4 out of 5 (2,774 ratings) 13,860 students</p>
+      <p class="fs-4 m-0">Learn Full Stack Web Development Building Over 40+ Projects (Co chu more de tu navigate toi body)</p>
+      <div class="d-flex">
+        <p class="fs-5 m-0 f-cyan me-1">Rating: </p>
+        <div class="rating d-inline-flex fs-1">
+          <i class="far fa-star fa-2xs text-danger my-1" title="Bad"></i>
+          <i class="far fa-star fa-2xs text-danger my-1" title="Poor"></i>
+          <i class="far fa-star fa-2xs text-danger my-1" title="OK"></i>
+          <i class="far fa-star fa-2xs text-danger my-1" title="Good"></i>
+          <i class="far fa-star fa-2xs text-danger my-1" title="Excellent"></i>
+        </div>
+        <p class="fs-5 m-0"> 4.4 out of 5 (2,774 ratings) 13,860 students</p>
+      </div>
       <div class="d-flex">
         <p class="fs-5 m-0 f-cyan me-1">Lecturers: </p>
-        <p class="fs-5 m-0">Hao Pham, Huy Hoang, Duc Hai, Gia Hai, Gia Bao</p>
+        <p class="fs-5 m-0">Anh Hao, Huy Hoang, Duc Hai, Gia Hai, Gia Bao</p>
+      </div>
+      <div class="d-flex">
+        <p class="fs-5 m-0 f-cyan me-1">Lastest Updated: </p>
+        <p class="fs-5 m-0">09/12/2022</p>
       </div>
     </div>
     <div class="bg-lgrey my-5 mx-auto rounded d-flex align-items-center">
       <div class="py-3 text-start mx-5">
         <p class="text-center f-cyan fw-bold fs-3">10.000 VND</p>
-        <button type="button" class="btn btn-cyan btn-lg px-5 mx-auto" style="width: 200px">Buy</button>
+        <button type="button" class="btn btn-cyan btn-lg px-5 mx-auto fw-bold" style="width: 200px">Buy</button>
       </div>
     </div>
 </div>
@@ -28,166 +42,111 @@
 
 {{!-- Body --}}
 
-<div class="container my-3 p-4 bg-lgrey">
- <div class="accordion open" id="accordionExample">
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="headingOne">
-      <button class="accordion-button fw-bold fs-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-        Chapter 1: Introduction
-      </button>
-    </h2>
-    <div id="collapseOne" class="accordion-collapse fs-5 collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-      <div class="accordion-body">
-        Overall
-      </div>
-    </div>
-  </div>
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="headingTwo">
-      <button class="accordion-button fw-bold fs-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-        Chapter 2: HTML
-      </button>
-    </h2>
-    <div id="collapseTwo" class="accordion-collapse fs-5 collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-      <div class="accordion-body">
-        Introduction about HTML
-      </div>
-    </div>
-  </div>
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="headingThree">
-      <button class="accordion-button fw-bold fs-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-        Chapter 3: CSS
-      </button>
-    </h2>
-    <div id="collapseThree" class="accordion-collapse fs-5 collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-      <div class="accordion-body">
-        Introduction about CSS
-      </div>
-    </div>
-  </div>
-</div>
+<div class="container-fluid my-3 p-4 bg-lgrey w-75" >
 
-{{!-- Comment --}}
 
-<section class="bg-cyan">
-  <div class="container my-5 py-5">
+    <p class="display-3 fw-bold ps-4 my-3 w-75" style="margin-left: 5%;">Course sumary</p>
+    <p class="fs-4 ps-4 my-3 w-75" style="margin-left: 5%;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip consequat.</p>
+    
+    {{!-- Accordion --}}
+    <p class="display-3 fw-bold ps-4 my-3" style="margin-left: 5%;">Course details</p>
+    <div class="accordion open w-75" id="accordionExample" style="margin-left: 5%;">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingOne">
+        <button class="accordion-button fw-bold fs-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Chapter 1: Introduction
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse fs-4 collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          Overall
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingTwo">
+        <button class="accordion-button fw-bold fs-2 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          Chapter 2: HTML
+        </button>
+      </h2>
+      <div id="collapseTwo" class="accordion-collapse fs-4 collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          Introduction about HTML
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingThree">
+        <button class="accordion-button fw-bold fs-2 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+          Chapter 3: CSS
+        </button>
+      </h2>
+      <div id="collapseThree" class="accordion-collapse fs-4 collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          Introduction about CSS
+        </div>
+      </div>
+    </div>
+  </div>
+
+{{!-- Comment --}}          <hr class="my-3" style="height: 1px;" />
+
+
+<section style="background-color: #eee;">
+  <p class="display-3 fw-bold ps-4 mb-3 mt-0" style="margin-left: 5%;">Comment</p>
+  <div class="container-fluid mx-auto px-0" style="width: 90%">
     <div class="row d-flex justify-content-center">
-      <div class="col-md-12 col-lg-10">
-        <div class="card text-dark">
-          <div class="card-body p-4">
-            <h4 class="mb-0">Recent comments</h4>
-            <p class="fw-light mb-4 pb-2">Latest Comments section by users</p>
-
-            <div class="d-flex flex-start">
+      <div class="">
+        <div class="card">
+          <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
+            <div class="d-flex flex-start w-100">
               <img class="rounded-circle shadow-1-strong me-3"
-                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(23).webp" alt="avatar" width="60"
-                height="60" />
-              <div>
-                <h6 class="fw-bold mb-1">Maggie Marsh</h6>
-                <div class="d-flex align-items-center mb-3">
-                  <p class="mb-0">
-                    March 07, 2021
-                    <span class="badge bg-primary">Pending</span>
-                  </p>
-                  <a href="#!" class="link-muted"><i class="fas fa-pencil-alt ms-2"></i></a>
-                  <a href="#!" class="link-muted"><i class="fas fa-redo-alt ms-2"></i></a>
-                  <a href="#!" class="link-muted"><i class="fas fa-heart ms-2"></i></a>
-                </div>
-                <p class="mb-0">
-                  Lorem Ipsum is simply dummy text of the printing and typesetting
-                  industry. Lorem Ipsum has been the industry's standard dummy text ever
-                  since the 1500s, when an unknown printer took a galley of type and
-                  scrambled it.
-                </p>
+                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(19).webp" alt="avatar" 
+                width="80"
+                height="80" />
+              <div class="form-outline w-100 fs-2">
+                <label class="form-label" for="textAreaExample">Message</label>
+                <textarea class="form-control" id="textAreaExample" rows="4"
+                  style="background: #fff;"></textarea>
               </div>
             </div>
-          </div>
-
-          <hr class="my-0" />
-
-          <div class="card-body p-4">
-            <div class="d-flex flex-start">
-              <img class="rounded-circle shadow-1-strong me-3"
-                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(26).webp" alt="avatar" width="60"
-                height="60" />
-              <div>
-                <h6 class="fw-bold mb-1">Lara Stewart</h6>
-                <div class="d-flex align-items-center mb-3">
-                  <p class="mb-0">
-                    March 15, 2021
-                    <span class="badge bg-success">Approved</span>
-                  </p>
-                  <a href="#!" class="link-muted"><i class="fas fa-pencil-alt ms-2"></i></a>
-                  <a href="#!" class="text-success"><i class="fas fa-redo-alt ms-2"></i></a>
-                  <a href="#!" class="link-danger"><i class="fas fa-heart ms-2"></i></a>
-                </div>
-                <p class="mb-0">
-                  Contrary to popular belief, Lorem Ipsum is not simply random text. It
-                  has roots in a piece of classical Latin literature from 45 BC, making it
-                  over 2000 years old. Richard McClintock, a Latin professor at
-                  Hampden-Sydney College in Virginia, looked up one of the more obscure
-                  Latin words, consectetur, from a Lorem Ipsum passage, and going through
-                  the cites.
-                </p>
+            <div class="d-flex justify-content-end pt-1">
+              <div style="height: 80;">
+                <ul class="rating d-inline-flex list-inline mx-3 fs-1 my-0 pt-1" data-mdb-toggle="rating">
+                  <li><i class="far fa-star fa-sm text-danger" title="Bad" ></i></li>
+                  <li><i class="far fa-star fa-sm text-danger" title="Poor"></i></li>
+                  <li><i class="far fa-star fa-sm text-danger" title="OK"></i></li>
+                  <li><i class="far fa-star fa-sm text-danger" title="Good"></i></li>
+                  <li><i class="far fa-star fa-sm text-danger" title="Excellent"></i></li>
+                </ul>
+              </div>
+              <div class="">
+              <button type="button" class="btn btn-cyan btn-lg mt-3">Post comment</button>
               </div>
             </div>
           </div>
 
           <hr class="my-0" style="height: 1px;" />
 
-          <div class="card-body p-4">
-            <div class="d-flex flex-start">
+          <div class="card-body">
+            <div class="d-flex flex-start align-items-center">
               <img class="rounded-circle shadow-1-strong me-3"
-                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(33).webp" alt="avatar" width="60"
-                height="60" />
+                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(19).webp" alt="avatar" 
+                width="100"
+                height="100" />
               <div>
-                <h6 class="fw-bold mb-1">Alexa Bennett</h6>
-                <div class="d-flex align-items-center mb-3">
-                  <p class="mb-0">
-                    March 24, 2021
-                    <span class="badge bg-danger">Rejected</span>
-                  </p>
-                  <a href="#!" class="link-muted"><i class="fas fa-pencil-alt ms-2"></i></a>
-                  <a href="#!" class="link-muted"><i class="fas fa-redo-alt ms-2"></i></a>
-                  <a href="#!" class="link-muted"><i class="fas fa-heart ms-2"></i></a>
-                </div>
-                <p class="mb-0">
-                  There are many variations of passages of Lorem Ipsum available, but the
-                  majority have suffered alteration in some form, by injected humour, or
-                  randomised words which don't look even slightly believable. If you are
-                  going to use a passage of Lorem Ipsum, you need to be sure.
+                <h6 class="fw-bold text-primary mb-1 fs-1">Lily Coleman</h6>
+                <p class="text-muted small mb-0 fs-3">
+                  Shared publicly - Jan 2020
                 </p>
               </div>
             </div>
-          </div>
 
-          <hr class="my-0" />
-
-          <div class="card-body p-4">
-            <div class="d-flex flex-start">
-              <img class="rounded-circle shadow-1-strong me-3"
-                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(24).webp" alt="avatar" width="60"
-                height="60" />
-              <div>
-                <h6 class="fw-bold mb-1">Betty Walker</h6>
-                <div class="d-flex align-items-center mb-3">
-                  <p class="mb-0">
-                    March 30, 2021
-                    <span class="badge bg-primary">Pending</span>
-                  </p>
-                  <a href="#!" class="link-muted"><i class="fas fa-pencil-alt ms-2"></i></a>
-                  <a href="#!" class="link-muted"><i class="fas fa-redo-alt ms-2"></i></a>
-                  <a href="#!" class="link-muted"><i class="fas fa-heart ms-2"></i></a>
-                </div>
-                <p class="mb-0">
-                  It uses a dictionary of over 200 Latin words, combined with a handful of
-                  model sentence structures, to generate Lorem Ipsum which looks
-                  reasonable. The generated Lorem Ipsum is therefore always free from
-                  repetition, injected humour, or non-characteristic words etc.
-                </p>
-              </div>
-            </div>
+            <p class="mt-3 mb-4 pb-2">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+              tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+              quis nostrud exercitation ullamco laboris nisi ut aliquip consequat.
+            </p>
           </div>
         </div>
       </div>
