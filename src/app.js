@@ -8,7 +8,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import homepageRouter from "./routes/homepage.route.js";
 import detailsRouter from "./routes/details.route.js";
-import searchPageRouter from "./routes/searchPage.route.js";
+import mainRouter from "./routes/main.route.js";
 
 //Const variable
 const app = express();
@@ -46,15 +46,10 @@ app.engine(
 app.set("view engine", "hbs");
 app.set("views", __dirname + "/views");
 
-//Default homepage
-app.get("/", (req, res) => {
-    res.render("home");
-});
-
 //Router
+app.use("/", mainRouter);
 app.use("/test", homepageRouter);
 app.use("/details", detailsRouter);
-app.use("/searchPage", searchPageRouter);
 
 //Start App
 app.listen(PORT, function () {
