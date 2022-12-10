@@ -1,3 +1,5 @@
+//Import Router
+import searchPageRouter from "./routes/searchPage.route.js";
 import express from "express";
 import { engine } from "express-handlebars";
 import { dirname } from "path";
@@ -8,7 +10,6 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import homepageRouter from "./routes/homepage.route.js";
 import detailsRouter from "./routes/details.route.js";
-import mainRouter from "./routes/main.route.js";
 
 //Const variable
 const app = express();
