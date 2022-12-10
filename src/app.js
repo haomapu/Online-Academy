@@ -1,16 +1,18 @@
 //Import Router
+
 import express from "express";
 import { engine } from "express-handlebars";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import path from "path";
 import hbs_sections from "express-handlebars-sections";
-
-//Import Router
+import dotenv from "dotenv";
 import mongoose from "mongoose";
+
+
 import homepageRouter from "./routes/homepage.route.js";
 import detailsRouter from "./routes/details.route.js";
-import searchPageRouter from "./routes/searchPage.route.js";
+import mainRouter from "./routes/main.route.js";
 
 //Const variable
 const app = express();
@@ -18,6 +20,12 @@ app.use("/public", express.static("public"));
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PORT = 8080;
+
+// Connect MongoDB
+dotenv.config();
+mongoose.connect((process.env.MONGODB_URL), () => {
+    console.log("Connected to MongoDB");
+});
 
 //Set up bootstrap
 app.use(
@@ -42,15 +50,10 @@ app.engine(
 app.set("view engine", "hbs");
 app.set("views", __dirname + "/views");
 
-//Default homepage
-app.get("/", (req, res) => {
-    res.render("home");
-});
-
 //Router
+app.use("/", mainRouter);
 app.use("/test", homepageRouter);
 app.use("/details", detailsRouter);
-app.use("/searchPage", searchPageRouter);
 
 //Start App
 app.listen(PORT, function () {
