@@ -11,8 +11,10 @@ router.get('/',async function (req, res) {
 router.get('/get/:id',async function (req, res) {
     const id = req.params.id;
     const list = await detailService.findAll();
+    const cmt = await detailService.getComment(id);
     res.render('vwDetails/details', {
         detail: list[id],
+        cmt: cmt,
         empty: list.length === 0
     });
 })
