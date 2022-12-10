@@ -1,12 +1,10 @@
-//Import Router
 import express from "express";
 import { engine } from "express-handlebars";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import path from "path";
 import hbs_sections from "express-handlebars-sections";
-
-//Import Router
+import dotenv from "dotenv";
 import mongoose from "mongoose";
 import homepageRouter from "./routes/homepage.route.js";
 import detailsRouter from "./routes/details.route.js";
@@ -18,6 +16,12 @@ app.use("/public", express.static("public"));
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PORT = 8080;
+
+// Connect MongoDB
+dotenv.config();
+mongoose.connect((process.env.MONGODB_URL), () => {
+    console.log("Connected to MongoDB");
+});
 
 //Set up bootstrap
 app.use(
