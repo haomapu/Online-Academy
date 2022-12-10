@@ -12,6 +12,8 @@ import mongoose from "mongoose";
 
 import homepageRouter from "./routes/homepage.route.js";
 import detailsRouter from "./routes/details.route.js";
+import searchPageRouter from "./routes/searchPage.route.js";
+import loginPageRouter from "./routes/loginPage.route.js";
 import mainRouter from "./routes/main.route.js";
 
 //Const variable
@@ -54,6 +56,7 @@ app.set("views", __dirname + "/views");
 app.use("/", mainRouter);
 app.use("/test", homepageRouter);
 app.use("/details", detailsRouter);
+app.use("/searchPage", searchPageRouter);
 
 //Start App
 app.listen(PORT, function () {
