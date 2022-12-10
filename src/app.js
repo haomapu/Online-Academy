@@ -12,7 +12,6 @@ import mongoose from "mongoose";
 
 import homepageRouter from "./routes/homepage.route.js";
 import detailsRouter from "./routes/details.route.js";
-import searchPageRouter from "./routes/searchPage.route.js";
 import loginPageRouter from "./routes/loginPage.route.js";
 import mainRouter from "./routes/main.route.js";
 
@@ -56,7 +55,8 @@ app.set("views", __dirname + "/views");
 app.use("/", mainRouter);
 app.use("/test", homepageRouter);
 app.use("/details", detailsRouter);
-app.use("/searchPage", searchPageRouter);
+app.use("/search", mainRouter);
+app.use("/login", loginPageRouter);
 
 //Start App
 app.listen(PORT, function () {
