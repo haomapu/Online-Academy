@@ -11,6 +11,7 @@ import mongoose from "mongoose";
 import homepageRouter from "./routes/homepage.route.js";
 import detailsRouter from "./routes/details.route.js";
 import searchPageRouter from "./routes/searchPage.route.js";
+import loginPageRouter from "./routes/loginPage.route.js";
 
 //Const variable
 const app = express();
@@ -51,6 +52,7 @@ app.get("/", (req, res) => {
 app.use("/test", homepageRouter);
 app.use("/details", detailsRouter);
 app.use("/searchPage", searchPageRouter);
+app.use("/login", loginPageRouter);
 
 //Start App
 app.listen(PORT, function () {
