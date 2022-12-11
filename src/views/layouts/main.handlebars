@@ -12,10 +12,11 @@
 </head>
 
 <body>
-    <nav class="navbar sticky-top navbar-expand-lg bg-lgrey">
+    <nav class="navbar sticky-top navbar-expand-lg bg-light">
         <div class="container-fluid">
             <a class="navbar-brand fs-3 fw-bold" href="/">
-                <img src="public/images/logo.png" width="40" height="40" class="text-primary d-inline-block align-top" alt="">
+                <img src="public/images/logo.png" width="40" height="40" class="text-primary d-inline-block align-top"
+                    alt="">
                 <span>Online Academy</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -24,36 +25,49 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/details">Link</a>
-                    </li>
+                <ul class="navbar-nav">
+                    <!-- Dropdown -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Category
+                        <a class="nav-link dropdown-toggle" href="#" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Categories
                         </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <li>
-                                <hr class="dropdown-divider">
+                                <a class="dropdown-item" href="#">Action</a>
                             </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            <li>
+                                <a class="dropdown-item" href="#">Another action</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">
+                                    Submenu &raquo;
+                                </a>
+                                <ul class="dropdown-menu dropdown-submenu">
+                                    <li>
+                                        <a class="dropdown-item" href="#">Submenu item 1</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#">Submenu item 2</a>
+                                    </li>
+                                </ul>
+                            </li>
                         </ul>
+                    </li>
                 </ul>
-                    <div class="container">
-                        <form class="d-flex justify-content-between" role="search">
-                            <input class="rounded-pill form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                            {{!-- <button class="rounded-pill btn btn-outline-success me-2" type="submit">Search</button> --}}
-                            {{!-- <div class="container"> --}}
-                            {{!-- </div> --}}
-                        </form>
-                    </div>
-                    <div class="container d-flex justify-content-end">
-                            <a class="btn btn-outline-success me-2" href="#" role="button"><span>Sign In</span></a>
-                            <a class="btn btn-outline-secondary me-2" href="#" role="button">Log In</a>
-                    </div>
+                <div class="container me-auto mb-2 mb-lg-0">
+                    <form class="d-flex justify-content-between" role="search">
+                        <input class="rounded-pill form-control me-2" type="search" placeholder="Search"
+                            aria-label="Search">
+                    </form>
+                </div>
+                <div class="container d-flex align-items-center justify-content-end me-auto mb-2 mb-lg-0">
+                    <a class="links me-2 fs-6" href="">About</a>
+                    <a class="btn btn-outline-secondary me-2" href="#" role="button"><i
+                            class="fa-solid fa-cart-shopping"></i></a>
+                    <a class="btn btn-outline-secondary me-2" href="#" role="button"><span>Sign Up</span></a>
+                    <a class="btn btn-outline-secondary me-2" href="/login" role="button">Log In</a>
+                </div>
             </div>
         </div>
     </nav>
@@ -69,3 +83,27 @@
 </body>
 
 </html>
+
+{{!-- <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <li class="nav-item dropend">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Categories
+        </a>
+        <ul class="dropdown-menu">
+            <li class="nav-item dropend">
+                <a class="dropdown-item nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    Test
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+            </li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+        </ul>
+</ul> --}}
