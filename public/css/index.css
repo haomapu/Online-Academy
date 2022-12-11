@@ -876,3 +876,6 @@ header.masthead .bg-circle-4 {
 .btn-w {
   min-width: 87px;
 }
+.btn-wl {
+  min-width: 150px;
+}
