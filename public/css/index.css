@@ -873,3 +873,6 @@ header.masthead .bg-circle-4 {
 .bg-gradient {
   background-image: var(--bs-gradient) !important;
 }
+.btn-w {
+  min-width: 90px;
+}
