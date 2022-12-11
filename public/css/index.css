@@ -14,7 +14,7 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
         monospace;
 }
-/* Root Background Color*/
+/* Root Background Color*/ /*
 .bg-grey {
     background-color: #252a34;
     color: #eaeaea;
@@ -30,7 +30,6 @@ code {
     color: #252a34;
 }
 
-/* text color */
 .text-pink {
     color: #ff2e63;
 }
@@ -39,7 +38,6 @@ code {
     color: #252a34;
 }
 
-/* Root Button Color */
 .btn-grey {
     background-color: #252a34;
     color: #eaeaea;
@@ -70,7 +68,7 @@ code {
 .btn-pink {
     background-color: #ff2e63;
     color: #252a34;
-}
+} */
 
 * {
     padding: 0;
@@ -874,4 +872,10 @@ header.masthead .bg-circle-4 {
 
 .bg-gradient {
   background-image: var(--bs-gradient) !important;
+}
+.btn-w {
+  min-width: 87px;
+}
+.btn-wl {
+  min-width: 150px;
 }
