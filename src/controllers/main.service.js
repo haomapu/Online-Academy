@@ -1,3 +1,5 @@
+import detailService from "./details.service.js";
+
 const mainService = {
     getHomePage : async(req, res) => {
         res.render("home");

@@ -1,5 +1,4 @@
-//Import Router
-
+//Import general
 import express from "express";
 import { engine } from "express-handlebars";
 import { dirname } from "path";
@@ -9,7 +8,7 @@ import hbs_sections from "express-handlebars-sections";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 
-
+//Inport router
 import homepageRouter from "./routes/homepage.route.js";
 import detailsRouter from "./routes/details.route.js";
 import loginPageRouter from "./routes/loginPage.route.js";
