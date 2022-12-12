@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const processSchema = new mongoose.Schema({
     student: {
@@ -19,4 +19,4 @@ const processSchema = new mongoose.Schema({
 });
 
 const Process = mongoose.model("Process", processSchema);
-module.exports = Process;
+export default Process;

@@ -11,7 +11,6 @@ import bodyParser from "body-parser";
 
 //Inport router
 import homepageRouter from "./routes/homepage.route.js";
-import detailsRouter from "./routes/details.route.js";
 import loginPageRouter from "./routes/loginPage.route.js";
 import mainRouter from "./routes/main.route.js";
 import registerPageRouter from "./routes/main.route.js"
@@ -58,7 +57,6 @@ app.set("views", __dirname + "/views");
 //Router
 app.use("/", mainRouter);
 app.use("/test", homepageRouter);
-app.use("/details", detailsRouter);
 app.use("/search", mainRouter);
 app.use("/login", loginPageRouter);
 app.use("/register", registerPageRouter);
