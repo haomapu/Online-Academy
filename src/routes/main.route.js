@@ -7,6 +7,4 @@ router.get('/', mainService.getHomePage);
 
 router.get('/search', mainService.getSearchPage);
 
-router.get('/courses/:id', mainService.getCourseDetail);
-
 export default router;
