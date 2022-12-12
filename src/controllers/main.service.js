@@ -1,4 +1,4 @@
-import detailService from "./details.service.js";
+import Course from "../models/course.js";
 
 const mainService = {
     getHomePage : async(req, res) => {
@@ -10,11 +10,10 @@ const mainService = {
     },
     
     getCourseDetail: async(req, res) => {
-        const id = req.params.id;
-        const list = await detailService.findAll();
+        const query = Course.where({id: req.params.id});
+        const course = await query.findOne().lean();
         res.render('vwDetails/details', {
-            detail: list[id],
-            empty: list.length === 0
+            course
         });
     },
 };

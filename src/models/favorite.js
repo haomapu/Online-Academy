@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const favoriteSchema = new mongoose.Schema({
     student: {
@@ -14,4 +14,4 @@ const favoriteSchema = new mongoose.Schema({
 });
 
 const Favorite = mongoose.model("Favorite", favoriteSchema);
-module.exports = Favorite;
+export default Favorite;
