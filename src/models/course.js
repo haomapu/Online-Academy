@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const courseSchema = new mongoose.Schema({
     img: {
@@ -47,8 +47,7 @@ const courseSchema = new mongoose.Schema({
     },
     
     author: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        type: String,
     },
     
     feedbacks: {
@@ -58,4 +57,4 @@ const courseSchema = new mongoose.Schema({
 });
 
 const Course = mongoose.model("Course", courseSchema);
-module.exports = Course;
+export default Course;
