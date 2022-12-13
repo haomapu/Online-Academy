@@ -15,6 +15,10 @@ const mainService = {
             course
         });
     },
+
+    getLoginPage: async(req, res) => {
+        res.render("vwLoginPage/loginPage")
+    },
 };
 
 export default mainService;
