@@ -24,6 +24,10 @@ const mainService = {
   getEditProfilePage: async (req, res) => {
     res.render("vwSettingsPage/settingsPageEdit");
   },
+
+  getLoginPage: async (req, res) => {
+    res.render("vwLoginPage/loginPage");
+  },
 };
 
 export default mainService;
