@@ -3,10 +3,14 @@ import mainService from "../controllers/main.service.js";
 
 const router = express.Router();
 
-router.get('/', mainService.getHomePage);
+router.get("/", mainService.getHomePage);
 
-router.get('/search', mainService.getSearchPage);
+router.get("/search", mainService.getSearchPage);
 
-router.get('/course/:id', mainService.getCourseDetail);
+router.get("/course/:id", mainService.getCourseDetail);
+
+router.get("/settings", mainService.getSettingsPage);
+
+router.get("/settings/editProfile", mainService.getEditProfilePage);
 
 export default router;
