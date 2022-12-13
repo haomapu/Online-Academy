@@ -1,1 +1,57 @@
-<div>test</div>
+<style>
+  @media screen and (min-width: 1000px){
+    #textInput{
+        display: flex;
+        flex-direction: column;
+        margin-left: 25%;
+        margin-right: 25%;
+        width: 50%;
+    }
+  }
+</style>
+
+<div class="container pt-2 pb-1">
+    <form method="post" id="frmLogin" class=" fs-5">
+        <h3 class="text-center pb-3 px-5">Account Register</h3>
+
+        <div class="form-outline mb-3 px-5" id="textInput">
+            <label class="form-label" for="name" >Name</label>
+            <div class="input-group flex-nowrap">
+                <i class="fa-solid fa-user absolute fa-lg pt-3 px-2 border border-1 rounded-start border-info" aria-hidden="true"></i>
+                <input type="text" id="name" class="form-control border border-1 border-info" autofocus/>
+            </div>
+        </div>
+
+        <div class="form-outline mb-3 px-5" id="textInput">
+            <label class="form-label" for="email" >Email</label>
+            <div class="input-group flex-nowrap">
+                <i class="fa fa-envelope absolute fa-lg pt-3 px-2 border border-1 rounded-start border-info" aria-hidden="true"></i>
+                <input type="email" id="email" class="form-control border border-1 border-info" autofocus/>
+            </div>
+        </div>
+
+        <div class="form-outline mb-3 px-5" id="textInput">
+            <label class="form-label" for="password">Password</label>
+            <div class="input-group flex-nowrap">
+                <i class="fa fa-lock  absolute fa-lg pt-3 px-2 border border-1 rounded-start border-info" aria-hidden="true"></i>
+                <input type="password" id="password" class="form-control border border-1 border-info" />
+            </div>
+        </div>
+
+        <div class="form-outline mb-4 px-5" id="textInput">
+            <label class="form-label" for="password">Confirm Password</label>
+            <div class="input-group flex-nowrap">
+                <i class="fa fa-lock  absolute fa-lg pt-3 px-2 border border-1 rounded-start border-info" aria-hidden="true"></i>
+                <input type="password" class="form-control border border-1 border-info" />
+            </div>
+        </div>
+
+        <div class="text-center px-5">
+            <button id="btnSignIn" type="signIn" class="btn btn-secondary text-light w-auto btn-block btn-lg mb-3">Sign up</button>
+        </div>
+
+        <div class="text-center px-5 ">
+            <p>Already have an account? <a href="/login" class="text-secondary">Login</a></p>
+        </div>
+    </form>
+</div>
