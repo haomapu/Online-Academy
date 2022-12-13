@@ -13,7 +13,7 @@ import bodyParser from "body-parser";
 import homepageRouter from "./routes/homepage.route.js";
 import loginPageRouter from "./routes/loginPage.route.js";
 import mainRouter from "./routes/main.route.js";
-import registerPageRouter from "./routes/main.route.js"
+import registerPageRouter from "./routes/registerPage.route.js"
 import courseRouter from "./routes/course.route.js";
 
 //Const variable
