@@ -1,72 +1,67 @@
 {{! Background }}
 <style>
-  @media screen and (max-width: 768px){
-    #numRateReg{
+  @media screen and (max-width: 768px) {
+    #numRateReg {
       display: none;
     }
-    #coverImg{
+
+    #coverImg {
       display: none;
     }
-    #coverContent{
-      
-    }
+
+    #coverContent {}
   }
 </style>
+
 <div class="container">
 
   {{! Buy in and description }}
 
-  <div class="bg-dark text-light row rounded-top">
-    <img src="/public/images/login.jpg" id="coverImg" class="col-md-4 p-0">
-    <div class="p-5 text-start col-md-8" id="coverContent">
-      <h1 class="fw-bold">{{detail.Title}}</h1>
-      <p class="fs-4 m-0">Learn Full Stack Web Development Building Over 40+
-        Projects (Co chu more de tu navigate toi body)</p>
+  <div class="bg-dark text-light row border-top rounded">
+    <img src="{{course.img}}" id="coverImg" class="col-md-4 p-0">
+    <div class="px-5 py-4 text-start col-md-8" id="coverContent">
+      <h1 class="fw-bold">{{course.name}}</h1>
+      <p class="fs-5 m-0">{{course.overview}}</p>
       <div class="d-flex">
-          <p class="fs-5 m-0 text-secondary me-1">Rating: </p>
-          <div class="rating d-flex fs-5">
-            <i class="fa fa-star text-secondary" style="line-height: unset" title="Bad"></i>
-            <i class="far fa-star text-secondary" style="line-height: unset" title="Poor"></i>
-            <i class="far fa-star text-secondary" style="line-height: unset" title="OK"></i>
-            <i class="far fa-star text-secondary" style="line-height: unset" title="Good"></i>
-            <i class="far fa-star text-secondary" style="line-height: unset" title="Excellent"></i>
-          </div>
-          <p class="fs-5 m-0" id="numRateReg">&nbsp; (2,774 ratings) 13,860 students</p>
+        <p class="fs-5 m-0 text-secondary me-1">Rating: </p>
+        <div class="rating d-flex fs-5">
+          <i class="fa fa-star text-secondary" style="line-height: unset" title="Bad"></i>
+          <i class="far fa-star text-secondary" style="line-height: unset" title="Poor"></i>
+          <i class="far fa-star text-secondary" style="line-height: unset" title="OK"></i>
+          <i class="far fa-star text-secondary" style="line-height: unset" title="Good"></i>
+          <i class="far fa-star text-secondary" style="line-height: unset" title="Excellent"></i>
+        </div>
+        <p class="fs-5 m-0" id="numRateReg">&nbsp;({{course.rating_count}} rating) {{course.register_count}} students
+        </p>
       </div>
       <div class="d-flex">
         <div class="d-flex flex-column me-auto">
-
           <div class="d-flex">
             <p class="fs-5 m-0 text-secondary me-1">Lecturers: </p>
-            <p class="fs-5 m-0">{{detail.Lecturers}}</p>
+            <p class="fs-5 m-0">{{course.author}}</p>
           </div>
-
           <div class="d-flex">
             <p class="fs-5 m-0 text-secondary me-1">Lastest Updated: </p>
-            <p class="fs-5 m-0">09/12/2022</p>
+            <p class="fs-5 m-0">{{course.lastUpdate}}</p>
           </div>
         </div>
-        <button class="btn btn-lg btn-secondary">Add to cart</button>
-
+        <div class="d-flex flex-column justify-content-center align-items-center">
+          <p class="text-secondary m-0 fs-5">{{course.price}} VND</p>
+          <button class="btn btn-md btn-secondary text-light fw-bold">Add to cart</button>
+        </div>
       </div>
+      
     </div>
+    <div class="row bg-secondary rounded-bottom fs-6 p-0 m-0 w-100">
+      &nbsp;
+    </div>
+  </div>
 
-  </div>
-  <div class="row">
-    <div class="bg-secondary rounded-bottom">&nbsp;</div>
-  </div>
   {{! Body }}
   <hr class="my-5 text-dark" style="height: 1px;" />
   <div class="container-fluid p-0" style="width: 90%">
-
     <p class="h2 fw-bold">Course Sumary</p>
-    <p class="fs-5 px-4 py-1 rounded-bottom rounded-end">Lorem ipsum dolor
-      sit amet, consectetur adipiscing elit, sed do Lorem ipsum
-      dolor sit amet, consectetur adipiscing elit, sed do Lorem ipsum dolor sit
-      amet, consectetur adipiscing elit, sed do Lorem ipsum dolor sit amet,
-      consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-      dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-      ullamco laboris nisi ut aliquip consequat.</p>
+    <p class="fs-5 px-4 py-1 rounded-bottom rounded-end">{{course.description}}</p>
   </div>
   {{! Accordion }}
   <hr class="my-5 text-dark" style="height: 1px;" />
@@ -75,20 +70,25 @@
   <div class="accordion open rounded-end rounded-bottom" id="accordionExample" style="margin-left: 5%; width: 90%;">
     <p class="h2 fw-bold">
       Course Details</p>
+
+    {{!-- {{#each course.chapters}}
     <div class="accordion-item">
       <h2 class="accordion-header" id="headingOne">
         <button class="accordion-button fw-bold fs-5 py-2" type="button" data-bs-toggle="collapse"
           data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-          Chapter 1: Introduction
+          Chapter 1: {{this.name}}
         </button>
       </h2>
       <div id="collapseOne" class="accordion-collapse fs-5 collapse" aria-labelledby="headingOne"
         data-bs-parent="#accordionExample">
+        {{#each this.lessons}}
         <div class="accordion-body py-2">
-          Overall
+          {{this.name}}: &nbsp; {{this.video}}
         </div>
+        {{/each}}
       </div>
     </div>
+    {{/each}} --}}
   </div>
 
   {{! Recommend }}
@@ -98,7 +98,35 @@
   <div class="container-fluid p-0" style="width: 90%">
     <p class="h2 fw-bold">Recommend</p>
     <ul class="list-group list-group-flush">
-      <li class="list-group-item d-flex rounded-end rounded-bottom">
+      <li class="list-group-item d-flex border border-2 shadow p-3">
+        <img src="/public/images/details.jpg" style="background-repeat: no-repeat; height: 80px; width: 80px; "
+          class="rounded align-self-center" />
+        <div class="px-2 me-auto">
+          <div class="fs-5 fw-bold m-0">Java Application</div>
+          <div class="fs-6">Short description</div>
+          5<i class="fa fa-star fa-sm text-secondary" title="Bad"></i>
+        </div>
+        <div class="px-2 d-flex flex-column align-self-center">
+          <button type="button"
+            class="btn btn-secondary btn-lg p-1 mb-1">&nbsp;&nbsp;&nbsp;Visit&nbsp;&nbsp;&nbsp;</button>
+          <button type="button" class="btn btn-outline-secondary btn-lg p-1"><i class="fas fa-heart"></i></button>
+        </div>
+      </li>
+      <li class="list-group-item d-flex border border-2 shadow p-3">
+        <img src="/public/images/details.jpg" style="background-repeat: no-repeat; height: 80px; width: 80px; "
+          class="rounded align-self-center" />
+        <div class="px-2 me-auto">
+          <div class="fs-5 fw-bold m-0">Java Application</div>
+          <div class="fs-6">Short description</div>
+          5<i class="fa fa-star fa-sm text-secondary" title="Bad"></i>
+        </div>
+        <div class="px-2 d-flex flex-column align-self-center">
+          <button type="button"
+            class="btn btn-secondary btn-lg p-1 mb-1">&nbsp;&nbsp;&nbsp;Visit&nbsp;&nbsp;&nbsp;</button>
+          <button type="button" class="btn btn-outline-secondary btn-lg p-1"><i class="fas fa-heart"></i></button>
+        </div>
+      </li>
+      <li class="list-group-item d-flex border border-2 shadow p-3">
         <img src="/public/images/details.jpg" style="background-repeat: no-repeat; height: 80px; width: 80px; "
           class="rounded align-self-center" />
         <div class="px-2 me-auto">
@@ -117,10 +145,9 @@
   </div>
 
   {{! Comment }}
-  <hr class="my-5 text-dark" style="height: 1px;" />
+  <hr class="my-5 text-dark " style="height: 1px;" />
 
-  <div class="card container-fluid rounded-end rounded-bottom p-0 row d-flex justify-content-center mx-auto"
-    style="width: 90%">
+  <div class="card container-fluid row d-flex justify-content-center mx-auto shadow" style="width: 90%">
     <p class="h2 fw-bold">Comment</p>
 
     <div class="card-header bg-white">
@@ -146,7 +173,7 @@
       </div>
     </div>
 
-    <hr class="my-0" style="height: 1px;" />
+    <hr class="mb-3" style="height: 1px;" />
     {{#each cmt}}
     <div class="card-body">
       <div class="d-flex flex-start align-items-center">
