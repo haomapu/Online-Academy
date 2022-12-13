@@ -61,6 +61,8 @@ app.use("/search", mainRouter);
 app.use("/login", loginPageRouter);
 app.use("/register", registerPageRouter);
 app.use("/course", courseRouter);
+
+
 //Start App
 app.listen(PORT, function () {
     console.log(`Online Academy listening at http://localhost:${PORT}`);

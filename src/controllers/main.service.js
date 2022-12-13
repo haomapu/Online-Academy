@@ -10,11 +10,14 @@ const mainService = {
     },
     
     getCourseDetail: async(req, res) => {
-        const query = Course.where({id: req.params.id});
-        const course = await query.findOne().lean();
+        const course = await Course.findOne({'name': req.params.id}).lean();
         res.render('vwDetails/details', {
             course
         });
+    },
+
+    getLoginPage: async(req, res) => {
+        res.render("vwLoginPage/loginPage")
     },
 };
 
