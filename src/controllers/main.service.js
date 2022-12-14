@@ -32,6 +32,14 @@ const mainService = {
   getSignupPage: async (req, res) => {
     res.render("vwRegisterPage/registerPage");
   },
+
+  loginService: async (req, res) => {
+    console.log(req.body);
+  },
+
+  signupService: async (req, res) => {
+    console.log(req.body.email);
+  }
 };
 
 export default mainService;
