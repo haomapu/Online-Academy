@@ -8,7 +8,7 @@ import hbs_sections from "express-handlebars-sections";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
-//Inport router
+//Import router
 import homepageRouter from "./routes/homepage.route.js";
 import mainRouter from "./routes/main.route.js";
 import courseRouter from "./routes/course.route.js";

@@ -1,6 +1,6 @@
 import Course from "../models/course.js";
 import Feedback from "../models/feedback.js";
-import User from "../models/user.js"
+import User from "../models/user.js";
 import bcrypt from "bcrypt";
 
 const mainService = {
@@ -17,27 +17,28 @@ const mainService = {
 
     const query = Course.where({ id: req.params.id });
     const course = await query.findOne().lean();
-    const top5cate = await Course.find().sort({register_count: -1}).lean().limit(top5);
-
+    const top5cate = await Course.find()
+      .sort({ register_count: -1 })
+      .lean()
+      .limit(top5);
 
     const feedbacks = [];
-    for (let i = 0; i < course.feedbacks.length; i++){
+    for (let i = 0; i < course.feedbacks.length; i++) {
       const feedback = await Feedback.findById(course.feedbacks[i]._id);
       const user = await User.findById(feedback.author._id);
 
-      
       feedbacks.push({
         content: feedback.content,
         avatar: user.avatar,
         author: user.username,
-        time: feedback.time,  
+        time: feedback.time,
       });
     }
 
     res.render("vwDetails/details", {
       course: course,
       feedbacks: feedbacks,
-      rec: top5cate
+      rec: top5cate,
     });
   },
 
@@ -47,6 +48,9 @@ const mainService = {
 
   getEditProfilePage: async (req, res) => {
     res.render("vwSettingsPage/settingsPageEdit");
+  },
+  getDashboardPage: async (req, res) => {
+    res.render("vwSettingsPage/dashboardPage");
   },
 
   getLoginPage: async (req, res) => {
@@ -63,11 +67,11 @@ const mainService = {
 
   signupService: async (req, res) => {
     try {
-      const { username, email, password} = req.body;
+      const { username, email, password } = req.body;
       const hashedPassword = await bcrypt.hash(password, 10);
-      const user = await User.findOne({email: email}).lean();
+      const user = await User.findOne({ email: email }).lean();
 
-      if(user) {
+      if (user) {
         res.render("vwRegisterPage/registerPage");
         console.log("Existed email");
       } else {
@@ -79,14 +83,14 @@ const mainService = {
           avatar: "",
           phone: "",
           fullname: "",
-        })
+        });
         await savedUser.save();
         res.render("home");
       }
-    }catch(e) {
+    } catch (e) {
       res.send(e);
     }
-  }
+  },
 };
 
 export default mainService;
