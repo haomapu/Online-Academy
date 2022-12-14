@@ -8,7 +8,6 @@ import hbs_sections from "express-handlebars-sections";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
-
 //Inport router
 import homepageRouter from "./routes/homepage.route.js";
 import loginPageRouter from "./routes/loginPage.route.js";
@@ -57,7 +56,6 @@ app.use("/", mainRouter);
 app.use("/test", homepageRouter);
 app.use("/search", mainRouter);
 app.use("/login", loginPageRouter);
-app.use("/register", registerPageRouter);
 app.use("/course", courseRouter);
 //Start App
 app.listen(PORT, function () {

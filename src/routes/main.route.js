@@ -9,6 +9,8 @@ router.get("/search", mainService.getSearchPage);
 
 router.get("/login", mainService.getLoginPage);
 
+router.get("/signup", mainService.getSignupPage);
+
 router.get("/course/:id", mainService.getCourseDetail);
 
 router.get("/settings", mainService.getSettingsPage);

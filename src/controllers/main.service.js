@@ -28,6 +28,10 @@ const mainService = {
   getLoginPage: async (req, res) => {
     res.render("vwLoginPage/loginPage");
   },
+
+  getSignupPage: async (req, res) => {
+    res.render("vwRegisterPage/registerPage");
+  },
 };
 
 export default mainService;
