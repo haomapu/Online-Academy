@@ -98,12 +98,13 @@
   <div class="container-fluid p-0" style="width: 90%">
     <p class="h2 fw-bold">Recommend</p>
     <ul class="list-group list-group-flush">
+      {{#each rec}}
       <li class="list-group-item d-flex border border-2 shadow p-3">
-        <img src="/public/images/details.jpg" style="background-repeat: no-repeat; height: 80px; width: 80px; "
+        <img src="{{this.img}}" style="background-repeat: no-repeat; height: 100px; width: 100px; "
           class="rounded align-self-center" />
         <div class="px-2 me-auto">
-          <div class="fs-5 fw-bold m-0">Java Application</div>
-          <div class="fs-6">Short description</div>
+          <div class="fs-5 fw-bold m-0">{{this.name}}</div>
+          <div class="fs-6">{{this.overview}}</div>
           5<i class="fa fa-star fa-sm text-secondary" title="Bad"></i>
         </div>
         <div class="px-2 d-flex flex-column align-self-center">
@@ -112,49 +113,7 @@
           <button type="button" class="btn btn-outline-secondary btn-lg p-1"><i class="fas fa-heart"></i></button>
         </div>
       </li>
-      <li class="list-group-item d-flex border border-2 shadow p-3">
-        <img src="/public/images/details.jpg" style="background-repeat: no-repeat; height: 80px; width: 80px; "
-          class="rounded align-self-center" />
-        <div class="px-2 me-auto">
-          <div class="fs-5 fw-bold m-0">Java Application</div>
-          <div class="fs-6">Short description</div>
-          5<i class="fa fa-star fa-sm text-secondary" title="Bad"></i>
-        </div>
-        <div class="px-2 d-flex flex-column align-self-center">
-          <button type="button" class="btn btn-secondary btn-lg p-1 mb-1"><a class="links text-light"
-              href="/course/Java Programming Masterclass updated to Java 17">&nbsp;&nbsp;&nbsp;Visit&nbsp;&nbsp;&nbsp;</a></button>
-          <button type="button" class="btn btn-outline-secondary btn-lg p-1"><i class="fas fa-heart"></i></button>
-        </div>
-      </li>
-      <li class="list-group-item d-flex border border-2 shadow p-3">
-        <img src="/public/images/details.jpg" style="background-repeat: no-repeat; height: 80px; width: 80px; "
-          class="rounded align-self-center" />
-        <div class="px-2 me-auto">
-          <div class="fs-5 fw-bold m-0">Java Application</div>
-          <div class="fs-6">Short description</div>
-          5<i class="fa fa-star fa-sm text-secondary" title="Bad"></i>
-        </div>
-        <div class="px-2 d-flex flex-column align-self-center">
-          <button type="button" class="btn btn-secondary btn-lg p-1 mb-1"><a class="links text-light"
-              href="/course/Java Programming Masterclass updated to Java 17">&nbsp;&nbsp;&nbsp;Visit&nbsp;&nbsp;&nbsp;</a></button>
-          <button type="button" class="btn btn-outline-secondary btn-lg p-1"><i class="fas fa-heart"></i></button>
-        </div>
-      </li>
-      <li class="list-group-item d-flex border border-2 shadow p-3">
-        <img src="/public/images/details.jpg" style="background-repeat: no-repeat; height: 80px; width: 80px; "
-          class="rounded align-self-center" />
-        <div class="px-2 me-auto">
-          <div class="fs-5 fw-bold m-0">Java Application</div>
-          <div class="fs-6">Short description</div>
-          5<i class="fa fa-star fa-sm text-secondary" title="Bad"></i>
-        </div>
-        <div class="px-2 d-flex flex-column align-self-center">
-          <button type="button" class="btn btn-secondary btn-lg p-1 mb-1"><a class="links text-light"
-              href="/course/Java Programming Masterclass updated to Java 17">&nbsp;&nbsp;&nbsp;Visit&nbsp;&nbsp;&nbsp;</a></button>
-          <button type="button" class="btn btn-outline-secondary btn-lg p-1"><i class="fas fa-heart"></i></button>
-        </div>
-      </li>
-
+      {{/each}}
     </ul>
 
   </div>
@@ -217,15 +176,15 @@
   {{/each}}
   <ul class="pagination pagination-lg justify-content-center">
     <li class="page-item">
-      <a class="page-link text-secondary fw-bold" href="?page=" aria-label="Previous">
+      <a class="page-link text-secondary border-secondary fw-bold" href="?page=" aria-label="Previous">
         <span aria-hidden="true">&laquo;</span>
       </a>
     </li>
-    <li class="page-item"><a class="page-link text-secondary fw-bold" href="?page=">1</a></li>
-    <li class="page-item"><a class="page-link text-secondary fw-bold" href="?page=">2</a></li>
-    <li class="page-item"><a class="page-link text-secondary fw-bold" href="?page=">3</a></li>
+    <li class="page-item"><a class="page-link text-secondary border-secondary fw-bold" href="?page=">1</a></li>
+    <li class="page-item"><a class="page-link text-secondary border-secondary fw-bold" href="?page=">2</a></li>
+    <li class="page-item"><a class="page-link text-secondary border-secondary fw-bold" href="?page=">3</a></li>
     <li class="page-item">
-      <a class="page-link text-secondary fw-bold" href="?page=" aria-label="Next">
+      <a class="page-link text-secondary fw-bold border-secondary" href="?page=" aria-label="Next">
         <span aria-hidden="true">&raquo;</span>
       </a>
     </li>
