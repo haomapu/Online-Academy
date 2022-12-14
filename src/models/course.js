@@ -50,10 +50,10 @@ const courseSchema = new mongoose.Schema({
         type: String,
     },
     
-    feedbacks: {
+    feedbacks: [{
         type: [mongoose.Schema.Types.ObjectId],
         ref: "Feedback"
-    }
+    }]
 });
 
 const Course = mongoose.model("Course", courseSchema);

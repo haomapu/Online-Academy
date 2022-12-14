@@ -17,7 +17,7 @@
 
   {{! Buy in and description }}
 
-  <div class="bg-dark text-light row border-top rounded">
+  <div class="bg-dark text-light row border rounded">
     <img src="{{course.img}}" id="coverImg" class="col-md-4 p-0">
     <div class="px-5 py-4 text-start col-md-8" id="coverContent">
       <h1 class="fw-bold">{{course.name}}</h1>
@@ -50,7 +50,7 @@
           <button class="btn btn-md btn-secondary text-light fw-bold">Add to cart</button>
         </div>
       </div>
-      
+
     </div>
     <div class="row bg-secondary rounded-bottom fs-6 p-0 m-0 w-100">
       &nbsp;
@@ -107,8 +107,8 @@
           5<i class="fa fa-star fa-sm text-secondary" title="Bad"></i>
         </div>
         <div class="px-2 d-flex flex-column align-self-center">
-          <button type="button"
-            class="btn btn-secondary btn-lg p-1 mb-1">&nbsp;&nbsp;&nbsp;Visit&nbsp;&nbsp;&nbsp;</button>
+          <button type="button" class="btn btn-secondary btn-lg p-1 mb-1"><a class="links text-light"
+              href="/course/Java Programming Masterclass updated to Java 17">&nbsp;&nbsp;&nbsp;Visit&nbsp;&nbsp;&nbsp;</a></button>
           <button type="button" class="btn btn-outline-secondary btn-lg p-1"><i class="fas fa-heart"></i></button>
         </div>
       </li>
@@ -121,8 +121,8 @@
           5<i class="fa fa-star fa-sm text-secondary" title="Bad"></i>
         </div>
         <div class="px-2 d-flex flex-column align-self-center">
-          <button type="button"
-            class="btn btn-secondary btn-lg p-1 mb-1">&nbsp;&nbsp;&nbsp;Visit&nbsp;&nbsp;&nbsp;</button>
+          <button type="button" class="btn btn-secondary btn-lg p-1 mb-1"><a class="links text-light"
+              href="/course/Java Programming Masterclass updated to Java 17">&nbsp;&nbsp;&nbsp;Visit&nbsp;&nbsp;&nbsp;</a></button>
           <button type="button" class="btn btn-outline-secondary btn-lg p-1"><i class="fas fa-heart"></i></button>
         </div>
       </li>
@@ -135,86 +135,101 @@
           5<i class="fa fa-star fa-sm text-secondary" title="Bad"></i>
         </div>
         <div class="px-2 d-flex flex-column align-self-center">
-          <button type="button"
-            class="btn btn-secondary btn-lg p-1 mb-1">&nbsp;&nbsp;&nbsp;Visit&nbsp;&nbsp;&nbsp;</button>
+          <button type="button" class="btn btn-secondary btn-lg p-1 mb-1"><a class="links text-light"
+              href="/course/Java Programming Masterclass updated to Java 17">&nbsp;&nbsp;&nbsp;Visit&nbsp;&nbsp;&nbsp;</a></button>
           <button type="button" class="btn btn-outline-secondary btn-lg p-1"><i class="fas fa-heart"></i></button>
         </div>
       </li>
+      <li class="list-group-item d-flex border border-2 shadow p-3">
+        <img src="/public/images/details.jpg" style="background-repeat: no-repeat; height: 80px; width: 80px; "
+          class="rounded align-self-center" />
+        <div class="px-2 me-auto">
+          <div class="fs-5 fw-bold m-0">Java Application</div>
+          <div class="fs-6">Short description</div>
+          5<i class="fa fa-star fa-sm text-secondary" title="Bad"></i>
+        </div>
+        <div class="px-2 d-flex flex-column align-self-center">
+          <button type="button" class="btn btn-secondary btn-lg p-1 mb-1"><a class="links text-light"
+              href="/course/Java Programming Masterclass updated to Java 17">&nbsp;&nbsp;&nbsp;Visit&nbsp;&nbsp;&nbsp;</a></button>
+          <button type="button" class="btn btn-outline-secondary btn-lg p-1"><i class="fas fa-heart"></i></button>
+        </div>
+      </li>
+
     </ul>
 
   </div>
 
   {{! Comment }}
   <hr class="my-5 text-dark " style="height: 1px;" />
+  <form method="post">
+    <div class="card container-fluid row d-flex justify-content-center mx-auto shadow" style="width: 90%">
+      <div class="card-header bg-white">
+        <div class="d-flex flex-start">
+          <img class="rounded-circle shadow-1-strong me-3"
+            src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(19).webp" alt="avatar" width="60" height="60" />
+          <div class="form-outline w-100 fs-4">
+            <label class="form-label" for="feedback">Message</label>
+            <textarea class="form-control" id="feedback" rows="4" style="background: #fff;" type="text"
+              name="feedback"></textarea>
 
-  <div class="card container-fluid row d-flex justify-content-center mx-auto shadow" style="width: 90%">
-    <p class="h2 fw-bold">Comment</p>
-
-    <div class="card-header bg-white">
-      <div class="d-flex flex-start">
-        <img class="rounded-circle shadow-1-strong me-3"
-          src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(19).webp" alt="avatar" width="60" height="60" />
-        <div class="form-outline w-100 fs-4">
-          <label class="form-label" for="textAreaExample">Message</label>
-          <textarea class="form-control" id="textAreaExample" rows="4" style="background: #fff;"></textarea>
+          </div>
+        </div>
+        <div class="d-flex justify-content-end pt-1">
+          <div>
+            <ul class="rating d-inline-flex list-inline mx-3 fs-1 my-0 pt-1" data-mdb-toggle="rating">
+              <li><i class="far fa-star fa-sm text-secondary" title="Bad"></i></li>
+              <li><i class="far fa-star fa-sm text-secondary" title="Poor"></i></li>
+              <li><i class="far fa-star fa-sm text-secondary" title="OK"></i></li>
+              <li><i class="far fa-star fa-sm text-secondary" title="Good"></i></li>
+              <li><i class="far fa-star fa-sm text-secondary" title="Excellent"></i></li>
+            </ul>
+          </div>
+          <button class="btn btn-secondary btn-lg my-auto" formaction="/course/feedback" type="submit">Post
+            comment</button>
         </div>
       </div>
-      <div class="d-flex justify-content-end pt-1">
-        <div>
-          <ul class="rating d-inline-flex list-inline mx-3 fs-1 my-0 pt-1" data-mdb-toggle="rating">
-            <li><i class="far fa-star fa-sm text-secondary" title="Bad"></i></li>
-            <li><i class="far fa-star fa-sm text-secondary" title="Poor"></i></li>
-            <li><i class="far fa-star fa-sm text-secondary" title="OK"></i></li>
-            <li><i class="far fa-star fa-sm text-secondary" title="Good"></i></li>
-            <li><i class="far fa-star fa-sm text-secondary" title="Excellent"></i></li>
-          </ul>
-        </div>
-        <button class="btn btn-secondary btn-lg my-auto">Post comment</button>
+  </form>
+  <hr class="mb-3" style="height: 1px;" />
+  {{#each feedbacks}}
+  <div class="card-body">
+    <div class="d-flex flex-start align-items-center">
+      <img class="rounded-circle shadow-1-strong me-3" src="{{this.avatar}}" alt="avatar" width="80" height="80" />
+      <div class="me-auto">
+        <h6 class="fw-bold mb-1 fs-4">{{this.author}}</h6>
+        <p class="text-muted small mb-0 fs-5">
+          {{this.time}}
+        </p>
+      </div>
+      <div class="rating d-flex fs-5">
+        <i class="far fa-star text-secondary" style="line-height: unset" title="Bad"></i>
+        <i class="far fa-star text-secondary" style="line-height: unset" title="Poor"></i>
+        <i class="far fa-star text-secondary" style="line-height: unset" title="OK"></i>
+        <i class="far fa-star text-secondary" style="line-height: unset" title="Good"></i>
+        <i class="far fa-star text-secondary" style="line-height: unset" title="Excellent"></i>
       </div>
     </div>
 
-    <hr class="mb-3" style="height: 1px;" />
-    {{#each cmt}}
-    <div class="card-body">
-      <div class="d-flex flex-start align-items-center">
-        <img class="rounded-circle shadow-1-strong me-3"
-          src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(19).webp" alt="avatar" width="80" height="80" />
-        <div class="me-auto">
-          <h6 class="fw-bold mb-1 fs-4">{{this.Person}}</h6>
-          <p class="text-muted small mb-0 fs-5">
-            {{this.Date}}
-          </p>
-        </div>
-        <div class="rating d-flex fs-5">
-          <i class="far fa-star text-secondary" style="line-height: unset" title="Bad"></i>
-          <i class="far fa-star text-secondary" style="line-height: unset" title="Poor"></i>
-          <i class="far fa-star text-secondary" style="line-height: unset" title="OK"></i>
-          <i class="far fa-star text-secondary" style="line-height: unset" title="Good"></i>
-          <i class="far fa-star text-secondary" style="line-height: unset" title="Excellent"></i>
-        </div>
-      </div>
-
-      <p class="mt-3 mb-4 pb-2 fs-5">
-        {{this.Content}}
-      </p>
-    </div>
-    <hr class="my-3" style="height: 1px;" />
-    {{/each}}
-    <ul class="pagination pagination-lg justify-content-center">
-      <li class="page-item">
-        <a class="page-link text-secondary fw-bold" href="?page=" aria-label="Previous">
-          <span aria-hidden="true">&laquo;</span>
-        </a>
-      </li>
-      <li class="page-item"><a class="page-link text-secondary fw-bold" href="?page=">1</a></li>
-      <li class="page-item"><a class="page-link text-secondary fw-bold" href="?page=">2</a></li>
-      <li class="page-item"><a class="page-link text-secondary fw-bold" href="?page=">3</a></li>
-      <li class="page-item">
-        <a class="page-link text-secondary fw-bold" href="?page=" aria-label="Next">
-          <span aria-hidden="true">&raquo;</span>
-        </a>
-      </li>
-    </ul>
+    <p class="mt-3 mb-4 pb-2 fs-5">
+      {{this.content}}
+    </p>
   </div>
+  <hr class="my-3" style="height: 1px;" />
+  {{/each}}
+  <ul class="pagination pagination-lg justify-content-center">
+    <li class="page-item">
+      <a class="page-link text-secondary fw-bold" href="?page=" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li class="page-item"><a class="page-link text-secondary fw-bold" href="?page=">1</a></li>
+    <li class="page-item"><a class="page-link text-secondary fw-bold" href="?page=">2</a></li>
+    <li class="page-item"><a class="page-link text-secondary fw-bold" href="?page=">3</a></li>
+    <li class="page-item">
+      <a class="page-link text-secondary fw-bold" href="?page=" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</div>
 
 </div>
