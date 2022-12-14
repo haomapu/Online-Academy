@@ -10,9 +10,7 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 //Inport router
 import homepageRouter from "./routes/homepage.route.js";
-import loginPageRouter from "./routes/loginPage.route.js";
 import mainRouter from "./routes/main.route.js";
-import registerPageRouter from "./routes/main.route.js";
 import courseRouter from "./routes/course.route.js";
 
 //Const variable

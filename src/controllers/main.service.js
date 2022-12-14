@@ -1,6 +1,8 @@
 import Course from "../models/course.js";
 import Feedback from "../models/feedback.js";
 import User from "../models/user.js"
+import bcrypt from "bcrypt";
+
 const mainService = {
   getHomePage: async (req, res) => {
     res.render("home");
@@ -57,7 +59,30 @@ const mainService = {
   },
 
   signupService: async (req, res) => {
-    console.log(req.body.email);
+    try {
+      const { username, email, password} = req.body;
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const user = await User.findOne({email: email}).lean();
+
+      if(user) {
+        res.render("vwRegisterPage/registerPage");
+        console.log("Existed email");
+      } else {
+        const savedUser = new User({
+          username: username,
+          email: email,
+          password: hashedPassword,
+          otp: "",
+          avatar: "",
+          phone: "",
+          fullname: "",
+        })
+        await savedUser.save();
+        res.render("home");
+      }
+    }catch(e) {
+      res.send(e);
+    }
   }
 };
 
