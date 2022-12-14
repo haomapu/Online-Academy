@@ -28,6 +28,7 @@ mongoose.connect(process.env.MONGODB_URL, () => {
   console.log("Connected to MongoDB");
 });
 
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 //Set up bootstrap
@@ -55,7 +56,6 @@ app.set("views", __dirname + "/views");
 app.use("/", mainRouter);
 app.use("/test", homepageRouter);
 app.use("/search", mainRouter);
-app.use("/login", loginPageRouter);
 app.use("/course", courseRouter);
 //Start App
 app.listen(PORT, function () {
