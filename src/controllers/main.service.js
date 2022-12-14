@@ -13,12 +13,14 @@ const mainService = {
   },
 
   getCourseDetail: async (req, res) => {
+    const top5 = 5;
+
     const query = Course.where({ id: req.params.id });
     const course = await query.findOne().lean();
-    
+    const top5cate = await Course.find().sort({register_count: -1}).lean().limit(top5);
+
+
     const feedbacks = [];
-
-
     for (let i = 0; i < course.feedbacks.length; i++){
       const feedback = await Feedback.findById(course.feedbacks[i]._id);
       const user = await User.findById(feedback.author._id);
@@ -34,7 +36,8 @@ const mainService = {
 
     res.render("vwDetails/details", {
       course: course,
-      feedbacks: feedbacks
+      feedbacks: feedbacks,
+      rec: top5cate
     });
   },
 
