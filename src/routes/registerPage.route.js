@@ -7,6 +7,7 @@ router.get("/", function (req, res) {
     res.render("vwRegisterPage/registerPage");
 });
 
+<<<<<<< HEAD
 // router.post('/register', function(req, res, next) {
 //     var salt = crypto.randomBytes(16);
 //     crypto.pbkdf2(req.body.password, salt, 310000, 32, 'sha256', function(err, hashedPassword) {
@@ -22,4 +23,6 @@ router.get("/", function (req, res) {
 //     });
 //   });
 
+=======
+>>>>>>> d8a9b5ef9f1dbdd5f5ef460295a1becf87591cbc
 export default router;
