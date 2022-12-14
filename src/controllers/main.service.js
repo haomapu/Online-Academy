@@ -1,6 +1,7 @@
 import Course from "../models/course.js";
+import Feedback from "../models/feedback.js";
+import User from "../models/user.js"
 import bcrypt from "bcrypt";
-import User from "../models/user.js";
 
 const mainService = {
   getHomePage: async (req, res) => {
@@ -14,8 +15,26 @@ const mainService = {
   getCourseDetail: async (req, res) => {
     const query = Course.where({ id: req.params.id });
     const course = await query.findOne().lean();
+    
+    const feedbacks = [];
+
+
+    for (let i = 0; i < course.feedbacks.length; i++){
+      const feedback = await Feedback.findById(course.feedbacks[i]._id);
+      const user = await User.findById(feedback.author._id);
+
+      
+      feedbacks.push({
+        content: feedback.content,
+        avatar: user.avatar,
+        author: user.username,
+        time: feedback.time,  
+      });
+    }
+
     res.render("vwDetails/details", {
-      course,
+      course: course,
+      feedbacks: feedbacks
     });
   },
 
