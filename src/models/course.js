@@ -38,7 +38,7 @@ const courseSchema = new mongoose.Schema({
     },
 
     lastUpdate: {
-        type: String,
+        type: Date,
     },
 
     chapters: {
