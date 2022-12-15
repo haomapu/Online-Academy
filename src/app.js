@@ -8,7 +8,9 @@ import hbs_sections from "express-handlebars-sections";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
-//Import router
+import passport from "passport";
+//Inport router
+
 import homepageRouter from "./routes/homepage.route.js";
 import mainRouter from "./routes/main.route.js";
 import courseRouter from "./routes/course.route.js";
@@ -28,6 +30,8 @@ mongoose.connect(process.env.MONGODB_URL, () => {
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(passport.initialize());
+app.use(passport.session());
 
 //Set up bootstrap
 app.use(
