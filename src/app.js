@@ -30,8 +30,8 @@ mongoose.connect(process.env.MONGODB_URL, () => {
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(passport.initialize());
-app.use(passport.session());
+//app.use(passport.initialize());
+//app.use(passport.session());
 
 //Set up bootstrap
 app.use(
