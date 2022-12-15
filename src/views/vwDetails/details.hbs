@@ -31,22 +31,24 @@
           <i class="far fa-star text-secondary" style="line-height: unset" title="Good"></i>
           <i class="far fa-star text-secondary" style="line-height: unset" title="Excellent"></i>
         </div>
-        <p class="fs-5 m-0" id="numRateReg">&nbsp;({{course.rating_count}} rating) {{course.register_count}} students
+        <p class="fs-5 m-0" id="numRateReg">&nbsp;({{course.rating_count}} rating) {{format_number course.register_count}} students
         </p>
       </div>
       <div class="d-flex">
         <div class="d-flex flex-column me-auto">
           <div class="d-flex">
             <p class="fs-5 m-0 text-secondary me-1">Lecturers: </p>
-            <p class="fs-5 m-0">{{course.author}}</p>
+            <a class="fs-5 m-0 text-decoration-none" data-bs-toggle="offcanvas" href="#profile" role="button" aria-controls="offcanvasExample">
+              {{course.author}}
+            </a>
           </div>
           <div class="d-flex">
             <p class="fs-5 m-0 text-secondary me-1">Lastest Updated: </p>
-            <p class="fs-5 m-0">{{course.lastUpdate}}</p>
+            <p class="fs-5 m-0">{{format_date course.lastUpdate}}</p>
           </div>
         </div>
         <div class="d-flex flex-column justify-content-center align-items-center">
-          <p class="text-secondary m-0 fs-5">{{course.price}} VND</p>
+          <p class="text-secondary m-0 fs-5">{{format_number course.price}} VND</p>
           <button class="btn btn-md btn-secondary text-light fw-bold">Add to cart</button>
         </div>
       </div>
@@ -105,11 +107,11 @@
         <div class="px-2 me-auto">
           <div class="fs-5 fw-bold m-0">{{this.name}}</div>
           <div class="fs-6">{{this.overview}}</div>
-          5<i class="fa fa-star fa-sm text-secondary" title="Bad"></i>
+          <span class="fs-5">5<i class="fa fa-star fa-xs text-secondary" style="line-height: unset"></i>&nbsp;<u class="fs-6 text-success">{{this.register_count}} students</u></span>
         </div>
         <div class="px-2 d-flex flex-column align-self-center">
           <button type="button" class="btn btn-secondary btn-lg p-1 mb-1"><a class="links text-light"
-              href="/course/Java Programming Masterclass updated to Java 17">&nbsp;&nbsp;&nbsp;Visit&nbsp;&nbsp;&nbsp;</a></button>
+              href="/course/{{this.name}}">&nbsp;&nbsp;&nbsp;Visit&nbsp;&nbsp;&nbsp;</a></button>
           <button type="button" class="btn btn-outline-secondary btn-lg p-1"><i class="fas fa-heart"></i></button>
         </div>
       </li>
@@ -128,8 +130,8 @@
             src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(19).webp" alt="avatar" width="60" height="60" />
           <div class="form-outline w-100 fs-4">
             <label class="form-label" for="feedback">Message</label>
-            <textarea class="form-control" id="feedback" rows="4" style="background: #fff;" type="text"
-              name="feedback"></textarea>
+            <textarea class="form-control" id="content" rows="4" style="background: #fff;" type="text"
+              name="content"></textarea>
 
           </div>
         </div>
@@ -143,7 +145,7 @@
               <li><i class="far fa-star fa-sm text-secondary" title="Excellent"></i></li>
             </ul>
           </div>
-          <button class="btn btn-secondary btn-lg my-auto" formaction="/course/feedback" type="submit">Post
+          <button class="btn btn-secondary btn-lg my-auto" formaction="/course/{{course.name}}/fb" type="submit">Post
             comment</button>
         </div>
       </div>
@@ -191,4 +193,16 @@
   </ul>
 </div>
 
+</div>
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="profile" aria-labelledby="profileLabel">
+  <div class="offcanvas-header">
+    <u class="offcanvas-title h1 fw-bold" id="profileLabel">{{course.author}}</u>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div>
+      Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+    </div>
+  </div>
 </div>

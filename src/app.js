@@ -8,6 +8,8 @@ import hbs_sections from "express-handlebars-sections";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
+import numeral from 'numeral';
+
 //Inport router
 import homepageRouter from "./routes/homepage.route.js";
 import mainRouter from "./routes/main.route.js";
@@ -45,6 +47,14 @@ app.engine(
   engine({
     defaultLayout: "main.handlebars",
     section: hbs_sections(),
+    helpers:{
+      format_number(val) {
+        return numeral(val).format('0,0');
+      },
+      format_date(date){
+        return date.toLocaleString();
+      }
+    }
   })
 );
 app.set("view engine", "hbs");
