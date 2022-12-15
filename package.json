@@ -18,7 +18,9 @@
     "express-handlebars": "^6.0.6",
     "express-handlebars-sections": "^1.0.1",
     "knex": "^2.3.0",
-    "mongoose": "^6.8.0"
+    "mongoose": "^6.8.0",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0"
   },
   "repository": {
     "type": "git",
