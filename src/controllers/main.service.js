@@ -1,6 +1,6 @@
 import Course from "../models/course.js";
 import Feedback from "../models/feedback.js";
-import User from "../models/user.js"
+import User from "../models/user.js";
 import bcrypt from "bcrypt";
 
 const mainService = {
@@ -37,7 +37,7 @@ const mainService = {
     res.render("vwDetails/details", {
       course: course,
       feedbacks: feedbacks,
-      rec: top5cate
+      rec: top5cate,
     });
 
   },
@@ -48,6 +48,9 @@ const mainService = {
 
   getEditProfilePage: async (req, res) => {
     res.render("vwSettingsPage/settingsPageEdit");
+  },
+  getDashboardPage: async (req, res) => {
+    res.render("vwSettingsPage/dashboardPage");
   },
 
   getLoginPage: async (req, res) => {
@@ -64,11 +67,11 @@ const mainService = {
 
   signupService: async (req, res) => {
     try {
-      const { username, email, password} = req.body;
+      const { username, email, password } = req.body;
       const hashedPassword = await bcrypt.hash(password, 10);
-      const user = await User.findOne({email: email}).lean();
+      const user = await User.findOne({ email: email }).lean();
 
-      if(user) {
+      if (user) {
         res.render("vwRegisterPage/registerPage");
         console.log("Existed email");
       } else {
@@ -80,11 +83,11 @@ const mainService = {
           avatar: "",
           phone: "",
           fullname: "",
-        })
+        });
         await savedUser.save();
         res.render("home");
       }
-    }catch(e) {
+    } catch (e) {
       res.send(e);
     }
   },

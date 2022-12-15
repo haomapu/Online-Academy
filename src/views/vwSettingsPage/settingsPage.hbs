@@ -1,77 +1,54 @@
+<style>
+  @media screen and (max-width: 940px) { .mainContent li span { display: none;
+  }} .mainContent li.nav-item:hover { background: #f05462;}
+</style>
 <div class="d-flex">
   <div
-    class="sidebarsSettings fs-5"
-    style="min-height: 100vh; min-height: -webkit-fill-available;"
+    class="mainContent d-flex flex-nowrap fs-5"
+    style="min-height: 100vh; overflow-x: auto; overflow-y: hidden;"
   >
-    <div
-      class="mainContent d-flex flex-nowrap"
-      style="height: 100vh;
-        height: -webkit-fill-available;
-        max-height: 100vh;
-        overflow-x: auto;
-        overflow-y: hidden;"
-    >
-      <div
-        class="d-flex flex-column flex-shrink-0 p-3 bg-light"
-        style="width: 280px"
-      >
-        <hr />
-        <ul class="nav nav-pills flex-column mb-auto">
-          <li class="nav-item">
-            <a href="#" class="nav-link active" aria-current="page">
-              Profile
-            </a>
-          </li>
-          <li>
-            <a href="#" class="nav-link link-dark">
-              Dashboard
-            </a>
-          </li>
-          <li>
-            <a href="#" class="nav-link link-dark">
-              Categories
-            </a>
-          </li>
-          <li>
-            <a href="#" class="nav-link link-dark">
-              Courses
-            </a>
-          </li>
-          <li>
-            <a href="#" class="nav-link link-dark">
-              Users
-            </a>
-          </li>
-        </ul>
-        <hr />
-        <div class="dropdown">
-          <a
-            href="#"
-            class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <img
-              src="https://github.com/mdo.png"
-              alt=""
-              width="32"
-              height="32"
-              class="rounded-circle me-2"
-            />
-            <strong>mdo</strong>
+    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light">
+      <hr />
+      <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+          <a href="#" class="nav-link active" aria-current="page">
+            <i class="fa-regular fa-address-card"></i>
+            <span>Profile</span>
           </a>
-          <ul class="dropdown-menu text-small shadow">
-            <li>
-              <a class="dropdown-item" href="#">New project...</a>
-            </li>
-            <li><a class="dropdown-item" href="#">Settings</a></li>
-            <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li><hr class="dropdown-divider" /></li>
-            <li><a class="dropdown-item" href="#">Sign out</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="b-example-divider b-example-vr"></div>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link link-dark">
+            <i class="fa-solid fa-table-columns"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link link-dark">
+            <i class="fas fa-grip-horizontal"></i>
+            <span>Categories</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link link-dark">
+            <i class="fas fa-book"></i>
+            <span>Courses</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link link-dark">
+            <i class="fas fa-users"></i>
+            <span>Users</span>
+          </a>
+        </li>
+      </ul>
+      <hr />
+      <ul class="nav nav-pills flex-column">
+        <li class="nav-item">
+          <a class="nav-link link-dark" href="#">
+            <i class="fa-solid fa-right-from-bracket"></i><span>Logout</span>
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
   <div class="main-body" style="flex: 3">
@@ -262,7 +239,7 @@
             <div class="row">
               <div class="col-sm-12">
                 <a
-                  class="btn btn-info"
+                  class="btn btn-secondary text-white"
                   target="__blank"
                   href="/settings/editProfile"
                 >Edit</a>
@@ -336,6 +313,5 @@
         </div>
       </div>
     </div>
-
   </div>
 </div>
