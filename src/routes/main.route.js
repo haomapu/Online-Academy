@@ -19,10 +19,13 @@ router.post("/course/:id/fb", mainService.feedbackService);
 
 router.get("/course/:id", mainService.getCourseDetail);
 
+router.get("/postCourse", mainService.createCoursePage);
+
 router.get("/settings", mainService.getSettingsPage);
 
 router.get("/settings/editProfile", mainService.getEditProfilePage);
 
 router.get("/settings/dashboard", mainService.getDashboardPage);
+
 
 export default router;
