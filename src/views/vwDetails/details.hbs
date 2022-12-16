@@ -31,14 +31,16 @@
           <i class="far fa-star text-secondary" style="line-height: unset" title="Good"></i>
           <i class="far fa-star text-secondary" style="line-height: unset" title="Excellent"></i>
         </div>
-        <p class="fs-5 m-0" id="numRateReg">&nbsp;({{course.rating_count}} rating) {{format_number course.register_count}} students
+        <p class="fs-5 m-0" id="numRateReg">&nbsp;({{course.rating_count}} rating) {{format_number
+          course.register_count}} students
         </p>
       </div>
       <div class="d-flex">
         <div class="d-flex flex-column me-auto">
           <div class="d-flex">
             <p class="fs-5 m-0 text-secondary me-1">Lecturers: </p>
-            <a class="fs-5 m-0 text-decoration-none" data-bs-toggle="offcanvas" href="#profile" role="button" aria-controls="offcanvasExample">
+            <a class="fs-5 m-0 text-decoration-none" data-bs-toggle="offcanvas" href="#profile" role="button"
+              aria-controls="offcanvasExample">
               {{course.author}}
             </a>
           </div>
@@ -107,7 +109,8 @@
         <div class="px-2 me-auto">
           <div class="fs-5 fw-bold m-0">{{this.name}}</div>
           <div class="fs-6">{{this.overview}}</div>
-          <span class="fs-5">5<i class="fa fa-star fa-xs text-secondary" style="line-height: unset"></i>&nbsp;<u class="fs-6 text-success">{{this.register_count}} students</u></span>
+          <span class="fs-5">5<i class="fa fa-star fa-xs text-secondary" style="line-height: unset"></i>&nbsp;<u
+              class="fs-6 text-success">{{this.register_count}} students</u></span>
         </div>
         <div class="px-2 d-flex flex-column align-self-center">
           <button type="button" class="btn btn-secondary btn-lg p-1 mb-1"><a class="links text-light"
@@ -182,9 +185,17 @@
         <span aria-hidden="true">&laquo;</span>
       </a>
     </li>
-    <li class="page-item"><a class="page-link text-secondary border-secondary fw-bold" href="?page=">1</a></li>
-    <li class="page-item"><a class="page-link text-secondary border-secondary fw-bold" href="?page=">2</a></li>
-    <li class="page-item"><a class="page-link text-secondary border-secondary fw-bold" href="?page=">3</a></li>
+    {{#each pageNumbers}}
+      {{#if isCurrent}}
+      <li class="page-item active" aria-current="page">
+            <span class="page-link text-secondary border-secondary fw-bold bg-secondary text-light">{{value}}</span>
+      </li>
+      {{else}}
+      <li class="page-item">
+        <a class="page-link text-secondary border-secondary fw-bold" href="?page={{value}}">{{value}}</a>
+      </li>
+      {{/if}}
+    {{/each}}
     <li class="page-item">
       <a class="page-link text-secondary fw-bold border-secondary" href="?page=" aria-label="Next">
         <span aria-hidden="true">&raquo;</span>
@@ -206,5 +217,3 @@
     </div>
   </div>
 </div>
-
-

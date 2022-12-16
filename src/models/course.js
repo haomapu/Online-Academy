@@ -49,11 +49,11 @@ const courseSchema = new mongoose.Schema({
     author: {
         type: String,
     },
-    
-    feedbacks: [{
+
+    category: {
         type: [mongoose.Schema.Types.ObjectId],
-        ref: "Feedback"
-    }]
+        ref: "Category",
+    },
 });
 
 const Course = mongoose.model("Course", courseSchema);

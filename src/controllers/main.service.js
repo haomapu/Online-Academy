@@ -14,13 +14,28 @@ const mainService = {
 
   getCourseDetail: async (req, res) => {
     const top5 = 5;
-    
-    const course = await Course.findOne({name: req.params.id}).lean();
-    const top5cate = await Course.find({name: { $not: { $eq: req.params.id} }}).sort({register_count: -1}).lean().limit(top5);
-    const queryFeedback = await Feedback.find({course: course._id});
+    const course = await Course.findOne({ name: req.params.id }).lean();
+    const top5cate = await Course.find({ name: { $not: { $eq: req.params.id } } }).sort({ register_count: -1 }).lean().limit(top5);
     const feedbacks = [];
-    if (queryFeedback.length != 0){
-      for (let i = 0; i < queryFeedback.length; i++){
+
+    const curPage = req.query.page || 1;
+    const limit = 4;
+    const offset = (curPage - 1) * limit;
+    const total = await Feedback.find().count(); 
+    const nPages = Math.ceil(total / limit);
+    const pageNumbers = [];
+
+    for (let i = 1; i <= nPages; i++) {
+      pageNumbers.push({
+        value: i,
+        isCurrent: i === +curPage
+      });
+    }
+    console.log(pageNumbers);
+    const queryFeedback = await Feedback.find({ course: course._id }).sort({time: -1}).skip(offset).limit(limit);
+
+    if (queryFeedback.length != 0) {
+      for (let i = 0; i < queryFeedback.length; i++) {
         const content = queryFeedback[i].content
 
         const user = await User.findById(queryFeedback[i].author._id);
@@ -38,6 +53,7 @@ const mainService = {
       course: course,
       feedbacks: feedbacks,
       rec: top5cate,
+      pageNumbers: pageNumbers
     });
 
   },
@@ -91,18 +107,22 @@ const mainService = {
       res.send(e);
     }
   },
-  
-  feedbackService: async(req, res, next) => {
+  // lan sau de cai nay o student.service.js de day do
+  feedbackService: async (req, res, next) => {
     try {
-      req.body = {...req.body, author: await User.findById("639978639e7caee6a44a7b3f")};
-      req.body = {...req.body, course: await Course.findOne({name: req.params.id})};
+      req.body = { ...req.body, author: await User.findById("6399782c9e7caee6a44a7b3d") };
+      req.body = { ...req.body, course: await Course.findOne({ name: req.params.id }) };
       const feedback = new Feedback(req.body);
       const savedFeedback = await feedback.save();
       res.redirect('/course/' + req.params.id);
-    }catch(e){
+    } catch (e) {
       res.send(e);
     }
-    
+
+  },
+
+  createCoursePage: async (req, res) => {
+    res.render('vwLecturer/createCourse')
   }
 };
 
