@@ -1,47 +1,250 @@
+<link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
+
 <div class="container">
-    <form>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="inputName">Name</label>
-                <input type="text" class="form-control" id="inputName" placeholder="Web application">
+    <form method="POST">
+        <!--begin::Card-->
+        <div class="card shadow">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3 class="card-label fw-bold">Infomation</h3>
+                </div>
+            </div>
+            <!--begin::Form-->
+            <div class="card-body p-0">
+                <div class="form-group row justify-content-md-center  my-2">
+                    <label class="col-lg-3 fs-4 text-end">Course Name:</label>
+                    <div class="col-lg-7">
+                        <input type="text" class="form-control" placeholder="Web development" name="name">
+                    </div>
+                </div>
+                <div class="form-group row justify-content-md-center  my-2">
+                    <label class="col-lg-3 fs-4 py-0 text-end">Cover Image:</label>
+                    <div class="col-xl-7">
+                        <div class="image-input image-input-outline" id="kt_image_4"
+                            style="background-image: url(/assets/media/users/blank.png)">
+                            <label class="btn p-0 d-flex" data-action="change" data-toggle="tooltip" title=""
+                                data-original-title="Change avatar">
+                                <input id="thumbnail" name="thumbnail" type="file" class="file btn btn-md px-0 me-auto"
+                                    data-browse-on-zone-click="true" accept="image/*">
+                                <button class="btn btn-outline-secondary" data-action="remove" data-toggle="tooltip"
+                                    title="Remove avatar">Remove
+                                </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row justify-content-md-center  my-2">
+                    <label class="col-lg-3 fs-4 text-end">Category:</label>
+                    <div class="col-lg-7">
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected>Open this select menu</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+
+                    </div>
+                </div>
+                <div class="form-group row justify-content-md-center  my-2">
+                    <label class="col-lg-3 fs-4 text-end">Overall:</label>
+                    <div class="col-lg-7">
+                        <textarea name="overview" class="form-control" rows="5"
+                            placeholder="Introduction to the course"></textarea>
+                    </div>
+                </div>
+
+
+                <div class="form-group row justify-content-md-center  my-2">
+                    <label class="col-lg-3 text-start py-0 fs-4 text-end">Price:</label>
+                    <div class="col-lg-7">
+                        <input type="text" name="price_discount" class="form-control" placeholder="10%">
+                    </div>
+                </div>
+
+                <div class="form-group row justify-content-md-center my-2">
+                    <label class="col-lg-3 py-0 fs-4 text-end">Sales:</label>
+                    <div class="col-lg-7">
+                        <input type="text" name="price_discount" class="form-control" placeholder="10%">
+                    </div>
+                </div>
+
+            </div>
+
+            <!--end::Form-->
+        </div>
+        <!--end::Card-->
+        <!--begin::Card-->
+        <div class="card shadow my-3">
+            <div class="card-header">
+                <div class="d-flex justify-content-between">
+                    <h3 class="fw-bold m-0">Chapters</h3>
+                    <button type="button" class="btn btn-secondary text-light fw-bold">Add new
+                        chapter</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div>Sau khi click add new chap, cho nay tao ra them 1 dong` roi cho nhap du lieu vao (chua biet lam)
+                </div>
             </div>
         </div>
-        <div class="form-group">
-                <label for="inputOverview">Overview</label>
-                <input type="text" class="form-control" id="inputOverview" placeholder="Summary about the course">
-            </div>
-        <div class="form-group">
-            <label for="inputDescription">Description</label>
-            <textarea type="text" class="form-control" id="inputDescription" placeholder="..."></textarea>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="inputPrice">Price</label>
-                <input type="text" class="form-control" id="inputPrice" placeholder="100,000 VND">
-            </div>
-            <div class="form-group col-md-6">
-                <label for="inputState">Main Cate</label>
-                <select id="inputState" class="form-control">
-                    <option selected>Development</option>
-                    <option>...</option>
-                </select>
-            </div>
-            <div class="form-group col-md-6">
-                <label for="inputState">Sub Cate</label>
-                <select id="inputState" class="form-control">
-                    <option selected>Web development</option>
-                    <option>...</option>
-                </select>
+        <!--begin::Form-->
+
+        <input type="text" hidden name="id" value="">
+
+        <div class="card-body">
+            <div class="chap-container accordion accordion-light accordion-svg-toggle" numChapter="0">
+
+                <!--begin::Card Chapter-->
+                <!--end::Card-->
             </div>
         </div>
-        <div class="form-group">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="gridCheck">
-                <label class="form-check-label" for="gridCheck">
-                    Check me out
-                </label>
+
+        <div class="card card-custom roseanna px-10">
+            <div id="toolbar" class="h1">
             </div>
+            <div id="editor"></div>
+
+            <!--end::Form-->
         </div>
-        <button type="submit" class="btn btn-primary">Sign in</button>
+        <!--end::Card-->
+        <div class="d-flex justify-content-center">
+            <button type="submit"
+                class="btn btn-md btn-secondary text-light fw-bold m-2">&emsp;&emsp;Create&emsp;&emsp;</button>
+            <a href="/" class="btn btn-md btn-secondary text-light fw-bold m-2">&emsp;&emsp;Cancel&emsp;&emsp;</a>
+        </div>
     </form>
 </div>
+
+<table>
+    <tbody>
+        <tr hidden class="templateLesson">
+            <td class="pt-0 py-5 ">
+                <i class="fa fas fa-photo-video text-warning icon-xl"></i>
+            </td>
+            <td>
+                <table>
+                    <input hidden class="id" type="text" value="new">
+
+                    <div class="row text-dark-75 font-weight-bolder mb-1 font-size-lg">
+                        <label class="col-lg-4 text-lg-left">Tên bài học:</label>
+
+                        <div class="col-lg-8">
+                            <input class="name form-control col-lg-20" type="text">
+                        </div>
+
+                    </div>
+                    <div class="row text-dark-75 font-weight-bolder mb-1 font-size-lg">
+                        <label data-toggle="modal" data-target="#myModal"
+                            class="col-lg-4 col-form-label text-lg-left">URL Video:</label>
+
+                        <div class="col-lg-8">
+                            <input class="video form-control col-lg-20" type="text">
+                        </div>
+                    </div>
+                </table>
+            </td>
+
+            <td class="text-center">
+                <span class="text-dark-75 font-weight-bolder d-block font-size-lg">Time</span>
+                <div class="dropdown dropdown-inline show" data-toggle="tooltip" data-placement="left"
+                    data-original-title="Xóa bài học">
+                    <i class="flaticon-delete btn-dlt-lesson "></i>
+                </div>
+                <span class="text-dark-50 d-block font-size-lg"> Xem trước
+                </span>
+
+                <input class="preview form-check-input" type="checkbox">
+            </td>
+        </tr>
+    </tbody>
+
+</table>
+
+<div hidden class="chapterTemplate">
+    <input hidden class="id" type="text" name="" value="new">
+    <div class="card-header settings telegram">
+        <div class="card-title text-dark collapsed ">
+            <span class="svg-icon svg-icon-primary click" role="button">
+                <!--begin::Svg Icon | path:assets/media/svg/icons/Navigation/Angle-double-right.svg-->
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                    height="24px" viewBox="0 0 24 24" version="1.1">
+                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <polygon points="0 0 24 0 24 24 0 24"></polygon>
+                        <path
+                            d="M12.2928955,6.70710318 C11.9023712,6.31657888 11.9023712,5.68341391 12.2928955,5.29288961 C12.6834198,4.90236532 13.3165848,4.90236532 13.7071091,5.29288961 L19.7071091,11.2928896 C20.085688,11.6714686 20.0989336,12.281055 19.7371564,12.675721 L14.2371564,18.675721 C13.863964,19.08284 13.2313966,19.1103429 12.8242777,18.7371505 C12.4171587,18.3639581 12.3896557,17.7313908 12.7628481,17.3242718 L17.6158645,12.0300721 L12.2928955,6.70710318 Z"
+                            fill="#000000" fill-rule="nonzero"></path>
+                        <path
+                            d="M3.70710678,15.7071068 C3.31658249,16.0976311 2.68341751,16.0976311 2.29289322,15.7071068 C1.90236893,15.3165825 1.90236893,14.6834175 2.29289322,14.2928932 L8.29289322,8.29289322 C8.67147216,7.91431428 9.28105859,7.90106866 9.67572463,8.26284586 L15.6757246,13.7628459 C16.0828436,14.1360383 16.1103465,14.7686056 15.7371541,15.1757246 C15.3639617,15.5828436 14.7313944,15.6103465 14.3242754,15.2371541 L9.03007575,10.3841378 L3.70710678,15.7071068 Z"
+                            fill="#000000" fill-rule="nonzero" opacity="0.3"
+                            transform="translate(9.000003, 11.999999) rotate(-270.000000) translate(-9.000003, -11.999999)">
+                        </path>
+                    </g>
+                </svg>
+                <!--end::Svg Icon-->
+            </span>
+            <div class="card-label text-dark row">
+                <label data-toggle="collapse" data-target="" aria-expanded="false" aria-controls="" role="button"
+                    class="col-lg-3 col-form-label text-lg-right click">Tên chương:</label>
+                <input type="text" class="name form-control col-lg-7">
+                <span class="text-dark-50 col-lg-2">
+                    <div class="d-flex flex-row justify-content-around">
+                        <div class="dropdown dropdown-inline show" data-toggle="tooltip" data-placement="left"
+                            data-original-title="Thêm bài học">
+                            <i class="flaticon-add btn-add-lesson" chap=""></i>
+                        </div>
+                        <div class="dropdown dropdown-inline show" data-toggle="tooltip" data-placement="left"
+                            data-original-title="Xóa chương">
+                            <i class="flaticon-delete btn-dlt-chap " chap=""></i>
+                        </div>
+
+                    </div>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="collapse target">
+        <div class="table-responsive">
+            <table class="table table-borderless table-vertical-center">
+
+                <tbody>
+
+                </tbody>
+                <!--end::Tbody-->
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="https://cdn.quilljs.com/1.0.0/quill.js"></script>
+
+<script>
+    var toolbarOptions = [
+        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+        ['blockquote', 'code-block'],
+
+        [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+        [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
+        [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
+        [{ 'direction': 'rtl' }],                         // text direction
+
+        [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+        [{ 'font': [] }],
+        [{ 'align': [] }],
+
+        ['clean']                                         // remove formatting button
+    ];
+
+    var quill = new Quill('#editor', {
+        placeholder: 'Compose an epic...',
+        theme: 'snow',
+        modules: {
+            toolbar: toolbarOptions
+        },
+        theme: 'snow'
+    });
+</script>
