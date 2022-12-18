@@ -13,7 +13,6 @@ import numeral from 'numeral';
 import passport from "passport";
 //Inport router
 
-import homepageRouter from "./routes/homepage.route.js";
 import mainRouter from "./routes/main.route.js";
 import courseRouter from "./routes/course.route.js";
 
@@ -26,6 +25,7 @@ const PORT = 8080;
 
 // Connect MongoDB
 dotenv.config();
+mongoose.set("strictQuery", false);
 mongoose.connect(process.env.MONGODB_URL, () => {
   console.log("Connected to MongoDB");
 });
@@ -66,7 +66,6 @@ app.set("views", __dirname + "/views");
 
 //Router
 app.use("/", mainRouter);
-app.use("/test", homepageRouter);
 app.use("/search", mainRouter);
 app.use("/course", courseRouter);
 //Start App
