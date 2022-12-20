@@ -2,6 +2,7 @@ import Course from "../models/course.js";
 import Feedback from "../models/feedback.js";
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
+import passport from "passport";
 
 const mainService = {
   getHomePage: async (req, res) => {
@@ -70,15 +71,29 @@ const mainService = {
   },
 
   getLoginPage: async (req, res) => {
-    res.render("vwLoginPage/loginPage");
+    if(req.isAuthenticated()) {
+      res.redirect("/");
+    } else {
+      res.render("vwLoginPage/loginPage");
+    }
   },
 
   getSignupPage: async (req, res) => {
     res.render("vwRegisterPage/registerPage");
   },
 
+  logoutService: async (req, res) => {
+    req.logout();
+    res.clearCookie("connect.sid");
+    res.redirect("/login");
+  },
+
   loginService: async (req, res) => {
-    console.log(req.body);
+    passport.authenticate('local', {
+      successRedirect: '/',
+      failureRedirect: '/login',
+      failureFlash: true
+    })
   },
 
   signupService: async (req, res) => {
@@ -88,8 +103,7 @@ const mainService = {
       const user = await User.findOne({ email: email }).lean();
 
       if (user) {
-        res.render("vwRegisterPage/registerPage");
-        console.log("Existed email");
+        return res.redirect("/signup");
       } else {
         const savedUser = new User({
           username: username,
@@ -101,11 +115,12 @@ const mainService = {
           fullname: "",
         });
         await savedUser.save();
-        res.render("home");
       }
     } catch (e) {
       res.send(e);
+      return res.redirect("/signup");
     }
+    return res.redirect("/login");
   },
   // lan sau de cai nay o student.service.js de day do
   feedbackService: async (req, res, next) => {
