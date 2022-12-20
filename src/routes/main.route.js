@@ -15,6 +15,8 @@ router.get("/signup", mainService.getSignupPage);
 
 router.post("/signup", mainService.signupService);
 
+router.get("/logout", mainService.logoutService);
+
 router.post("/course/:id/fb", mainService.feedbackService);
 
 router.get("/course/:id", mainService.getCourseDetail);

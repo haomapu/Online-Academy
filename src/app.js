@@ -9,7 +9,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import numeral from 'numeral';
-
+import session from 'express-session';
 import passport from "passport";
 //Inport router
 
@@ -32,8 +32,13 @@ mongoose.connect(process.env.MONGODB_URL, () => {
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-//app.use(passport.initialize());
-//app.use(passport.session());
+app.use(session({
+  resave: false,
+  saveUninitialized: true,
+  secret: 'bla bla bla' 
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 //Set up bootstrap
 app.use(
