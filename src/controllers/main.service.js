@@ -3,6 +3,7 @@ import Feedback from "../models/feedback.js";
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
 import passport from "passport";
+import authenticationMiddleware from "../middlewares/authentication.js";
 
 const mainService = {
   getHomePage: async (req, res) => {
@@ -10,6 +11,9 @@ const mainService = {
   },
 
   getSearchPage: async (req, res) => {
+    if(req.isAuthenticated()) {
+      console.log(req.user.username);
+    }
     res.render("vwSearchPage/searchPage");
   },
 
@@ -56,7 +60,6 @@ const mainService = {
       rec: top5cate,
       pageNumbers: pageNumbers
     });
-
   },
 
   getSettingsPage: async (req, res) => {
@@ -84,17 +87,17 @@ const mainService = {
 
   logoutService: async (req, res) => {
     req.logout();
-    res.clearCookie("connect.sid");
     res.redirect("/login");
   },
 
-  loginService: async (req, res) => {
+  loginService:
     passport.authenticate('local', {
-      successRedirect: '/',
-      failureRedirect: '/login',
-      failureFlash: true
-    })
-  },
+      failureRedirect: "/login",
+      successRedirect: "/",
+      failureFlash: true,
+      failureFlash: "Tài khoản hoặc mật khẩu không chính xác",
+  
+  },),
 
   signupService: async (req, res) => {
     try {
@@ -122,6 +125,7 @@ const mainService = {
     }
     return res.redirect("/login");
   },
+
   // lan sau de cai nay o student.service.js de day do
   feedbackService: async (req, res, next) => {
     try {
