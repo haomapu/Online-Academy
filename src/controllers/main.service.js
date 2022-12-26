@@ -7,7 +7,11 @@ import authenticationMiddleware from "../middlewares/authentication.js";
 
 const mainService = {
   getHomePage: async (req, res) => {
-    res.render("home");
+    const course = await Course.find().sort({lastUpdate : 1}).lean().limit(4);
+    res.render("home",{
+      newCourse: course
+    });
+
   },
 
   getSearchPage: async (req, res) => {
@@ -36,7 +40,6 @@ const mainService = {
         isCurrent: i === +curPage
       });
     }
-    console.log(pageNumbers);
     const queryFeedback = await Feedback.find({ course: course._id }).sort({time: -1}).skip(offset).limit(limit);
 
     if (queryFeedback.length != 0) {
@@ -53,12 +56,17 @@ const mainService = {
         });
       }
     }
+    var user = "";
+    if(req.isAuthenticated()) {
+      user = req.user
+    }
 
     res.render("vwDetails/details", {
       course: course,
       feedbacks: feedbacks,
       rec: top5cate,
-      pageNumbers: pageNumbers
+      pageNumbers: pageNumbers,
+      user: user
     });
   },
 
@@ -129,7 +137,11 @@ const mainService = {
   // lan sau de cai nay o student.service.js de day do
   feedbackService: async (req, res, next) => {
     try {
-      req.body = { ...req.body, author: await User.findById("6399782c9e7caee6a44a7b3d") };
+      var user = "";
+      if(req.isAuthenticated()) {
+        user = req.user
+      }     
+      req.body = { ...req.body, author: await User.findById(user._id) };
       req.body = { ...req.body, course: await Course.findOne({ name: req.params.id }) };
       const feedback = new Feedback(req.body);
       const savedFeedback = await feedback.save();
