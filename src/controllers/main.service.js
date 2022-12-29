@@ -20,7 +20,7 @@ const mainService = {
 
   getSearchPage: async (req, res) => {
     if(req.isAuthenticated()) {
-      console.log(req.user.username);
+      console.log(req.user.password);
     }
     res.render("vwSearchPage/searchPage");
   },
