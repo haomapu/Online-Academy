@@ -18,6 +18,7 @@ import flash from "connect-flash";
 //Inport router
 import mainRouter from "./routes/main.route.js";
 import courseRouter from "./routes/course.route.js";
+import loginRouter from "./routes/loginPage.route.js"
 import User from "./models/user.js";
 import bcrypt from "bcrypt";
 //Const variable
@@ -111,6 +112,7 @@ app.set("views", __dirname + "/views");
 app.use("/", mainRouter);
 app.use("/search", mainRouter);
 app.use("/course", courseRouter);
+app.use("/login", loginRouter);
 //Start App
 app.listen(PORT, function () {
   console.log(`Online Academy listening at http://localhost:${PORT}`);
