@@ -48,6 +48,7 @@ app.use(session({
 }))
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(userAuthorization());
 app.use(flash());
 
 passport.use(
