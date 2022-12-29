@@ -50,7 +50,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(userAuthorization());
 app.use(flash());
-
 passport.use(
   new LocalStrategy(async (username, password, done) => {
     const user = await User.findOne({ username: username });

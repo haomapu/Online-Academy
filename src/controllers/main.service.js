@@ -14,6 +14,12 @@ const mainService = {
   },
 
   getSearchPage: async (req, res) => {
+<<<<<<< HEAD
+=======
+    if(req.isAuthenticated()) {
+      console.log(req.user.password);
+    }
+>>>>>>> 2a85f869e85ca76bab475b60e99161ea7e091661
     res.render("vwSearchPage/searchPage");
   },
 
