@@ -7,21 +7,19 @@ import authenticationMiddleware from "../middlewares/authentication.js";
 
 const mainService = {
   getHomePage: async (req, res) => {
-    var user = "";
-    if(req.isAuthenticated()) {
-      user = req.user;
-    }
     const course = await Course.find().sort({lastUpdate : 1}).lean().limit(4);
     res.render("home",{
-      newCourse: course,
-      user: user
+      newCourse: course
     });
   },
 
   getSearchPage: async (req, res) => {
+<<<<<<< HEAD
+=======
     if(req.isAuthenticated()) {
       console.log(req.user.password);
     }
+>>>>>>> 2a85f869e85ca76bab475b60e99161ea7e091661
     res.render("vwSearchPage/searchPage");
   },
 
@@ -98,11 +96,12 @@ const mainService = {
   },
 
   logoutService: async (req, res, next) => {
+    const url = req.headers.referer || '/';
     req.logout(function(err) {
       if (err) {
         return next(err);
       }
-    res.redirect("/");
+    res.redirect(url);
     });
   },
 
