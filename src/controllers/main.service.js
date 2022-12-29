@@ -7,11 +7,15 @@ import authenticationMiddleware from "../middlewares/authentication.js";
 
 const mainService = {
   getHomePage: async (req, res) => {
+    var user = "";
+    if(req.isAuthenticated()) {
+      user = req.user;
+    }
     const course = await Course.find().sort({lastUpdate : 1}).lean().limit(4);
     res.render("home",{
-      newCourse: course
+      newCourse: course,
+      user: user
     });
-
   },
 
   getSearchPage: async (req, res) => {
@@ -93,9 +97,13 @@ const mainService = {
     res.render("vwRegisterPage/registerPage");
   },
 
-  logoutService: async (req, res) => {
-    req.logout();
-    res.redirect("/login");
+  logoutService: async (req, res, next) => {
+    req.logout(function(err) {
+      if (err) {
+        return next(err);
+      }
+    res.redirect("/");
+    });
   },
 
   loginService:
