@@ -13,6 +13,8 @@ router.post("/login", mainService.loginService);
 
 router.get("/otp", mainService.getOtpPage);
 
+router.post("/otp", mainService.otpService);
+
 router.get("/signup", mainService.getSignupPage);
 
 router.post("/signup", mainService.signupService);

@@ -6,57 +6,52 @@ import User from "../models/user.js";
 import bcrypt from "bcrypt";
 import passport from "passport";
 import authenticationMiddleware from "../middlewares/authentication.js";
+import mailer from "../utils/mailer.js";
+import userAuthorization from "../middlewares/authorization.js";
+
+let userMail;
 
 const mainService = {
   getHomePage: async (req, res) => {
-    const course = await Course.find().sort({ lastUpdate: 1 }).lean().limit(4);
-    res.render("home", {
-      newCourse: course,
+    const course = await Course.find().sort({lastUpdate : 1}).lean().limit(4);
+    res.render("home",{
+      newCourse: course
     });
   },
 
   getSearchPage: async (req, res) => {
-    if (req.isAuthenticated()) {
-      console.log(req.user.password);
-    }
     res.render("vwSearchPage/searchPage");
   },
 
   getCourseDetail: async (req, res) => {
     const top5 = 5;
     const course = await Course.findOne({ name: req.params.id }).lean();
-    const top5cate = await Course.find({
-      name: { $not: { $eq: req.params.id } },
-    })
-      .sort({ register_count: -1 })
-      .lean()
-      .limit(top5);
+    const top5cate = await Course.find({ name: { $not: { $eq: req.params.id } } }).sort({ register_count: -1 }).lean().limit(top5);
     const feedbacks = [];
 
     const curPage = req.query.page || 1;
     const limit = 4;
     const offset = (curPage - 1) * limit;
+
     const total = await Feedback.find().count();
     var nPages;
     
     (total % limit != 0)?nPages = Math.ceil(total / limit) : nPages = total / limit;
+
 
     const pageNumbers = [];
 
     for (let i = 1; i <= nPages; i++) {
       pageNumbers.push({
         value: i,
-        isCurrent: i === +curPage,
+        isCurrent: i === +curPage
       });
     }
-    const queryFeedback = await Feedback.find({ course: course._id })
-      .sort({ time: -1 })
-      .skip(offset)
-      .limit(limit);
+    const queryFeedback = await Feedback.find({ course: course._id }).sort({time: -1}).skip(offset).limit(limit);
 
     if (queryFeedback.length != 0) {
       for (let i = 0; i < queryFeedback.length; i++) {
-        const content = queryFeedback[i].content;
+        const content = queryFeedback[i].content
 
         const user = await User.findById(queryFeedback[i].author._id);
         if (user){
@@ -89,15 +84,11 @@ const mainService = {
   },
 
   getLoginPage: async (req, res) => {
-    if (req.isAuthenticated()) {
+    if(req.isAuthenticated()) {
       res.redirect("/");
     } else {
       res.render("vwLoginPage/loginPage");
     }
-  },
-
-  getOtpPage: async (req, res) => {
-    res.render("vwLoginPage/otpPage");
   },
 
   getSignupPage: async (req, res) => {
@@ -105,22 +96,22 @@ const mainService = {
   },
 
   logoutService: async (req, res, next) => {
-    const url = req.headers.referer || "/";
-    req.logout(function (err) {
+    const url = req.headers.referer || '/';
+    req.logout(function(err) {
       if (err) {
         return next(err);
       }
-      res.redirect(url);
-
+    res.redirect(url);
     });
   },
 
-  loginService: passport.authenticate("local", {
-    failureRedirect: "/login",
-    successRedirect: "/",
-    failureFlash: true,
-    failureFlash: "Tài khoản hoặc mật khẩu không chính xác",
-  }),
+  loginService:
+    passport.authenticate('local', {
+      failureRedirect: "/login",
+      successRedirect: "/",
+      failureFlash: true,
+      failureFlash: "Tài khoản hoặc mật khẩu không chính xác",
+  },),
 
   signupService: async (req, res) => {
     try {
@@ -131,39 +122,40 @@ const mainService = {
       if (user) {
         return res.redirect("/signup");
       } else {
+        await mailer.sendMail(email);
         const savedUser = new User({
           username: username,
           email: email,
           password: hashedPassword,
-          otp: "",
+          otp: mailer.otp,
           avatar: "",
           phone: "",
           fullname: "",
         });
         await savedUser.save();
+        userMail = email;
+        res.render("vwLoginPage/otpPage",{
+          mail: email
+        })
       }
     } catch (e) {
       res.send(e);
       return res.redirect("/signup");
     }
-    return res.redirect("/login");
   },
 
   // lan sau de cai nay o student.service.js de day do
   feedbackService: async (req, res, next) => {
     try {
       var user = "";
-      if (req.isAuthenticated()) {
-        user = req.user;
-      }
+      if(req.isAuthenticated()) {
+        user = req.user
+      }     
       req.body = { ...req.body, author: await User.findById(user._id) };
-      req.body = {
-        ...req.body,
-        course: await Course.findOne({ name: req.params.id }),
-      };
+      req.body = { ...req.body, course: await Course.findOne({ name: req.params.id }) };
       const feedback = new Feedback(req.body);
       const savedFeedback = await feedback.save();
-      res.redirect("/course/" + req.params.id);
+      res.redirect('/course/' + req.params.id);
     } catch (e) {
       res.send(e);
     }
@@ -189,8 +181,12 @@ const mainService = {
     await createRegister.save();
     await Course.updateOne({_id: course._id}, {register_count: course.register_count + 1})
 
-
     res.redirect('/course/' + req.params.id);
+  },
+
+
+  getOtpPage: async(req, res) => {
+    res.render('vwLoginPage/otpPage');
   },
 
   createFavorite: async (req, res) => {
@@ -211,8 +207,36 @@ const mainService = {
     res.redirect('/course/' + req.params.id);
   }
 
+  otpService: async(req, res) => {
+    const{first,second,third,fourth,fifth,sixth} = req.body
+    const userOtp = `${first}${second}${third}${fourth}${fifth}${sixth}`
+    const user = await User.findOne({email: userMail})
+    const Otp = user.otp
+ 
+    if(userOtp.toUpperCase() == Otp.toUpperCase()){
+      await User.updateOne({email: userMail}, {verified: true})
+      res.redirect("/login")
+    }else{
+      const otpcount = user.otp_count + 1;
+      if(otpcount === 3){
+        await mailer.sendMail(userMail)
+        await User.updateOne({email: userMail}, {otp: mailer.otp})
+        await User.updateOne({email: userMail},{otp_count: 0})
+        res.render("vwLoginPage/otpPage", {
+          title: "Verify",
+          noti: "You entered your OTP incorrectly 3 times. We've just resent the code to your email"
+        })
+      } else {
+        await User.updateOne({email: userMail},{otp_count: otpcount})
+        res.render("vwLoginPage/otpPage", {
+          title: "Verify",
+          noti: "Wrong OTP! Please enter again"
+        })
+      }
+    }
+  }
 };
 
 
-
 export default mainService;
+

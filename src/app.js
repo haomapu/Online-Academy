@@ -53,7 +53,7 @@ app.use(flash());
 passport.use(
   new LocalStrategy(async (username, password, done) => {
     const user = await User.findOne({ username: username });
-
+    
     let state = null;
     try {
       state = await bcrypt.compareSync(password, user.password);
@@ -62,6 +62,9 @@ passport.use(
     }
     if (!user || !user.password || !state) {
       return done(null, false, { error: "Sai email hoặc mật khẩu" });
+    }
+    if(!user.verified) {
+      return done(null, false, { error: "Chưa xác nhận OTP"});
     }
     return done(null, user);
   })
