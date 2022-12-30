@@ -1,5 +1,6 @@
 import Course from "../models/course.js";
 import Feedback from "../models/feedback.js";
+import Register from "../models/register.js";
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
 import passport from "passport";
@@ -63,18 +64,13 @@ const mainService = {
         });
       }
     }
-    var user = "";
-    if (req.isAuthenticated()) {
-      user = req.user;
-    }
 
     res.render("vwDetails/details", {
       course: course,
       feedbacks: feedbacks,
       rec: top5cate,
-      pageNumbers: pageNumbers,
-      user: user,
-    });
+      pageNumbers: pageNumbers
+      });
   },
 
   getSettingsPage: async (req, res) => {
@@ -170,8 +166,26 @@ const mainService = {
   },
 
   createCoursePage: async (req, res) => {
-    res.render("vwLecturer/createCourse");
+    res.render('vwLecturer/createCourse')
   },
+
+  createRegister: async (req, res) => {
+    var newRegister = {};
+    if(req.isAuthenticated()) {
+      var user = req.user
+    }   
+    const student = await User.findById(user._id)
+    const course = await Course.findOne({ name: req.params.id });
+    newRegister = {...newRegister, student: student}
+    newRegister = {...newRegister, course: course}
+    const createRegister = new Register(newRegister);
+    const savedRegister = await createRegister.save();
+    await Course.updateOne({_id: course._id}, {register_count: course.register_count + 1})
+
+
+    res.redirect('/course/' + req.params.id);
+  }
+
 };
 
 export default mainService;
