@@ -7,19 +7,14 @@ import authenticationMiddleware from "../middlewares/authentication.js";
 
 const mainService = {
   getHomePage: async (req, res) => {
-    var user = "";
-    if(req.isAuthenticated()) {
-      user = req.user;
-    }
-    const course = await Course.find().sort({lastUpdate : 1}).lean().limit(4);
-    res.render("home",{
+    const course = await Course.find().sort({ lastUpdate: 1 }).lean().limit(4);
+    res.render("home", {
       newCourse: course,
-      user: user
     });
   },
 
   getSearchPage: async (req, res) => {
-    if(req.isAuthenticated()) {
+    if (req.isAuthenticated()) {
       console.log(req.user.password);
     }
     res.render("vwSearchPage/searchPage");
@@ -28,27 +23,35 @@ const mainService = {
   getCourseDetail: async (req, res) => {
     const top5 = 5;
     const course = await Course.findOne({ name: req.params.id }).lean();
-    const top5cate = await Course.find({ name: { $not: { $eq: req.params.id } } }).sort({ register_count: -1 }).lean().limit(top5);
+    const top5cate = await Course.find({
+      name: { $not: { $eq: req.params.id } },
+    })
+      .sort({ register_count: -1 })
+      .lean()
+      .limit(top5);
     const feedbacks = [];
 
     const curPage = req.query.page || 1;
     const limit = 4;
     const offset = (curPage - 1) * limit;
-    const total = await Feedback.find().count(); 
+    const total = await Feedback.find().count();
     const nPages = Math.ceil(total / limit);
     const pageNumbers = [];
 
     for (let i = 1; i <= nPages; i++) {
       pageNumbers.push({
         value: i,
-        isCurrent: i === +curPage
+        isCurrent: i === +curPage,
       });
     }
-    const queryFeedback = await Feedback.find({ course: course._id }).sort({time: -1}).skip(offset).limit(limit);
+    const queryFeedback = await Feedback.find({ course: course._id })
+      .sort({ time: -1 })
+      .skip(offset)
+      .limit(limit);
 
     if (queryFeedback.length != 0) {
       for (let i = 0; i < queryFeedback.length; i++) {
-        const content = queryFeedback[i].content
+        const content = queryFeedback[i].content;
 
         const user = await User.findById(queryFeedback[i].author._id);
 
@@ -61,8 +64,8 @@ const mainService = {
       }
     }
     var user = "";
-    if(req.isAuthenticated()) {
-      user = req.user
+    if (req.isAuthenticated()) {
+      user = req.user;
     }
 
     res.render("vwDetails/details", {
@@ -70,7 +73,7 @@ const mainService = {
       feedbacks: feedbacks,
       rec: top5cate,
       pageNumbers: pageNumbers,
-      user: user
+      user: user,
     });
   },
 
@@ -86,11 +89,15 @@ const mainService = {
   },
 
   getLoginPage: async (req, res) => {
-    if(req.isAuthenticated()) {
+    if (req.isAuthenticated()) {
       res.redirect("/");
     } else {
       res.render("vwLoginPage/loginPage");
     }
+  },
+
+  getOtpPage: async (req, res) => {
+    res.render("vwLoginPage/otpPage");
   },
 
   getSignupPage: async (req, res) => {
@@ -98,22 +105,22 @@ const mainService = {
   },
 
   logoutService: async (req, res, next) => {
-    req.logout(function(err) {
+    const url = req.headers.referer || "/";
+    req.logout(function (err) {
       if (err) {
         return next(err);
       }
-    res.redirect("/");
+      res.redirect(url);
+
     });
   },
 
-  loginService:
-    passport.authenticate('local', {
-      failureRedirect: "/login",
-      successRedirect: "/",
-      failureFlash: true,
-      failureFlash: "Tài khoản hoặc mật khẩu không chính xác",
-  
-  },),
+  loginService: passport.authenticate("local", {
+    failureRedirect: "/login",
+    successRedirect: "/",
+    failureFlash: true,
+    failureFlash: "Tài khoản hoặc mật khẩu không chính xác",
+  }),
 
   signupService: async (req, res) => {
     try {
@@ -146,23 +153,25 @@ const mainService = {
   feedbackService: async (req, res, next) => {
     try {
       var user = "";
-      if(req.isAuthenticated()) {
-        user = req.user
-      }     
+      if (req.isAuthenticated()) {
+        user = req.user;
+      }
       req.body = { ...req.body, author: await User.findById(user._id) };
-      req.body = { ...req.body, course: await Course.findOne({ name: req.params.id }) };
+      req.body = {
+        ...req.body,
+        course: await Course.findOne({ name: req.params.id }),
+      };
       const feedback = new Feedback(req.body);
       const savedFeedback = await feedback.save();
-      res.redirect('/course/' + req.params.id);
+      res.redirect("/course/" + req.params.id);
     } catch (e) {
       res.send(e);
     }
-
   },
 
   createCoursePage: async (req, res) => {
-    res.render('vwLecturer/createCourse')
-  }
+    res.render("vwLecturer/createCourse");
+  },
 };
 
 export default mainService;
