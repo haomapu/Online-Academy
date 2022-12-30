@@ -1,6 +1,7 @@
 import Course from "../models/course.js";
 import Feedback from "../models/feedback.js";
 import Register from "../models/register.js";
+import Favorite from "../models/favorite.js";
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
 import passport from "passport";
@@ -36,7 +37,10 @@ const mainService = {
     const limit = 4;
     const offset = (curPage - 1) * limit;
     const total = await Feedback.find().count();
-    const nPages = Math.ceil(total / limit);
+    var nPages;
+    
+    (total % limit != 0)?nPages = Math.ceil(total / limit) : nPages = total / limit;
+
     const pageNumbers = [];
 
     for (let i = 1; i <= nPages; i++) {
@@ -55,13 +59,13 @@ const mainService = {
         const content = queryFeedback[i].content;
 
         const user = await User.findById(queryFeedback[i].author._id);
-
-        feedbacks.push({
+        if (user){
+          feedbacks.push({
           content: content,
           avatar: user.avatar,
           author: user.username,
           time: queryFeedback[i].time.toLocaleString(),
-        });
+        })}
       }
     }
 
@@ -169,23 +173,46 @@ const mainService = {
     res.render('vwLecturer/createCourse')
   },
 
-  createRegister: async (req, res) => {
+  createRegister: async (req, res, next) => {
     var newRegister = {};
     if(req.isAuthenticated()) {
       var user = req.user
-    }   
+    } else {
+      res.redirect("/login/")
+      return; 
+    }
     const student = await User.findById(user._id)
     const course = await Course.findOne({ name: req.params.id });
     newRegister = {...newRegister, student: student}
     newRegister = {...newRegister, course: course}
     const createRegister = new Register(newRegister);
-    const savedRegister = await createRegister.save();
+    await createRegister.save();
     await Course.updateOne({_id: course._id}, {register_count: course.register_count + 1})
 
+
+    res.redirect('/course/' + req.params.id);
+  },
+
+  createFavorite: async (req, res) => {
+    var newFavorite = {};
+    if(req.isAuthenticated()) {
+      var user = req.user
+    } else {
+      res.redirect("/login")
+      return;
+    }
+    const student = await User.findById(user._id)
+    const course = await Course.findOne({ name: req.params.id });
+    newFavorite = {...newFavorite, student: student}
+    newFavorite = {...newFavorite, course: course}
+    const createFavorite = new Favorite(newFavorite);
+    await createFavorite.save();
 
     res.redirect('/course/' + req.params.id);
   }
 
 };
+
+
 
 export default mainService;
