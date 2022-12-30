@@ -11,6 +11,8 @@ router.get("/login", mainService.getLoginPage);
 
 router.post("/login", mainService.loginService);
 
+router.get("/otp", mainService.getOtpPage);
+
 router.get("/signup", mainService.getSignupPage);
 
 router.post("/signup", mainService.signupService);
@@ -28,6 +30,5 @@ router.get("/settings", mainService.getSettingsPage);
 router.get("/settings/editProfile", mainService.getEditProfilePage);
 
 router.get("/settings/dashboard", mainService.getDashboardPage);
-
 
 export default router;
