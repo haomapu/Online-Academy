@@ -205,7 +205,7 @@ const mainService = {
     await createFavorite.save();
 
     res.redirect('/course/' + req.params.id);
-  }
+  },
 
   otpService: async(req, res) => {
     const{first,second,third,fourth,fifth,sixth} = req.body
