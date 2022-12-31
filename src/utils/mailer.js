@@ -1,7 +1,11 @@
 import nodeMailer from 'nodemailer';
 import otpGenerator from 'otp-generator';
-const adminEmail = 'onlineacademyktpm@gmail.com'
-const adminPassword = 'kderjhutasgcbjgz'
+import dotenv from "dotenv";
+
+
+dotenv.config();
+const adminEmail = process.env.adminEmail;
+const adminPassword = process.env.adminPassword;
 const mailHost = 'smtp.gmail.com'
 const mailPort = 587
 
@@ -10,7 +14,8 @@ const otptxt = otp.toUpperCase()
 const txt = `Your verify code: ${otptxt}`
 
 const sendMail = (receiver) => {
-
+  console.log(adminEmail);
+  console.log(adminPassword);
   const transporter = nodeMailer.createTransport({
     service: 'gmail',
     host: mailHost,
