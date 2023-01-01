@@ -23,6 +23,20 @@ const mainService = {
     res.render("vwSearchPage/searchPage");
   },
 
+  getSearchCourses: async (req, res) => {
+    try {
+      const courses = await Course.find({
+        $text: { $search: req.query.search },
+      }).lean();
+      res.render("vwSearchPage/searchPage", {
+        courses: courses,
+        text: req.query.search,
+      });
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+
   getCourseDetail: async (req, res) => {
     const top5 = 5;
     const course = await Course.findOne({ name: req.params.id }).lean();
@@ -150,14 +164,19 @@ const mainService = {
   // lan sau de cai nay o student.service.js de day do
   feedbackService: async (req, res, next) => {
     try {
-      var user = "";
+      var curUser;
       if(req.isAuthenticated()) {
-        user = req.user;
+        curUser = req.user;
       } else {
         res.redirect('/login');
         return;
       }
-      req.body = { ...req.body, author: await User.findById(user._id) };
+      if(curUser.hasOwnProperty('_json')) {
+        req.body = { ...req.body, author: await User.findOne({username: curUser._json.given_name + curUser._json.family_name})};
+      }
+      else {
+        req.body = { ...req.body, author: await User.findById(curUser._id) };
+      }
       req.body = { ...req.body, course: await Course.findOne({ name: req.params.id }) };
       console.log(req.body)
       const feedback = new Feedback(req.body);
