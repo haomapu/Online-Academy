@@ -128,6 +128,39 @@ const mainService = {
     }
   },
 
+  getCoursePage: async (req, res) => {
+    var curUser;
+    if(req.isAuthenticated()) {
+      curUser = req.user;
+    } else {
+      res.redirect('/login');
+      return;
+    }
+    const limit = 3;
+    var nPages;
+    const curPage = req.query.page || 1;
+    const offset = (curPage - 1) * limit;
+    const courseLecture = await Course.find({ author: curUser.fullname }).lean().skip(offset).limit(limit);
+    const total = await Course.find({ author: curUser.fullname }).count();
+    
+    
+    (total % limit != 0)?nPages = Math.ceil(total / limit) : nPages = total / limit;
+
+
+    const pageNumbers = [];
+
+    for (let i = 1; i <= nPages; i++) {
+      pageNumbers.push({
+        value: i,
+        isCurrent: i === +curPage
+      });
+    }
+    res.render("vwSettingsPage/courseLecture", {
+      course: courseLecture,
+      pageNumbers: pageNumbers
+    });
+  },
+
   getEditProfilePage: async (req, res) => {
     try {
       var curUser;

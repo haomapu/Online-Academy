@@ -1,0 +1,120 @@
+<style>
+  @media screen and (max-width: 940px) {
+    .mainContent li span {
+      display: none;
+    }
+  }
+
+  .mainContent li.nav-item:hover {
+    background: #f05462;
+  }
+</style>
+
+<div class="d-flex">
+    <div class="mainContent d-flex flex-nowrap fs-5" style="min-height: 100vh; overflow-x: auto; overflow-y: hidden;">
+        <div class="d-flex flex-column flex-shrink-0 p-2 bg-light">
+        <hr />
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+            <a href="#" class="nav-link active" aria-current="page">
+            <i class="fa-regular fa-address-card"></i>
+            <span>Profile</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link link-dark">
+            <i class="fa-solid fa-table-columns"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link link-dark">
+            <i class="fas fa-grip-horizontal"></i>
+            <span>Categories</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link link-dark">
+            <i class="fas fa-book"></i>
+            <span>Courses</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link link-dark">
+            <i class="fas fa-users"></i>
+            <span>Users</span>
+          </a>
+        </li>
+        </ul>
+        <hr />
+        <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+            <a class="nav-link link-dark" href="#">
+                <i class="fa-solid fa-right-from-bracket"></i><span>Logout</span>
+            </a>
+            </li>
+        </ul>
+        </div>
+    </div>
+    <div class="container">
+        <dic class="d-flex flex-column">
+            <h2 class="mt-3 ml-5">Your Course</h2>
+            <hr style="margin-top: -10px;"/>
+            <div class="text-end" style="padding-right: 15px;">
+                <a href="/postCourse" class="btn btn-secondary text-light me-2">
+                    <i class="fa-solid fa-plus"></i>
+                    Create
+                </a>
+            </div>
+            <div class="d-flex flex-column pt-3">
+                {{#each this.course}}
+                <div class="d-flex flex-row shadow py-3">
+                    <img src={{img}} alt="imageCourse" class="py-2 ms-2" style="width: 15%;"/>
+                    <div class="d-flex justify-content-between h-75" style="width: 100%; padding-right: 15px;">
+                        <div class="d-flex flex-column ps-4">
+                            <div>{{name}}</div>
+                            <div>Students: {{register_count}}</div>
+                            <div>Lecture: {{author}}</div>
+                        </div>
+                        <div class="d-flex flex-column text-end">
+                            <div>Update: </div>
+                            <div>Status: Finish</div>
+                            <div class="d-flex flex-row-reverse">
+                                <a href="/#" class="btn btn-secondary text-light">Remove</a>
+                                <a href="/postCourse" class="btn btn-secondary text-light me-2">Edit</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+
+
+                <div class="d-flex justify-content-center pt-4">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <li class="page-item" style="color: se;">
+                                <a class="page-link text-dark fs-5" href="?page=" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span></a>
+                            </li>
+                            {{#each pageNumbers}}
+                                {{#if isCurrent}}
+                                <li class="page-item active" aria-current="page">
+                                <span class="page-link bg-light border-secondary text-dark fs-5">{{value}}</span>
+                                </li>
+                                {{else}}
+                                <li class="page-item">
+                                <a class="page-link text-dark fs-5" href="?page={{value}}">{{value}}</a>
+                                </li>
+                                {{/if}}
+                            {{/each}}
+                                <a class="page-link text-dark fs-5" href="?page=" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span></a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

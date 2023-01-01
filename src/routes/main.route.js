@@ -33,6 +33,8 @@ router.get("/postCourse", mainService.createCoursePage);
 
 router.get("/settings", mainService.getSettingsPage);
 
+router.get("/settings/courseLecture", mainService.getCoursePage);
+
 router.get("/settings/editProfile", mainService.getEditProfilePage);
 
 router.post("/settings/editProfile/patch", mainService.postEditProfile);
