@@ -1,3 +1,13 @@
+<link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/css/star-rating.min.css" media="all" rel="stylesheet" type="text/css" />
+<link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.css" media="all" rel="stylesheet" type="text/css" />
+
+<!-- important mandatory libraries -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/star-rating.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.js"></script>
+
+
+
 {{! Background }}
 <style>
   @media screen and (max-width: 768px) {
@@ -8,9 +18,9 @@
     #coverImg {
       display: none;
     }
-
     #coverContent {}
   }
+
 </style>
 
 <div class="container">
@@ -24,12 +34,8 @@
       <p class="fs-5 m-0">{{course.overview}}</p>
       <div class="d-flex">
         <p class="fs-5 m-0 text-secondary me-1">Rating: </p>
-        <div class="rating d-flex fs-5">
-          <i class="fa fa-star text-secondary" style="line-height: unset" title="Bad"></i>
-          <i class="far fa-star text-secondary" style="line-height: unset" title="Poor"></i>
-          <i class="far fa-star text-secondary" style="line-height: unset" title="OK"></i>
-          <i class="far fa-star text-secondary" style="line-height: unset" title="Good"></i>
-          <i class="far fa-star text-secondary" style="line-height: unset" title="Excellent"></i>
+        <div class="rating d-flex fs-5 align-items-center">
+          <input id="#input-6" class="rating rating-loading" value="{{course.rating}}" data-min="0" data-max="5" data-step="0.5" data-show-caption="false" data-display-only="true" data-size="sm">          
         </div>
         <p class="fs-5 m-0" id="numRateReg"><span class="text-success">&nbsp;{{course.rating_count}}</span> ratings<span
             class="text-success">&nbsp;{{format_number
@@ -133,7 +139,7 @@
 
   {{! Comment }}
   <hr class="my-5 text-dark " style="height: 1px;" />
-  <form method="post">
+  <form method="post" id="postCmtForm" action="/course/{{course.name}}/fb">
     <div class="card container-fluid row d-flex justify-content-center mx-auto shadow" style="width: 90%">
       <div class="card-header bg-white">
         <div class="d-flex flex-start">
@@ -146,17 +152,11 @@
 
           </div>
         </div>
-        <div class="d-flex justify-content-end pt-1">
+        <div class="d-flex justify-content-end pt-1 align-items-center">
           <div>
-            <ul class="rating d-inline-flex list-inline mx-3 fs-1 my-0 pt-1" data-mdb-toggle="rating">
-              <li><i class="far fa-star fa-sm text-secondary" title="Bad"></i></li>
-              <li><i class="far fa-star fa-sm text-secondary" title="Poor"></i></li>
-              <li><i class="far fa-star fa-sm text-secondary" title="OK"></i></li>
-              <li><i class="far fa-star fa-sm text-secondary" title="Good"></i></li>
-              <li><i class="far fa-star fa-sm text-secondary" title="Excellent"></i></li>
-            </ul>
+            <input id="input-7" name="star" class="rating rating-loading" data-show-clear="false" data-size="sm" data-show-caption="false">
           </div>
-          <button class="btn btn-secondary btn-lg my-auto" formaction="/course/{{course.name}}/fb" type="submit">Post
+          <button class="btn btn-secondary btn-lg my-auto" id="btnPost" type="button" form="postCmtForm" id="btnComment" data-bs-toggle="popover" title="Warning">Post
             comment</button>
         </div>
       </div>
@@ -173,11 +173,7 @@
         </p>
       </div>
       <div class="rating d-flex fs-5">
-        <i class="far fa-star text-secondary" style="line-height: unset" title="Bad"></i>
-        <i class="far fa-star text-secondary" style="line-height: unset" title="Poor"></i>
-        <i class="far fa-star text-secondary" style="line-height: unset" title="OK"></i>
-        <i class="far fa-star text-secondary" style="line-height: unset" title="Good"></i>
-        <i class="far fa-star text-secondary" style="line-height: unset" title="Excellent"></i>
+          <input class="rating rating-loading" value="{{star}}" data-min="0" data-max="5" data-step="0.5" data-show-caption="false" data-display-only="true" data-size="md">          
       </div>
     </div>
 
@@ -210,9 +206,7 @@
       </a>
     </li>
   </ul>
-</div>
-
-</div>
+</div>  
 
 <div class="offcanvas offcanvas-start" tabindex="-1" id="profile" aria-labelledby="profileLabel">
   <div class="offcanvas-header">
@@ -227,7 +221,31 @@
 </div>
 
 <script type="text/javascript">
-    function myFunction(var a) {
+    function myFunction(a) {
       document.getElementById('nameFav').value = a;
-    }
+    };
+
+    $('#btnPost').click(function(){
+      var check1;
+      var check2;
+      if (!($('#content').val())){
+        $('[data-bs-toggle="popover"]').attr('data-bs-content', 'Missing Comment');
+        $('[data-bs-toggle="popover"]').popover('enable');  
+        $('[data-bs-toggle="popover"]').popover('show');  
+      } else if (!($('#input-7').val())){
+        $('[data-bs-toggle="popover"]').popover('dispose');  
+        console.log($('[data-bs-toggle="popover"]').attr('data-bs-content'))
+        $('[data-bs-toggle="popover"]').attr('data-bs-content', 'Missing Rating');
+        $('[data-bs-toggle="popover"]').popover('enable');  
+        $('[data-bs-toggle="popover"]').popover('show');  
+      } else{
+        $('[data-bs-toggle="popover"]').popover('disable');  
+        $('[data-bs-toggle="popover"]').popover('hide');  
+        $('#postCmtForm').submit();
+      }
+
+
+      
+    });
+    
 </script>

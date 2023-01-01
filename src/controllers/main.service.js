@@ -52,13 +52,16 @@ const mainService = {
     if (queryFeedback.length != 0) {
       for (let i = 0; i < queryFeedback.length; i++) {
         const content = queryFeedback[i].content
-
-        const user = await User.findById(queryFeedback[i].author._id);
+        var user;
+        if(queryFeedback[i].author){
+           user = await User.findById(queryFeedback[i].author._id);
+        }
         if (user){
           feedbacks.push({
           content: content,
           avatar: user.avatar,
           author: user.username,
+          star: queryFeedback[i].star,
           time: queryFeedback[i].time.toLocaleString(),
         })}
       }
@@ -149,10 +152,14 @@ const mainService = {
     try {
       var user = "";
       if(req.isAuthenticated()) {
-        user = req.user
-      }     
+        user = req.user;
+      } else {
+        res.redirect('/login');
+        return;
+      }
       req.body = { ...req.body, author: await User.findById(user._id) };
       req.body = { ...req.body, course: await Course.findOne({ name: req.params.id }) };
+      console.log(req.body)
       const feedback = new Feedback(req.body);
       const savedFeedback = await feedback.save();
       res.redirect('/course/' + req.params.id);
