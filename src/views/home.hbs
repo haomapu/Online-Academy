@@ -134,17 +134,18 @@
                   <div class="carousel-item active" data-bs-interval="10000">
                     <div class="row">
                       {{#each newCourse}}
-                      <div class="col-md-3 mb-3">
+                      <div class="col-md-3 col-lg-3 mb-3 d-flex align-items-stretch">
                         <div class="card">
                           <a href="/course/{{this.name}}"><img
-                            class="img-fluid"
+                            class="img-fluid card-img-top"
                             alt="100%x280"
                             src="{{this.img}}"
                           /></a>
                           <div class="card-body">
-                            <h4 class="card-title">{{this.name}}</h4>
-                            <p class="card-text">{{this.overview}}</p>
+                            <h4 class="card-title fw-bold">{{this.name}}</h4>
+                            <p class="card-text fs-6">{{this.overview}}</p>
                           </div>
+                          <a href="#" class="btn btn-primary m-3 align-self-start">{{format_number this.price}}</a>
                         </div>
                       </div>
                       {{/each}}
