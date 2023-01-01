@@ -52,9 +52,12 @@ const mainService = {
     if (queryFeedback.length != 0) {
       for (let i = 0; i < queryFeedback.length; i++) {
         const content = queryFeedback[i].content
-
-        const user = await User.findById(queryFeedback[i].author._id);
-        if (user){
+        var user;
+        if(queryFeedback[i].author) {
+          user = await User.findById(queryFeedback[i].author._id);
+        }
+  
+        if(user){
           feedbacks.push({
           content: content,
           avatar: user.avatar,
@@ -147,11 +150,16 @@ const mainService = {
   // lan sau de cai nay o student.service.js de day do
   feedbackService: async (req, res, next) => {
     try {
-      var user = "";
+      var curUser;
       if(req.isAuthenticated()) {
-        user = req.user
+        curUser = req.user
       }     
-      req.body = { ...req.body, author: await User.findById(user._id) };
+      if(curUser.hasOwnProperty('_json')) {
+        req.body = { ...req.body, author: await User.findOne({username: curUser._json.given_name + curUser._json.family_name})};
+      }
+      else {
+        req.body = { ...req.body, author: await User.findById(curUser._id) };
+      }
       req.body = { ...req.body, course: await Course.findOne({ name: req.params.id }) };
       const feedback = new Feedback(req.body);
       const savedFeedback = await feedback.save();
