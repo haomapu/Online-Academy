@@ -10,7 +10,7 @@
   }
 </style>
 <div class="d-flex">
-  <div class="mainContent d-flex flex-nowrap fs-5" style="min-height: 100vh; overflow-x: auto; overflow-y: hidden;">
+  <div class="mainContent d-flex flex-nowrap fs-5" style="min-height: 85vh; overflow-x: auto; overflow-y: hidden;">
     <div class="d-flex flex-column flex-shrink-0 p-3 bg-light">
       <hr />
       <ul class="nav nav-pills flex-column mb-auto">
@@ -21,7 +21,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link link-dark">
+          <a href="/settings/dashboard" class="nav-link link-dark">
             <i class="fa-solid fa-table-columns"></i>
             <span>Dashboard</span>
           </a>
@@ -61,17 +61,16 @@
         <div class="card">
           <div class="card-body">
             <div class="d-flex flex-column align-items-center text-center">
-              <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle"
-                width="150" />
+              <img src={{avatar}} alt="Admin" class="rounded-circle" width="150px" />
               <div class="mt-3">
-                <h4>John Doe</h4>
-                <p class="text-secondary mb-1">Full Stack Developer</p>
-                <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
+                <h4>{{user.username}}</h4>
+                <p class="text-secondary mb-1">{{role}}</p>
+                <p class="text-muted font-size-sm"> Ho Chi Minh, VietNam</p>
               </div>
             </div>
           </div>
         </div>
-        <div class="card mt-3">
+        {{!-- <div class="card mt-3">
           <ul class="list-group list-group-flush fs-5">
             <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
               <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -123,7 +122,7 @@
               <span class="text-secondary">bootdey</span>
             </li>
           </ul>
-        </div>
+        </div> --}}
       </div>
       <div class="col-md-8">
         <div class="card mb-3">
@@ -132,18 +131,14 @@
               <div class="col-sm-3">
                 <h6 class="mb-0">Full Name</h6>
               </div>
-              <div class="col-sm-9 text-secondary">
-                Kenneth Valdez
-              </div>
+              <div class="col-sm-9 text-secondary">{{user.fullname}}</div>
             </div>
             <hr />
             <div class="row">
               <div class="col-sm-3">
                 <h6 class="mb-0">Email</h6>
               </div>
-              <div class="col-sm-9 text-secondary">
-                fip@jukmuh.al
-              </div>
+              <div class="col-sm-9 text-secondary">{{user.email}}</div>
             </div>
             <hr />
             <div class="row">
@@ -168,19 +163,17 @@
               <div class="col-sm-3">
                 <h6 class="mb-0">Address</h6>
               </div>
-              <div class="col-sm-9 text-secondary">
-                Bay Area, San Francisco, CA
-              </div>
+              <div class="col-sm-9 text-secondary">Ho Chi Minh, VietNam</div>
             </div>
             <hr />
             <div class="row">
               <div class="col-sm-12">
-                <a class="btn btn-secondary text-white" target="__blank" href="/settings/editProfile">Edit</a>
+                <a class="btn btn-secondary text-white" href="/settings/editProfile" aria-current="page">Edit</a>
               </div>
             </div>
           </div>
         </div>
-        <div class="row fs-5">
+        {{!-- <div class="row fs-5">
           <div class="col-sm-12">
             <div class="card">
               <div class="card-body">
@@ -213,7 +206,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> --}}
       </div>
     </div>
   </div>

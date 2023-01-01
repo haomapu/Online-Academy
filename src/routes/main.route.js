@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get("/", mainService.getHomePage);
 
-router.get("/search/", mainService.getSearchCourses);
+router.get("/search", mainService.getSearchCourses);
 
 router.get("/login", mainService.getLoginPage);
 
@@ -34,6 +34,8 @@ router.get("/postCourse", mainService.createCoursePage);
 router.get("/settings", mainService.getSettingsPage);
 
 router.get("/settings/editProfile", mainService.getEditProfilePage);
+
+router.post("/settings/editProfile/patch", mainService.postEditProfile);
 
 router.get("/settings/dashboard", mainService.getDashboardPage);
 
