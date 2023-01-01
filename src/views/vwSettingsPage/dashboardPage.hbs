@@ -16,18 +16,18 @@
   }
 </style>
 <div class="d-flex">
-  <div class="mainContent d-flex flex-nowrap fs-5" style="min-height: 100vh; overflow-x: auto; overflow-y: hidden;">
+  <div class="mainContent d-flex flex-nowrap fs-5" style="min-height: 85vh; overflow-x: auto; overflow-y: hidden;">
     <div class="d-flex flex-column flex-shrink-0 p-3 bg-light">
       <hr />
       <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item">
-          <a href="#" class="nav-link active" aria-current="page">
+          <a href="/settings" class="nav-link link-dark">
             <i class="fa-regular fa-address-card"></i>
             <span>Profile</span>
           </a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link link-dark">
+          <a href="/settings/dashboard" class="nav-link active" aria-current="page">
             <i class="fa-solid fa-table-columns"></i>
             <span>Dashboard</span>
           </a>
@@ -67,7 +67,7 @@
         <div class="card d-flex align-items-center justify-content-around" style="width: 250px; height: 150px; background: white; margin: 20px 10px;
           box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
           <div class="box">
-            <div class="fs-3">2194 Students</div>
+            <div class="fs-3">{{students.length}} Students</div>
           </div>
           <div class="icon-case">
             <img src="/public/images/students.png" alt="" />
@@ -76,7 +76,7 @@
         <div class="card d-flex align-items-center justify-content-around" style="width: 250px; height: 150px; background: white; margin: 20px 10px;
           box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
           <div class="box">
-            <div class="fs-3">53 Lecturers</div>
+            <div class="fs-3">{{lecturers.length}} Lecturers</div>
           </div>
           <div class="icon-case">
             <img src="/public/images/teachers.png" alt="" />
@@ -94,7 +94,7 @@
         <div class="card d-flex align-items-center justify-content-around" style="width: 250px; height: 150px; background: white; margin: 20px 10px;
           box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
           <div class="box">
-            <div class="fs-3">350000 Courses</div>
+            <div class="fs-3">{{courses.length}} Courses</div>
           </div>
           <div class="icon-case">
             <img src="/public/images/courses.png" alt="" style="width: 64px" />
@@ -112,46 +112,18 @@
         <table class="p-2">
           <tr>
             <th>Name</th>
-            <th>School</th>
-            <th>Amount</th>
+            <th>Lecturer</th>
+            <th>Price</th>
             <th>Option</th>
           </tr>
+          {{#each this.newCourses}}
           <tr>
-            <td>John Doe</td>
-            <td>St. James College</td>
-            <td>$120</td>
-            <td><a href="#" class="btn btn-secondary text-center text-white">View</a></td>
+            <td>{{name}}</td>
+            <td>{{author}}</td>
+            <td>${{price}}</td>
+            <td><a href="/course/{{name}}" class="btn btn-secondary text-center text-white">View</a></td>
           </tr>
-          <tr>
-            <td>John Doe</td>
-            <td>St. James College</td>
-            <td>$120</td>
-            <td><a href="#" class="btn btn-secondary text-center text-white">View</a></td>
-          </tr>
-          <tr>
-            <td>John Doe</td>
-            <td>St. James College</td>
-            <td>$120</td>
-            <td><a href="#" class="btn btn-secondary text-center text-white">View</a></td>
-          </tr>
-          <tr>
-            <td>John Doe</td>
-            <td>St. James College</td>
-            <td>$120</td>
-            <td><a href="#" class="btn btn-secondary text-center text-white">View</a></td>
-          </tr>
-          <tr>
-            <td>John Doe</td>
-            <td>St. James College</td>
-            <td>$120</td>
-            <td><a href="#" class="btn btn-secondary text-center text-white">View</a></td>
-          </tr>
-          <tr>
-            <td>John Doe</td>
-            <td>St. James College</td>
-            <td>$120</td>
-            <td><a href="#" class="btn btn-secondary text-center text-white">View</a></td>
-          </tr>
+          {{/each}}
         </table>
       </div>
       <div class="new-students d-flex flex-column"
@@ -165,22 +137,12 @@
             <th>Avatar</th>
             <th>Name</th>
           </tr>
+          {{#each this.newStudents}}
           <tr>
-            <td><img src="" alt="" /></td>
-            <td>John Steve Doe</td>
+            <td><img src={{avatar}} alt="" /></td>
+            <td>{{username}}</td>
           </tr>
-          <tr>
-            <td><img src="" alt="" /></td>
-            <td>John Steve Doe</td>
-          </tr>
-          <tr>
-            <td><img src="" alt="" /></td>
-            <td>John Steve Doe</td>
-          </tr>
-          <tr>
-            <td><img src="" alt="" /></td>
-            <td>John Steve Doe</td>
-          </tr>
+          {{/each}}
         </table>
       </div>
     </div>
