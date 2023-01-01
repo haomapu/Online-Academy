@@ -42,7 +42,6 @@ const mainService = {
     const course = await Course.findOne({ name: req.params.id }).lean();
     const top5cate = await Course.find({ name: { $not: { $eq: req.params.id } } }).sort({ register_count: -1 }).lean().limit(top5);
     const feedbacks = [];
-
     const curPage = req.query.page || 1;
     const limit = 4;
     const offset = (curPage - 1) * limit;
@@ -61,6 +60,8 @@ const mainService = {
         isCurrent: i === +curPage
       });
     }
+
+
     const queryFeedback = await Feedback.find({ course: course._id }).sort({time: -1}).skip(offset).limit(limit);
 
     if (queryFeedback.length != 0) {
@@ -177,10 +178,22 @@ const mainService = {
       else {
         req.body = { ...req.body, author: await User.findById(curUser._id) };
       }
-      req.body = { ...req.body, course: await Course.findOne({ name: req.params.id }) };
-      console.log(req.body)
+      
+      const course = await Course.findOne({ name: req.params.id });
+
+      req.body = { ...req.body, course: course};
       const feedback = new Feedback(req.body);
-      const savedFeedback = await feedback.save();
+      await feedback.save();
+
+      const queryRating = await Feedback.find({course: course._id}).lean();
+      var sum = 0;
+      for (var x of queryRating){
+        sum += x.star;
+        console.log(x);
+      }
+      const averageStar = sum / queryRating.length;
+      await Course.updateOne({_id: course._id},{rating: averageStar, rating_count: queryRating.length})
+
       res.redirect('/course/' + req.params.id);
     } catch (e) {
       res.send(e);
@@ -205,7 +218,7 @@ const mainService = {
     newRegister = {...newRegister, course: course}
     const createRegister = new Register(newRegister);
     await createRegister.save();
-    await Course.updateOne({_id: course._id}, {register_count: course.register_count + 1})
+    await Course.updateOne({_id: course._id}, {register_count:     await Register.find({course: course._id}).count()})
 
     res.redirect('/course/' + req.params.id);
   },

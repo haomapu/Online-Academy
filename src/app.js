@@ -126,6 +126,9 @@ app.engine(
       },
       format_date(date){
         return date.toLocaleString();
+      },
+      round_number(val){
+        return Number(val).toFixed(1);
       }
     }
   })
