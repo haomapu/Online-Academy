@@ -14,8 +14,6 @@ const otptxt = otp.toUpperCase()
 const txt = `Your verify code: ${otptxt}`
 
 const sendMail = (receiver) => {
-  console.log(adminEmail);
-  console.log(adminPassword);
   const transporter = nodeMailer.createTransport({
     service: 'gmail',
     host: mailHost,
