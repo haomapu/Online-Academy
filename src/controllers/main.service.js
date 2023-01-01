@@ -46,7 +46,7 @@ const mainService = {
     const limit = 4;
     const offset = (curPage - 1) * limit;
 
-    const total = await Feedback.find().count();
+    const total = await Feedback.find({course: course._id}).count();
     var nPages;
     
     (total % limit != 0)?nPages = Math.ceil(total / limit) : nPages = total / limit;
@@ -189,7 +189,6 @@ const mainService = {
       var sum = 0;
       for (var x of queryRating){
         sum += x.star;
-        console.log(x);
       }
       const averageStar = sum / queryRating.length;
       await Course.updateOne({_id: course._id},{rating: averageStar, rating_count: queryRating.length})
