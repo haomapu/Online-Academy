@@ -2,6 +2,8 @@ import Course from "../models/course.js";
 import Feedback from "../models/feedback.js";
 import Register from "../models/register.js";
 import Favorite from "../models/favorite.js";
+import Category from "../models/category.js";
+import Sub_Category from "../models/sub_category.js";
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
 import passport from "passport";
