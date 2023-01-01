@@ -1,60 +1,67 @@
 import mongoose from "mongoose";
 
 const courseSchema = new mongoose.Schema({
-    img: {
-        type: String,
-    },
+  img: {
+    type: String,
+  },
 
-    name: {
-        type: String,
-    },
+  name: {
+    type: String,
+  },
 
-    overview: {
-        type: String,
-    }, 
+  overview: {
+    type: String,
+  },
 
-    description: {
-        type: String,
-    },
+  description: {
+    type: String,
+  },
 
-    rating: {
-        type: Number,
-    },
+  rating: {
+    type: Number,
+  },
 
-    rating_count: {
-        type: Number, 
-    },
+  rating_count: {
+    type: Number,
+  },
 
-    register_count: {
-        type: Number,
-    },
+  register_count: {
+    type: Number,
+  },
 
-    price: {
-        type: Number,
-    },
+  price: {
+    type: Number,
+  },
 
-    discount: {
-        type: Number,
-    },
+  discount: {
+    type: Number,
+  },
 
-    lastUpdate: {
-        type: Date,
-    },
+  lastUpdate: {
+    type: Date,
+  },
 
-    chapters: {
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: "Chapter",
-    },
-    
-    author: {
-        type: String,
-    },
+  chapters: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Chapter",
+  },
 
-    category: {
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: "Category",
-    },
+  author: {
+    type: String,
+  },
+
+  category: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Category",
+  },
+});
+
+courseSchema.index({
+  name: "text",
+  overview: "text",
+  description: "text",
 });
 
 const Course = mongoose.model("Course", courseSchema);
+
 export default Course;

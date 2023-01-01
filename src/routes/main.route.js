@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get("/", mainService.getHomePage);
 
-router.get("/search", mainService.getSearchPage);
+router.get("/search/", mainService.getSearchCourses);
 
 router.get("/login", mainService.getLoginPage);
 
