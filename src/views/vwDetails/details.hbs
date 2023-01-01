@@ -31,15 +31,16 @@
           <i class="far fa-star text-secondary" style="line-height: unset" title="Good"></i>
           <i class="far fa-star text-secondary" style="line-height: unset" title="Excellent"></i>
         </div>
-        <p class="fs-5 m-0" id="numRateReg">&nbsp;({{course.rating_count}} rating) {{format_number
-          course.register_count}} students
+        <p class="fs-5 m-0" id="numRateReg"><span class="text-success">&nbsp;{{course.rating_count}}</span> ratings<span
+            class="text-success">&nbsp;{{format_number
+            course.register_count}}</span> register
         </p>
       </div>
       <div class="d-flex">
         <div class="d-flex flex-column me-auto">
           <div class="d-flex">
             <p class="fs-5 m-0 text-secondary me-1">Lecturers: </p>
-            <a class="fs-5 m-0 text-decoration-none" data-bs-toggle="offcanvas" href="#profile" role="button"
+            <a class="fs-5 m-0 text-success" data-bs-toggle="offcanvas" href="#profile" role="button"
               aria-controls="offcanvasExample">
               {{course.author}}
             </a>
@@ -51,7 +52,10 @@
         </div>
         <div class="d-flex flex-column justify-content-center align-items-center">
           <p class="text-secondary m-0 fs-5">{{format_number course.price}} VND</p>
-          <button class="btn btn-md btn-secondary text-light fw-bold">Add to cart</button>
+          <form method="post">
+            <button class="btn btn-md btn-secondary text-light fw-bold" formaction="/course/{{course.name}}/buy"
+              type="submit">Add to cart</button>
+          </form>
         </div>
       </div>
 
@@ -106,22 +110,26 @@
       <li class="list-group-item d-flex border border-2 shadow p-3">
         <img src="{{this.img}}" style="background-repeat: no-repeat; height: 100px; width: 100px; "
           class="rounded align-self-center" />
-        <div class="px-2 me-auto">
+        <div class="px-2 me-auto" style="flex: 9">
           <div class="fs-5 fw-bold m-0">{{this.name}}</div>
           <div class="fs-6">{{this.overview}}</div>
           <span class="fs-5">5<i class="fa fa-star fa-xs text-secondary" style="line-height: unset"></i>&nbsp;<u
               class="fs-6 text-success">{{this.register_count}} students</u></span>
         </div>
-        <div class="px-2 d-flex flex-column align-self-center">
-          <button type="button" class="btn btn-secondary btn-lg p-1 mb-1"><a class="links text-light"
-              href="/course/{{this.name}}">&nbsp;&nbsp;&nbsp;Visit&nbsp;&nbsp;&nbsp;</a></button>
-          <button type="button" class="btn btn-outline-secondary btn-lg p-1"><i class="fas fa-heart"></i></button>
+        <div class="px-2 d-flex flex-column align-self-center" style="flex: 1">
+          <button type="button" class="btn btn-secondary btn-md p-1 mb-1"><a class="links text-light"
+              href="/course/{{this.name}}">Visit</a></button>
+          <button class="btn btn-outline-secondary btn-lg p-1" 
+            type="submit" form="myform" onclick="myFunction({{this.name}})"><i class="fas fa-heart"></i></button>
         </div>
       </li>
       {{/each}}
     </ul>
 
   </div>
+  <form method="post" id="myform" action="/course/{{course.name}}/fav">
+          <input type="text" style="display: none" id="nameFav">
+  </form>
 
   {{! Comment }}
   <hr class="my-5 text-dark " style="height: 1px;" />
@@ -186,15 +194,15 @@
       </a>
     </li>
     {{#each pageNumbers}}
-      {{#if isCurrent}}
-      <li class="page-item active" aria-current="page">
-            <span class="page-link text-secondary border-secondary fw-bold bg-secondary text-light">{{value}}</span>
-      </li>
-      {{else}}
-      <li class="page-item">
-        <a class="page-link text-secondary border-secondary fw-bold" href="?page={{value}}">{{value}}</a>
-      </li>
-      {{/if}}
+    {{#if isCurrent}}
+    <li class="page-item active" aria-current="page">
+      <span class="page-link text-secondary border-secondary fw-bold bg-secondary text-light">{{value}}</span>
+    </li>
+    {{else}}
+    <li class="page-item">
+      <a class="page-link text-secondary border-secondary fw-bold" href="?page={{value}}">{{value}}</a>
+    </li>
+    {{/if}}
     {{/each}}
     <li class="page-item">
       <a class="page-link text-secondary fw-bold border-secondary" href="?page=" aria-label="Next">
@@ -217,3 +225,9 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+    function myFunction(var a) {
+      document.getElementById('nameFav').value = a;
+    }
+</script>

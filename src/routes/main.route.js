@@ -13,6 +13,8 @@ router.post("/login", mainService.loginService);
 
 router.get("/otp", mainService.getOtpPage);
 
+router.post("/otp", mainService.otpService);
+
 router.get("/signup", mainService.getSignupPage);
 
 router.post("/signup", mainService.signupService);
@@ -20,6 +22,10 @@ router.post("/signup", mainService.signupService);
 router.get("/logout", mainService.logoutService);
 
 router.post("/course/:id/fb", mainService.feedbackService);
+
+router.post("/course/:id/buy", mainService.createRegister);
+
+router.post("/course/:id/fav", mainService.createFavorite);
 
 router.get("/course/:id", mainService.getCourseDetail);
 

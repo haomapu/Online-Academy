@@ -12,7 +12,9 @@ import numeral from 'numeral';
 import session from 'express-session';
 import passport from "passport";
 import userAuthorization from "./middlewares/authorization.js";
+import userAuthentication from "./middlewares/authentication.js";
 import cookieSession from "cookie-session"
+import GoogleStrategy from "passport-google-oauth20";
 import LocalStrategy from "passport-local";
 import flash from "connect-flash";
 //Inport router
@@ -50,10 +52,20 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(userAuthorization());
 app.use(flash());
+
+passport.use(new GoogleStrategy({
+  clientID: process.env.clientID,
+  clientSecret: process.env.clientSecret,
+  callbackURL: 'http://localhost:8080/auth/google/callback'
+},
+(accessToken, refreshToken, profile, done) => {
+  done(null, profile); 
+}
+));
 passport.use(
   new LocalStrategy(async (username, password, done) => {
     const user = await User.findOne({ username: username });
-
+    
     let state = null;
     try {
       state = await bcrypt.compareSync(password, user.password);
@@ -63,9 +75,21 @@ passport.use(
     if (!user || !user.password || !state) {
       return done(null, false, { error: "Sai email hoặc mật khẩu" });
     }
+    if(!user.verified) {
+      return done(null, false, { error: "Chưa xác nhận OTP"});
+    }
     return done(null, user);
   })
 );
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+// Used to decode the received cookie and persist session
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
+
 
 passport.serializeUser((user, done) => {
   done(null, user.username);
@@ -114,6 +138,31 @@ app.use("/", mainRouter);
 app.use("/search", mainRouter);
 app.use("/course", courseRouter);
 app.use("/login", loginRouter);
+app.get('/auth/google', passport.authenticate('google', {
+  scope: ['profile'] 
+}));
+app.get('/auth/google/callback', passport.authenticate('google'), async (req, res) => {
+  const curUser = req.user._json;
+  const username = curUser.given_name + curUser.family_name;
+  const hashedPassword = await bcrypt.hash("secret", 10);
+  const email = curUser.sub + "@gmail.com";
+  const existedUser = await User.findOne({username: curUser.given_name + curUser.family_name});
+  if(!existedUser) {
+    const savedUser = new User({
+      username: username,
+      email: email,
+      password: hashedPassword,
+      otp: "",
+      avatar: curUser.picture,
+      phone: "",
+      fullname: "",
+      verified: true,
+      oauth: true,
+    });
+    await savedUser.save();
+  }
+  res.redirect('/');
+});
 //Start App
 app.listen(PORT, function () {
   console.log(`Online Academy listening at http://localhost:${PORT}`);
