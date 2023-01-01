@@ -119,11 +119,11 @@
         <div class="px-2 me-auto" style="flex: 9">
           <div class="fs-5 fw-bold m-0">{{this.name}}</div>
           <div class="fs-6">{{this.overview}}</div>
-          <span class="fs-5">5<i class="fa fa-star fa-xs text-secondary" style="line-height: unset"></i>&nbsp;<u
+          <span class="fs-5">{{round_number this.rating}}<i class="fa fa-star fa-xs text-secondary" style="line-height: unset"></i>&nbsp;<u
               class="fs-6 text-success">{{this.register_count}} students</u></span>
         </div>
         <div class="px-2 d-flex flex-column align-self-center" style="flex: 1">
-          <button type="button" class="btn btn-secondary btn-md p-1 mb-1"><a class="links text-light"
+          <button type="button" class="btn btn-secondary btn-md p-1 mb-1" type="button"><a class="links text-light"
               href="/course/{{this.name}}">Visit</a></button>
           <button class="btn btn-outline-secondary btn-lg p-1" 
             type="submit" form="myform" onclick="myFunction({{this.name}})"><i class="fas fa-heart"></i></button>
