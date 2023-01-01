@@ -1,131 +1,84 @@
 <html>
 
-  <head>
-    <meta charset="utf-8" />
-    <title>Example App</title>
-    <link rel="stylesheet" href="/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/public/css/index.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
-    />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  </head>
+<head>
+  <meta charset="utf-8" />
+  <title>Example App</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/public/css/index.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
 
-  <body class="d-flex flex-column min-vh-100">
-    <nav class="navbar sticky-top navbar-expand-lg bg-light navbar-light">
-      <div class="container-fluid">
-        <a class="navbar-brand fs-3 fw-bold" href="/">
-          <img
-            src="/public/images/logo.png"
-            width="40"
-            height="40"
-            class="text-primary d-inline-block align-top"
-            alt=""
-          />
-          <span>Online Academy</span>
-        </a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav">
-            <!-- Dropdown -->
-            <li class="nav-item dropdown">
-              <a
-                class="text-primary nav-link dropdown-toggle"
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Categories
-              </a>
-              <ul
-                class="dropdown-menu"
-                aria-labelledby="navbarDropdownMenuLink"
-              >
-                <li>
-                  <a class="dropdown-item" href="#">Action</a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="#">Another action</a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="#">
-                    Submenu &raquo;
-                  </a>
-                  <ul class="dropdown-menu dropdown-submenu">
-                    <li>
-                      <a class="dropdown-item" href="#">Submenu item 1</a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">Submenu item 2</a>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-          </ul>
-          <form class="d-flex justify-content-between w-100" role="search">
-            <input
-              class="rounded-pill form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-          </form>
-          {{#if user}}
-            <a href="#" class="text-primary align-middle me-2 fs-5 links">{{user.username}}</a>
-            <a
-              class="btn btn-outline-secondary me-2 btn-w"
-              href="/logout"
-              role="button"
-            >Log Out</a>
-          {{else}}
-            <a
-              class="btn btn-outline-secondary me-2 btn-w"
-              href="/signup"
-              role="button"
-            >Sign Up</a>
-            <a
-              class="btn btn-outline-secondary me-2 btn-w"
-              href="/login"
-              role="button"
-            >Log In</a>
-          {{/if}}
-        </div>
+<body class="d-flex flex-column min-vh-100">
+  <nav class="navbar sticky-top navbar-expand-lg bg-light navbar-light">
+    <div class="container-fluid">
+      <a class="navbar-brand fs-3 fw-bold" href="/">
+        <img src="/public/images/logo.png" width="40" height="40" class="text-primary d-inline-block align-top"
+          alt="" />
+        <span>Online Academy</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav">
+          <!-- Dropdown -->
+          <li class="nav-item dropdown">
+            <a class="text-primary nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Categories
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li>
+                <a class="dropdown-item" href="#">Action</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#">Another action</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#">
+                  Submenu &raquo;
+                </a>
+                <ul class="dropdown-menu dropdown-submenu">
+                  <li>
+                    <a class="dropdown-item" href="#">Submenu item 1</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#">Submenu item 2</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <form class="d-flex justify-content-between w-100" role="search" action="search" method="get">
+          <input class="rounded-pill form-control me-2" type="search" placeholder="Search" aria-label="Search"
+            name="search" value="" />
+        </form>
+        {{#if user}}
+        <a href="#" class="text-primary align-middle me-2 fs-5 links">{{user.username}}</a>
+        <a class="btn btn-outline-secondary me-2 btn-w" href="/logout" role="button">Log Out</a>
+        {{else}}
+        <a class="btn btn-outline-secondary me-2 btn-w" href="/signup" role="button">Sign Up</a>
+        <a class="btn btn-outline-secondary me-2 btn-w" href="/login" role="button">Log In</a>
+        {{/if}}
       </div>
-    </nav>
-  
-    {{{body}}}
+    </div>
+  </nav>
 
-    <footer
-      class="text-center p-4 mt-auto"
-      style="background-color: rgba(0, 0, 0, 0.025);"
-    >
-      © 2021 Copyright:
-      <a
-        class="text-reset fw-bold"
-        href="https://mdbootstrap.com/"
-      >MDBootstrap.com</a>
-    </footer>
-    <script src="/js/bootstrap.bundle.js" type="text/javascript"></script>
+  {{{body}}}
 
-    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+  <footer class="text-center p-4 mt-auto" style="background-color: rgba(0, 0, 0, 0.025);">
+    © 2021 Copyright:
+    <a class="text-reset fw-bold" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+  </footer>
+  <script src="/js/bootstrap.bundle.js" type="text/javascript"></script>
+
+  <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+</body>
 
 </html>

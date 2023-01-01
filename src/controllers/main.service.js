@@ -23,6 +23,20 @@ const mainService = {
     res.render("vwSearchPage/searchPage");
   },
 
+  getSearchCourses: async (req, res) => {
+    try {
+      const courses = await Course.find({
+        $text: { $search: req.query.search },
+      }).lean();
+      res.render("vwSearchPage/searchPage", {
+        courses: courses,
+        text: req.query.search,
+      });
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+
   getCourseDetail: async (req, res) => {
     const top5 = 5;
     const course = await Course.findOne({ name: req.params.id }).lean();
