@@ -56,12 +56,6 @@ const courseSchema = new mongoose.Schema({
   },
 });
 
-courseSchema.index({
-  name: "text",
-  overview: "text",
-  description: "text",
-});
-
 const Course = mongoose.model("Course", courseSchema);
 
 export default Course;
