@@ -15,6 +15,7 @@ import userAuthorization from "./middlewares/authorization.js";
 import userAuthentication from "./middlewares/authentication.js";
 import cookieSession from "cookie-session"
 import GoogleStrategy from "passport-google-oauth20";
+import FacebookStrategy from "passport-facebook";
 import LocalStrategy from "passport-local";
 import flash from "connect-flash";
 //Inport router
@@ -41,7 +42,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 const store = session.MemoryStore();
 app.use(session({
-  saveUninitialized: false,
+  resave: true,
+  saveUninitialized: true,
   secret: "KEY_SESSION",
   cookie: {
       maxAge: 24 * 60 * 60 * 1000, // 10s
@@ -51,6 +53,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(userAuthorization());
+//app.use(userAuthentication());
 app.use(flash());
 
 passport.use(new GoogleStrategy({
@@ -62,6 +65,19 @@ passport.use(new GoogleStrategy({
   done(null, profile); 
 }
 ));
+
+passport.use(new FacebookStrategy({
+  clientID: '470228735287363',
+  clientSecret: '2d46470320ab6bf4dcedcb242d0b4742',
+  callbackURL: "http://localhost:8080/auth/facebook/callback",
+  profileFields: ['email', 'id', 'displayName','name', 'gender', 'picture.type(large)']
+},
+function(accessToken, refreshToken, profile, cb) {
+    cb(null, profile); 
+}
+));
+
+
 passport.use(
   new LocalStrategy(async (username, password, done) => {
     const user = await User.findOne({ username: username });
@@ -141,6 +157,37 @@ app.use("/", mainRouter);
 app.use("/search", mainRouter);
 app.use("/course", courseRouter);
 app.use("/login", loginRouter);
+app.get('/auth/facebook',passport.authenticate('facebook', {scope: ['email']}));
+app.get('/auth/facebook/callback',
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  async function(req, res) {
+    const curUser = req.user._json;
+    const username = curUser.name;
+    const hashedPassword = await bcrypt.hash("secret", 10);
+    const email = curUser.email;
+    const existedUser =  await User.findOne({username: curUser.name});
+    const avatar = curUser.picture.data.url;
+    console.log(email);
+    console.log(curUser);
+    if (!existedUser) {
+      const savedUser = new User({
+        username: username,
+        email: email,
+        password: hashedPassword,
+        otp: "",
+        avatar: avatar,
+        phone: "",
+        fullname: "",
+        verified: true,
+        oauth: true,
+      });
+      await savedUser.save();
+    }
+    res.redirect('/');
+  });
+
+
+
 app.get('/auth/google', passport.authenticate('google', {
   scope: ['profile'] 
 }));

@@ -30,25 +30,21 @@
               Categories
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li>
-                <a class="dropdown-item" href="#">Action</a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="#">Another action</a>
-              </li>
-              <li>
+              {{#each categories}}
+                <li>
                 <a class="dropdown-item" href="#">
-                  Submenu &raquo;
+                  {{this.name}} &raquo;
                 </a>
                 <ul class="dropdown-menu dropdown-submenu">
-                  <li>
-                    <a class="dropdown-item" href="#">Submenu item 1</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#">Submenu item 2</a>
-                  </li>
+                  {{#each this.sub_categories}}
+                    <li>
+                      <a class="dropdown-item" href="#">{{this.name}}</a>
+                    </li>
+                  {{/each}}
                 </ul>
               </li>
+              {{/each}}
+              
             </ul>
           </li>
         </ul>

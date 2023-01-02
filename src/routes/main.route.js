@@ -9,7 +9,20 @@ router.get("/search", mainService.getSearchCourses);
 
 router.get("/login", mainService.getLoginPage);
 
-router.post("/login", mainService.loginService);
+router.post("/login", mainService.loginService, 
+function(req, res) {
+    console.log(req.session);
+    var redirectTo = '/';
+    console.log("here");
+    console.log(req.session.reqUrl);
+    if (req.session.reqUrl) {
+        redirectTo = req.session.reqUrl;
+        req.session.reqUrl = null;
+    };
+    res.redirect(redirectTo);
+});
+
+//router.post("/login", mainService.loginService);
 
 router.get("/otp", mainService.getOtpPage);
 
@@ -34,6 +47,10 @@ router.get("/postCourse", mainService.createCoursePage);
 router.get("/settings", mainService.getSettingsPage);
 
 router.get("/settings/courseLecture", mainService.getCoursePage);
+
+router.get("/settings/courseStudent", mainService.getCourseStudentPage);
+
+router.get("/settings/favourite", mainService.getFavourite);
 
 router.get("/settings/editProfile", mainService.getEditProfilePage);
 
