@@ -23,8 +23,13 @@ const mainService = {
 
   getSearchCourses: async (req, res) => {
     try {
+      const temp = "(?i)" + req.query.search + "(?-i)";
       const courses = await Course.find({
-        $text: { $search: req.query.search },
+        $or: [
+          { name: { $regex: temp } },
+          { description: { $regex: temp } },
+          { overview: { $regex: temp } },
+        ],
       }).lean();
       res.render("vwSearchPage/searchPage", {
         courses: courses,
@@ -65,8 +70,10 @@ const mainService = {
       });
     }
 
-
-    const queryFeedback = await Feedback.find({ course: course._id }).sort({time: -1}).skip(offset).limit(limit);
+    const queryFeedback = await Feedback.find({ course: course._id })
+      .sort({ time: -1 })
+      .skip(offset)
+      .limit(limit);
 
     if (queryFeedback.length != 0) {
       for (let i = 0; i < queryFeedback.length; i++) {
@@ -128,6 +135,39 @@ const mainService = {
     }
   },
 
+  getCoursePage: async (req, res) => {
+    var curUser;
+    if(req.isAuthenticated()) {
+      curUser = req.user;
+    } else {
+      res.redirect('/login');
+      return;
+    }
+    const limit = 3;
+    var nPages;
+    const curPage = req.query.page || 1;
+    const offset = (curPage - 1) * limit;
+    const courseLecture = await Course.find({ author: curUser.fullname }).lean().skip(offset).limit(limit);
+    const total = await Course.find({ author: curUser.fullname }).count();
+    
+    
+    (total % limit != 0)?nPages = Math.ceil(total / limit) : nPages = total / limit;
+
+
+    const pageNumbers = [];
+
+    for (let i = 1; i <= nPages; i++) {
+      pageNumbers.push({
+        value: i,
+        isCurrent: i === +curPage
+      });
+    }
+    res.render("vwSettingsPage/courseLecture", {
+      course: courseLecture,
+      pageNumbers: pageNumbers
+    });
+  },
+
   getEditProfilePage: async (req, res) => {
     try {
       var curUser;
@@ -172,7 +212,7 @@ const mainService = {
       }
       console.log(curUser._id);
       console.log(req.body);
-      await User.updateMany({_id : curUser._id}, req.body);
+      await User.updateMany({ _id: curUser._id }, req.body);
       res.redirect("/settings");
     } catch (e) {
       res.send(e);
@@ -289,19 +329,22 @@ const mainService = {
 
       const course = await Course.findOne({ name: req.params.id });
 
-      req.body = { ...req.body, course: course};
+      req.body = { ...req.body, course: course };
       const feedback = new Feedback(req.body);
       await feedback.save();
 
-      const queryRating = await Feedback.find({course: course._id}).lean();
+      const queryRating = await Feedback.find({ course: course._id }).lean();
       var sum = 0;
-      for (var x of queryRating){
+      for (var x of queryRating) {
         sum += x.star;
       }
       const averageStar = sum / queryRating.length;
-      await Course.updateOne({_id: course._id},{rating: averageStar, rating_count: queryRating.length})
+      await Course.updateOne(
+        { _id: course._id },
+        { rating: averageStar, rating_count: queryRating.length }
+      );
 
-      res.redirect('/course/' + req.params.id);
+      res.redirect("/course/" + req.params.id);
     } catch (e) {
       res.send(e);
     }
@@ -325,7 +368,10 @@ const mainService = {
     newRegister = { ...newRegister, course: course };
     const createRegister = new Register(newRegister);
     await createRegister.save();
-    await Course.updateOne({_id: course._id}, {register_count:     await Register.find({course: course._id}).count()})
+    await Course.updateOne(
+      { _id: course._id },
+      { register_count: await Register.find({ course: course._id }).count() }
+    );
 
     res.redirect("/course/" + req.params.id);
   },
