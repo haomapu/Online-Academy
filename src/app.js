@@ -207,7 +207,6 @@ app.get('/auth/google/callback', passport.authenticate('google'), async (req, re
       phone: "",
       fullname: "",
       verified: true,
-      oauth: true,
     });
     await savedUser.save();
   }
