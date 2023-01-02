@@ -554,6 +554,18 @@ const mainService = {
     res.redirect("/course/" + req.params.id);
   },
 
+  removeFavorite: async (req, res) => {
+    var user;
+    if (req.isAuthenticated()) {
+      user = req.user;
+    } else {
+      res.redirect("/login");
+      return;
+    }
+    const result = await Favorite.deleteOne(req.params.id);
+    res.redirect("/settings/favourite");
+  },
+
   otpService: async (req, res) => {
     const { first, second, third, fourth, fifth, sixth } = req.body;
     const userOtp = `${first}${second}${third}${fourth}${fifth}${sixth}`;
