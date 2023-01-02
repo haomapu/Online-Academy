@@ -15,8 +15,10 @@ let userMail;
 
 const mainService = {
   getHomePage: async (req, res) => {
+    const categories = await Category.find().populate('sub_categories').lean();
     const course = await Course.find().sort({ lastUpdate: 1 }).lean().limit(4);
     res.render("home", {
+      categories: categories,
       newCourse: course,
     });
   },
