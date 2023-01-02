@@ -15,6 +15,8 @@ let userMail;
 
 const mainService = {
   getHomePage: async (req, res) => {
+    // console.log("home page");
+    // console.log(req.session);
     const categories = await Category.find().populate('sub_categories').lean();
     const course = await Course.find().sort({ lastUpdate: 1 }).lean().limit(4);
     res.render("home", {
@@ -249,6 +251,9 @@ const mainService = {
   },
 
   getLoginPage: async (req, res) => {
+    req.session.reqUrl = req.headers.referer || "/";
+    
+    console.log(req.session);
     if (req.isAuthenticated()) {
       res.redirect("/");
     } else {
@@ -271,11 +276,12 @@ const mainService = {
   },
 
   loginService: passport.authenticate("local", {
+    //successRedirect: req.session.reqUrl,
     failureRedirect: "/login",
-    successRedirect: "/",
     failureFlash: true,
     failureFlash: "Tài khoản hoặc mật khẩu không chính xác",
   }),
+
 
   signupService: async (req, res) => {
     try {
