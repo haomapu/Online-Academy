@@ -42,7 +42,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 const store = session.MemoryStore();
 app.use(session({
-  saveUninitialized: false,
+  resave: true,
+  saveUninitialized: true,
   secret: "KEY_SESSION",
   cookie: {
       maxAge: 24 * 60 * 60 * 1000, // 10s
@@ -52,6 +53,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(userAuthorization());
+//app.use(userAuthentication());
 app.use(flash());
 
 passport.use(new GoogleStrategy({

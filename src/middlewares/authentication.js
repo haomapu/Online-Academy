@@ -1,8 +1,9 @@
 const authenticationMiddleware = () => {
     return (req, res, next) => {
-      if (req.isAuthenticated()) 
+      if (req.isAuthenticated()) {
         return next();
-      res.redirect("/login");
+      }
+      return next();
     };
   };
 export default authenticationMiddleware;
