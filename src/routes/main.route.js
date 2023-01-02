@@ -48,6 +48,8 @@ router.get("/settings", mainService.getSettingsPage);
 
 router.get("/settings/courseLecture", mainService.getCoursePage);
 
+router.get("/settings/courseStudent", mainService.getCourseStudentPage);
+
 router.get("/settings/favourite", mainService.getFavourite);
 
 router.get("/settings/editProfile", mainService.getEditProfilePage);
