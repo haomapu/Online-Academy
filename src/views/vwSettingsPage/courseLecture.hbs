@@ -69,15 +69,15 @@
             <div class="d-flex flex-column pt-3">
                 {{#each this.course}}
                 <div class="d-flex flex-row shadow py-3">
-                    <img src={{img}} alt="imageCourse" class="py-2 ms-2" style="width: 15%;"/>
+                    <a href="/course/{{name}}" class="w-25"><img src={{img}} alt="imageCourse" class="py-2 ms-2" style="width: 100%; height: 100%"/></a>
                     <div class="d-flex justify-content-between h-75" style="width: 100%; padding-right: 15px;">
-                        <div class="d-flex flex-column ps-4">
+                        <div class="d-flex flex-column ps-4 w-50">
                             <div>{{name}}</div>
                             <div>Students: {{register_count}}</div>
                             <div>Lecture: {{author}}</div>
                         </div>
                         <div class="d-flex flex-column text-end">
-                            <div>Update: </div>
+                            <div>Update: {{format_date lastUpdate}}</div>
                             <div>Status: Finish</div>
                             <div class="d-flex flex-row-reverse">
                                 <a href="/#" class="btn btn-secondary text-light">Remove</a>
