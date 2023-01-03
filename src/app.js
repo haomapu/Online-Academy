@@ -19,8 +19,8 @@ import LocalStrategy from "passport-local";
 import flash from "connect-flash";
 //Inport router
 import mainRouter from "./routes/main.route.js";
-import courseRouter from "./routes/course.route.js";
-import loginRouter from "./routes/loginPage.route.js"
+
+
 import User from "./models/user.js";
 import bcrypt from "bcrypt";
 //Const variable
@@ -137,10 +137,10 @@ app.set("view engine", "hbs");
 app.set("views", __dirname + "/views");
 
 //Router
-app.use("/", mainRouter);
-app.use("/search", mainRouter);
-app.use("/course", courseRouter);
-app.use("/login", loginRouter);
+import AppRouter from './middlewares/routes.mdw.js'
+AppRouter(app);
+
+
 app.get('/auth/google', passport.authenticate('google', {
   scope: ['profile'] 
 }));

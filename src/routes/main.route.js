@@ -21,24 +21,7 @@ router.post("/signup", mainService.signupService);
 
 router.get("/logout", mainService.logoutService);
 
-router.post("/course/:id/fb", mainService.feedbackService);
-
-router.post("/course/:id/buy", mainService.createRegister);
-
-router.post("/course/:id/fav", mainService.createFavorite);
-
-router.get("/course/:id", mainService.getCourseDetail);
-
 router.get("/postCourse", mainService.createCoursePage);
 
-router.get("/settings", mainService.getSettingsPage);
-
-router.get("/settings/courseLecture", mainService.getCoursePage);
-
-router.get("/settings/editProfile", mainService.getEditProfilePage);
-
-router.post("/settings/editProfile/patch", mainService.postEditProfile);
-
-router.get("/settings/dashboard", mainService.getDashboardPage);
 
 export default router;

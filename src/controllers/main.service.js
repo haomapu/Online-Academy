@@ -93,24 +93,25 @@ const mainService = {
         }
       }
     }
-
+    var curUser;
+    var buy;
+    if (req.isAuthenticated()) {
+      curUser = req.user;
+      buy = await Register.find({$and:[ {student: curUser._id}, {course: course._id}]}).lean();
+    }
     res.render("vwDetails/details", {
       course: course,
       feedbacks: feedbacks,
       rec: top5cate,
       pageNumbers: pageNumbers,
+      buy: buy,
     });
   },
 
   getSettingsPage: async (req, res) => {
     try {
       var curUser;
-      if (req.isAuthenticated()) {
-        curUser = req.user;
-      } else {
-        res.redirect("/login");
-        return;
-      }
+      
       let user, role;
       if (curUser.hasOwnProperty("_json")) {
         user = await User.findOne({

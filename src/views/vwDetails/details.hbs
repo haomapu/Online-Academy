@@ -235,8 +235,6 @@
   };
 
   $('#btnPost').click(function () {
-    var check1;
-    var check2;
     if (!($('#content').val())) {
       $('[data-bs-toggle="popover"]').attr('data-bs-content', 'Missing Comment');
       $('[data-bs-toggle="popover"]').popover('enable');
