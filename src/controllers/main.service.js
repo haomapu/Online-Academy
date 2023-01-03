@@ -566,6 +566,18 @@ const mainService = {
     res.redirect("/settings/favourite");
   },
 
+  removeCourseStudentPage: async (req, res) => {
+    var user;
+    if (req.isAuthenticated()) {
+      user = req.user;
+    } else {
+      res.redirect("/login");
+      return;
+    }
+    const result = await Register.deleteOne(req.params.id);
+    res.redirect("/settings/courseStudent");
+  },
+
   otpService: async (req, res) => {
     const { first, second, third, fourth, fifth, sixth } = req.body;
     const userOtp = `${first}${second}${third}${fourth}${fifth}${sixth}`;
