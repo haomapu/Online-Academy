@@ -17,7 +17,7 @@ const mainService = {
   getHomePage: async (req, res) => {
     // console.log("home page");
     // console.log(req.session);
-    const categories = await Category.find().populate('sub_categories').lean();
+    const categories = await Category.find().populate("sub_categories").lean();
     const course = await Course.find().sort({ lastUpdate: 1 }).lean().limit(4);
     res.render("home", {
       categories: categories,
@@ -27,33 +27,137 @@ const mainService = {
 
   getSearchCourses: async (req, res) => {
     try {
-      const temp = req.query.rating;
+      const temp = req.query.sort;
       console.log(temp);
-      const courses = await Course.aggregate([
-        {
-          $search: {
-            autocomplete: {
-              query: req.query.search,
-              path: "name",
+      let courses;
+      if (req.query.search) {
+        if (temp === "rating") {
+          courses = await Course.aggregate([
+            {
+              $search: {
+                compound: {
+                  should: [
+                    {
+                      autocomplete: {
+                        path: "name",
+                        query: req.query.search,
+                        score: { boost: { value: 3 } },
+                      },
+                    },
+                    {
+                      text: {
+                        path: "name",
+                        query: req.query.search,
+                        fuzzy: { maxEdits: 1 },
+                      },
+                    },
+                  ],
+                },
+              },
             },
-          },
-        },
-        {
-          $project: {
-            _id: 1,
-            img: 1,
-            name: 1,
-            overview: 1,
-            rating: 1,
-            register_count: 1,
-            price: 1,
-            discount: 1,
-          },
-        },
-        {
-          $sort: { rating: -1 },
-        },
-      ]);
+            {
+              $project: {
+                _id: 1,
+                img: 1,
+                name: 1,
+                overview: 1,
+                rating: 1,
+                register_count: 1,
+                price: 1,
+                discount: 1,
+              },
+            },
+            {
+              $sort: { rating: -1 },
+            },
+          ]);
+        } else if (temp === "price") {
+          courses = await Course.aggregate([
+            {
+              $search: {
+                compound: {
+                  should: [
+                    {
+                      autocomplete: {
+                        path: "name",
+                        query: req.query.search,
+                        score: { boost: { value: 3 } },
+                      },
+                    },
+                    {
+                      text: {
+                        path: "name",
+                        query: req.query.search,
+                        fuzzy: { maxEdits: 1 },
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+            {
+              $project: {
+                _id: 1,
+                img: 1,
+                name: 1,
+                overview: 1,
+                rating: 1,
+                register_count: 1,
+                price: 1,
+                discount: 1,
+              },
+            },
+            {
+              $sort: { price: -1 },
+            },
+          ]);
+        } else {
+          courses = await Course.aggregate([
+            {
+              $search: {
+                compound: {
+                  should: [
+                    {
+                      autocomplete: {
+                        path: "name",
+                        query: req.query.search,
+                        score: { boost: { value: 3 } },
+                      },
+                    },
+                    {
+                      text: {
+                        path: "name",
+                        query: req.query.search,
+                        fuzzy: { maxEdits: 1 },
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+            {
+              $project: {
+                _id: 1,
+                img: 1,
+                name: 1,
+                overview: 1,
+                rating: 1,
+                register_count: 1,
+                price: 1,
+                discount: 1,
+              },
+            },
+          ]);
+        }
+      } else {
+        if (temp === "rating") {
+          courses = await Course.find().sort({ rating: -1 }).lean();
+        } else if (temp === "price") {
+          courses = await Course.find().sort({ price: -1 }).lean();
+        } else {
+          courses = await Course.find().lean();
+        }
+      }
       console.log(courses);
       res.render("vwSearchPage/searchPage", {
         courses: courses,
@@ -399,7 +503,7 @@ const mainService = {
 
   getLoginPage: async (req, res) => {
     req.session.reqUrl = req.headers.referer || "/";
-    
+
     console.log(req.session);
     if (req.isAuthenticated()) {
       res.redirect("/");
@@ -428,7 +532,6 @@ const mainService = {
     failureFlash: true,
     failureFlash: "Tài khoản hoặc mật khẩu không chính xác",
   }),
-
 
   signupService: async (req, res) => {
     try {
