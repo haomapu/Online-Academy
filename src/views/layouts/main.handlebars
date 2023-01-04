@@ -53,8 +53,12 @@
             name="search" value="" />
         </form>
         {{#if user}}
-        <a href="#" class="text-primary align-middle me-2 fs-5 links">{{user.username}}</a>
-        <a class="btn btn-outline-secondary me-2 btn-w" href="/logout" role="button">Log Out</a>
+          {{#if user.username}}
+            <a href="#" class="text-primary align-middle me-2 fs-5 links">{{user.username}}</a>
+          {{else}}
+            <a href="#" class="text-primary align-middle me-2 fs-5 links">{{user.displayName}}</a>
+          {{/if}}
+            <a class="btn btn-outline-secondary me-2 btn-w" href="/logout" role="button">Log Out</a>
         {{else}}
         <a class="btn btn-outline-secondary me-2 btn-w" href="/signup" role="button">Sign Up</a>
         <a class="btn btn-outline-secondary me-2 btn-w" href="/login" role="button">Log In</a>
