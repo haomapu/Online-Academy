@@ -299,6 +299,130 @@ const mainService = {
     });
   },
 
+  getFavourite: async (req, res) => {
+    var curUser;
+    if (req.isAuthenticated()) {
+      curUser = req.user;
+    } else {
+      res.redirect("/login");
+      return;
+    }
+
+    const limit = 3;
+    var nPages;
+    const courses = [];
+    const curPage = req.query.page || 1;
+    const offset = (curPage - 1) * limit;
+    const favourite = await Favorite.find({ student: curUser._id }).lean().skip(offset).limit(limit);
+    const total = await Favorite.find({ student: curUser._id }).count();
+
+    if (favourite.length != 0) {
+      for (let i = 0; i < favourite.length; i++) {
+        var course;
+        if (favourite[i].course) {
+          course = await Course.findById(favourite[i].course._id);
+        }
+        if (course) {
+          courses.push({
+            img: course.img,
+            name: course.name,
+            overview: course.overview,
+            description: course.description,
+            rating: course.rating,
+            rating_count: course.rating_count,
+            register_count: course.register_count,
+            price: course.price,
+            discount: course.discount,
+            lastUpdate: course.lastUpdate,
+            chapters: course.chapters,
+            author: course.author,
+            category: course.category
+          });
+        }
+      }
+    }
+
+    total % limit != 0
+      ? (nPages = Math.ceil(total / limit))
+      : (nPages = total / limit);
+
+    const pageNumbers = [];
+
+    for (let i = 1; i <= nPages; i++) {
+      pageNumbers.push({
+        value: i,
+        isCurrent: i === +curPage,
+      });
+    }
+
+    res.render("vwSettingsPage/favouriteCourse", {
+      pageNumbers: pageNumbers,
+      courses: courses
+    });
+  },
+
+  getCourseStudentPage: async (req, res) => {
+    var curUser;
+    if (req.isAuthenticated()) {
+      curUser = req.user;
+    } else {
+      res.redirect("/login");
+      return;
+    }
+
+    const limit = 3;
+    var nPages;
+    const courses = [];
+    const curPage = req.query.page || 1;
+    const offset = (curPage - 1) * limit;
+    const favourite = await Register.find({ student: curUser._id }).lean().skip(offset).limit(limit);
+    const total = await Register.find({ student: curUser._id }).count();
+
+    if (favourite.length != 0) {
+      for (let i = 0; i < favourite.length; i++) {
+        var course;
+        if (favourite[i].course) {
+          course = await Course.findById(favourite[i].course._id);
+        }
+        if (course) {
+          courses.push({
+            img: course.img,
+            name: course.name,
+            overview: course.overview,
+            description: course.description,
+            rating: course.rating,
+            rating_count: course.rating_count,
+            register_count: course.register_count,
+            price: course.price,
+            discount: course.discount,
+            lastUpdate: course.lastUpdate,
+            chapters: course.chapters,
+            author: course.author,
+            category: course.category
+          });
+        }
+      }
+    }
+
+    total % limit != 0
+      ? (nPages = Math.ceil(total / limit))
+      : (nPages = total / limit);
+
+    const pageNumbers = [];
+
+    for (let i = 1; i <= nPages; i++) {
+      pageNumbers.push({
+        value: i,
+        isCurrent: i === +curPage,
+      });
+    }
+
+    res.render("vwSettingsPage/courseStudent", {
+      pageNumbers: pageNumbers,
+      courses: courses
+    });
+  },
+
   getEditProfilePage: async (req, res) => {
     try {
       var curUser;
@@ -531,6 +655,30 @@ const mainService = {
     await createFavorite.save();
 
     res.redirect("/course/" + req.params.id);
+  },
+
+  removeFavorite: async (req, res) => {
+    var user;
+    if (req.isAuthenticated()) {
+      user = req.user;
+    } else {
+      res.redirect("/login");
+      return;
+    }
+    const result = await Favorite.deleteOne(req.params.id);
+    res.redirect("/settings/favourite");
+  },
+
+  removeCourseStudentPage: async (req, res) => {
+    var user;
+    if (req.isAuthenticated()) {
+      user = req.user;
+    } else {
+      res.redirect("/login");
+      return;
+    }
+    const result = await Register.deleteOne(req.params.id);
+    res.redirect("/settings/courseStudent");
   },
 
   otpService: async (req, res) => {
