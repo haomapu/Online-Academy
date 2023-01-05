@@ -19,9 +19,9 @@ import FacebookStrategy from "passport-facebook";
 import LocalStrategy from "passport-local";
 import flash from "connect-flash";
 //Inport router
-import mainRouter from "./routes/main.route.js";
-import courseRouter from "./routes/course.route.js";
-import loginRouter from "./routes/loginPage.route.js"
+import activate_routes from './middlewares/routes.mdw.js';
+
+
 import User from "./models/user.js";
 import bcrypt from "bcrypt";
 //Const variable
@@ -153,39 +153,7 @@ app.set("view engine", "hbs");
 app.set("views", __dirname + "/views");
 
 //Router
-app.use("/", mainRouter);
-app.use("/search", mainRouter);
-app.use("/course", courseRouter);
-app.use("/login", loginRouter);
-app.get('/auth/facebook',passport.authenticate('facebook', {scope: ['email']}));
-app.get('/auth/facebook/callback',
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
-  async function(req, res) {
-    const curUser = req.user._json;
-    const username = curUser.name;
-    const hashedPassword = await bcrypt.hash("secret", 10);
-    const email = curUser.email;
-    const existedUser =  await User.findOne({username: curUser.name});
-    const avatar = curUser.picture.data.url;
-    console.log(email);
-    console.log(curUser);
-    if (!existedUser) {
-      const savedUser = new User({
-        username: username,
-        email: email,
-        password: hashedPassword,
-        otp: "",
-        avatar: avatar,
-        phone: "",
-        fullname: "",
-        verified: true,
-        oauth: true,
-      });
-      await savedUser.save();
-    }
-    res.redirect('/');
-  });
-
+activate_routes(app);
 
 
 app.get('/auth/google', passport.authenticate('google', {
