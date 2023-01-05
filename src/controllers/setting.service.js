@@ -177,7 +177,8 @@ const settingService = {
           res.redirect("/login");
           return;
         }
-        const result = await Favorite.deleteOne(req.params.id);
+        const course = await Course.findOne({name: req.body.nameFav});
+        const result = await Favorite.deleteOne({course: course._id});
         res.redirect("/settings/favourite");
       },
 
