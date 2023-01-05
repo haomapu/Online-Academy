@@ -27,34 +27,6 @@ const mainService = {
 
   getSearchCourses: async (req, res) => {
     try {
-<<<<<<< HEAD
-      const temp = req.query.rating;
-      const courses = await Course.aggregate([
-        {
-          $search: {
-            autocomplete: {
-              query: req.query.search,
-              path: "name",
-            },
-          },
-        },
-        {
-          $project: {
-            _id: 1,
-            img: 1,
-            name: 1,
-            overview: 1,
-            rating: 1,
-            register_count: 1,
-            price: 1,
-            discount: 1,
-          },
-        },
-        {
-          $sort: { rating: -1 },
-        },
-      ]);
-=======
       const temp = req.query.sort;
       console.log(temp);
       let courses;
@@ -187,7 +159,6 @@ const mainService = {
         }
       }
       console.log(courses);
->>>>>>> 35a83713f73fcc18604fcf757633468a6f2a388b
       res.render("vwSearchPage/searchPage", {
         courses: courses,
         text: req.query.search,
@@ -212,13 +183,7 @@ const mainService = {
 
   getLoginPage: async (req, res) => {
     req.session.reqUrl = req.headers.referer || "/";
-<<<<<<< HEAD
         if (req.isAuthenticated()) {
-=======
-
-    console.log(req.session);
-    if (req.isAuthenticated()) {
->>>>>>> 35a83713f73fcc18604fcf757633468a6f2a388b
       res.redirect("/");
     } else {
       res.render("vwLoginPage/loginPage");
