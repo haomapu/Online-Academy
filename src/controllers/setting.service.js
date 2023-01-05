@@ -180,6 +180,19 @@ const settingService = {
         const result = await Favorite.deleteOne(req.params.id);
         res.redirect("/settings/favourite");
       },
+
+      removeCourseStudentPage: async (req, res) => {
+        var user;
+        if (req.isAuthenticated()) {
+          user = req.user;
+        } else {
+          res.redirect("/login");
+          return;
+        }
+        const result = await Register.deleteOne(req.params.id);
+        res.redirect("/settings/courseStudent");
+      },
+    
       getEditProfilePage: async (req, res) => {
         try {
           var curUser;

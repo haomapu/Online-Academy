@@ -36,6 +36,4 @@ router.get("/logout", mainService.logoutService);
 
 router.get("/postCourse", mainService.createCoursePage);
 
-
-
 export default router;

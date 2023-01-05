@@ -15,8 +15,9 @@ let userMail;
 
 const mainService = {
   getHomePage: async (req, res) => {
-
-    const categories = await Category.find().populate('sub_categories').lean();
+    // console.log("home page");
+    // console.log(req.session);
+    const categories = await Category.find().populate("sub_categories").lean();
     const course = await Course.find().sort({ lastUpdate: 1 }).lean().limit(4);
     res.render("home", {
       categories: categories,
@@ -26,6 +27,7 @@ const mainService = {
 
   getSearchCourses: async (req, res) => {
     try {
+<<<<<<< HEAD
       const temp = req.query.rating;
       const courses = await Course.aggregate([
         {
@@ -52,6 +54,140 @@ const mainService = {
           $sort: { rating: -1 },
         },
       ]);
+=======
+      const temp = req.query.sort;
+      console.log(temp);
+      let courses;
+      if (req.query.search) {
+        if (temp === "rating") {
+          courses = await Course.aggregate([
+            {
+              $search: {
+                compound: {
+                  should: [
+                    {
+                      autocomplete: {
+                        path: "name",
+                        query: req.query.search,
+                        score: { boost: { value: 3 } },
+                      },
+                    },
+                    {
+                      text: {
+                        path: "name",
+                        query: req.query.search,
+                        fuzzy: { maxEdits: 1 },
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+            {
+              $project: {
+                _id: 1,
+                img: 1,
+                name: 1,
+                overview: 1,
+                rating: 1,
+                register_count: 1,
+                price: 1,
+                discount: 1,
+              },
+            },
+            {
+              $sort: { rating: -1 },
+            },
+          ]);
+        } else if (temp === "price") {
+          courses = await Course.aggregate([
+            {
+              $search: {
+                compound: {
+                  should: [
+                    {
+                      autocomplete: {
+                        path: "name",
+                        query: req.query.search,
+                        score: { boost: { value: 3 } },
+                      },
+                    },
+                    {
+                      text: {
+                        path: "name",
+                        query: req.query.search,
+                        fuzzy: { maxEdits: 1 },
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+            {
+              $project: {
+                _id: 1,
+                img: 1,
+                name: 1,
+                overview: 1,
+                rating: 1,
+                register_count: 1,
+                price: 1,
+                discount: 1,
+              },
+            },
+            {
+              $sort: { price: -1 },
+            },
+          ]);
+        } else {
+          courses = await Course.aggregate([
+            {
+              $search: {
+                compound: {
+                  should: [
+                    {
+                      autocomplete: {
+                        path: "name",
+                        query: req.query.search,
+                        score: { boost: { value: 3 } },
+                      },
+                    },
+                    {
+                      text: {
+                        path: "name",
+                        query: req.query.search,
+                        fuzzy: { maxEdits: 1 },
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+            {
+              $project: {
+                _id: 1,
+                img: 1,
+                name: 1,
+                overview: 1,
+                rating: 1,
+                register_count: 1,
+                price: 1,
+                discount: 1,
+              },
+            },
+          ]);
+        }
+      } else {
+        if (temp === "rating") {
+          courses = await Course.find().sort({ rating: -1 }).lean();
+        } else if (temp === "price") {
+          courses = await Course.find().sort({ price: -1 }).lean();
+        } else {
+          courses = await Course.find().lean();
+        }
+      }
+      console.log(courses);
+>>>>>>> 35a83713f73fcc18604fcf757633468a6f2a388b
       res.render("vwSearchPage/searchPage", {
         courses: courses,
         text: req.query.search,
@@ -76,7 +212,13 @@ const mainService = {
 
   getLoginPage: async (req, res) => {
     req.session.reqUrl = req.headers.referer || "/";
+<<<<<<< HEAD
         if (req.isAuthenticated()) {
+=======
+
+    console.log(req.session);
+    if (req.isAuthenticated()) {
+>>>>>>> 35a83713f73fcc18604fcf757633468a6f2a388b
       res.redirect("/");
     } else {
       res.render("vwLoginPage/loginPage");
@@ -103,7 +245,6 @@ const mainService = {
     failureFlash: true,
     failureFlash: "Tài khoản hoặc mật khẩu không chính xác",
   }),
-
 
   signupService: async (req, res) => {
     try {
@@ -150,6 +291,18 @@ const mainService = {
   },
 
   
+
+  removeCourseStudentPage: async (req, res) => {
+    var user;
+    if (req.isAuthenticated()) {
+      user = req.user;
+    } else {
+      res.redirect("/login");
+      return;
+    }
+    const result = await Register.deleteOne(req.params.id);
+    res.redirect("/settings/courseStudent");
+  },
 
   otpService: async (req, res) => {
     const { first, second, third, fourth, fifth, sixth } = req.body;

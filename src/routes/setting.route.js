@@ -9,6 +9,8 @@ router.get("/courseLecture", settingService.getCoursePage); //
 
 router.get("/courseStudent", settingService.getCourseStudentPage);
 
+router.post("/courseStudent/remove", settingService.removeCourseStudentPage);
+
 router.get("/favourite", settingService.getFavourite);
 
 router.post("/favourite/remove", settingService.removeFavorite);
