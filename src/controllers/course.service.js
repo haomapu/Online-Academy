@@ -2,6 +2,7 @@ import Course from "../models/course.js";
 import Feedback from "../models/feedback.js";
 import Register from "../models/register.js";
 import Favorite from "../models/favorite.js";
+import User from "../models/user.js";
 const courseService = {
 
 getCourseDetail: async (req, res) => {
@@ -59,9 +60,11 @@ getCourseDetail: async (req, res) => {
     }
     var curUser;
     var buy;
+    var avatar;
     if (req.isAuthenticated()) {
       curUser = req.user;
       buy = await Register.find({$and:[ {student: curUser._id}, {course: course._id}]}).lean();
+      avatar = curUser.hasOwnProperty("_json")? curUser.photos[0].value : curUser.avatar;
     }
     res.render("vwDetails/details", {
       course: course,
@@ -69,6 +72,7 @@ getCourseDetail: async (req, res) => {
       rec: top5cate,
       pageNumbers: pageNumbers,
       buy: buy,
+      avatar: avatar,
     });
   },
 
@@ -124,15 +128,18 @@ getCourseDetail: async (req, res) => {
     }
     const student = await User.findById(user._id);
     const course = await Course.findOne({ name: req.params.id });
-    newRegister = { ...newRegister, student: student };
-    newRegister = { ...newRegister, course: course };
-    const createRegister = new Register(newRegister);
-    await createRegister.save();
-    await Course.updateOne(
-      { _id: course._id },
-      { register_count: await Register.find({ course: course._id }).count() }
-    );
 
+    const check = await Register.findOne({student: student._id, course: course._id});
+    if(!check){
+      newRegister = { ...newRegister, student: student };
+      newRegister = { ...newRegister, course: course };
+      const createRegister = new Register(newRegister);
+      await createRegister.save();
+      await Course.updateOne(
+        { _id: course._id },
+        { register_count: await Register.find({ course: course._id }).count() }
+      );
+    }
     res.redirect("/course/" + req.params.id);
   },
 
@@ -144,13 +151,17 @@ getCourseDetail: async (req, res) => {
       res.redirect("/login");
       return;
     }
-    const student = await User.findById(user._id);
-    const course = await Course.findOne({ name: req.params.id });
-    newFavorite = { ...newFavorite, student: student };
-    newFavorite = { ...newFavorite, course: course };
-    const createFavorite = new Favorite(newFavorite);
-    await createFavorite.save();
 
+    const student = await User.findById(user._id);
+    const course = await Course.findOne({ name: req.body.nameFav });
+
+    const check = await Favorite.findOne({student: student._id, course: course._id});
+    if(!check){
+      newFavorite = { ...newFavorite, student: student };
+      newFavorite = { ...newFavorite, course: course };
+      const createFavorite = new Favorite(newFavorite);
+      await createFavorite.save();
+    }
     res.redirect("/course/" + req.params.id);
   },
 

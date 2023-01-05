@@ -11,6 +11,11 @@ const registerSchema = new mongoose.Schema({
         ref: "Course",
     },
 
+    date: {
+        type: Date,
+        default: Date.now,
+    },
+
 });
 
 const Register = mongoose.model("Register", registerSchema);

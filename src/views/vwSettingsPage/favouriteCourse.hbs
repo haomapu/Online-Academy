@@ -74,7 +74,7 @@
                             <div>Update: {{format_date lastUpdate}}</div>
                             <div>Status: Finish</div>
                             <div class="d-flex flex-row-reverse">
-                              <button class="btn btn-secondary text-light" type="submit" form="myform" onclick="myFunction({{this._id}})">Remove</button>
+                              <button class="btn btn-secondary text-light" type="submit" form="myform" name="nameFav" value="{{this.name}}" id="btnFav">Remove</button>
                             </div>
                         </div>
                     </div>
@@ -111,13 +111,8 @@
     </div>
 </div>
 
-<form method="post" id="myform" action="/settings/favourite/remove">
-  <input type="text" style="display: none" id="nameFav">
-</form>
+ <form method="post" id="myform" action="/settings/favourite/remove">
 
-<script>
-  function myFunction(a) {
-      document.getElementById('nameFav').value = a;
-    };
-</script>
+  </form>
+
 
