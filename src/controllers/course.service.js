@@ -7,7 +7,7 @@ const courseService = {
 
 getCourseDetail: async (req, res) => {
     const top5 = 5;
-    const course = await Course.findOne({ name: 'Javascript for Beginners' }).lean();
+    const course = await Course.findOne({ name: req.params.id }).lean();
     const top5cate = await Course.find({
       name: { $not: { $eq: req.params.id } },
     })
