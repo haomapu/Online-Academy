@@ -147,7 +147,7 @@ getCourseDetail: async (req, res) => {
       return;
     }
     const student = await User.findById(user._id);
-    const course = await Course.findOne({ name: req.params.id });
+    const course = await Course.findOne({ name: req.body.nameFav });
     newFavorite = { ...newFavorite, student: student };
     newFavorite = { ...newFavorite, course: course };
     const createFavorite = new Favorite(newFavorite);
