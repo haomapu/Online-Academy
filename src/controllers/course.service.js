@@ -2,9 +2,11 @@ import Course from "../models/course.js";
 import Feedback from "../models/feedback.js";
 import Register from "../models/register.js";
 import Favorite from "../models/favorite.js";
+import User from "../models/user.js";
 const courseService = {
 
 getCourseDetail: async (req, res) => {
+    console.log(req.params.id);
     const top5 = 5;
     const course = await Course.findOne({ name: req.params.id }).lean();
     const top5cate = await Course.find({
