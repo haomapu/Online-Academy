@@ -27,34 +27,6 @@ const mainService = {
 
   getSearchCourses: async (req, res) => {
     try {
-<<<<<<< HEAD
-      const temp = req.query.rating;
-      const courses = await Course.aggregate([
-        {
-          $search: {
-            autocomplete: {
-              query: req.query.search,
-              path: "name",
-            },
-          },
-        },
-        {
-          $project: {
-            _id: 1,
-            img: 1,
-            name: 1,
-            overview: 1,
-            rating: 1,
-            register_count: 1,
-            price: 1,
-            discount: 1,
-          },
-        },
-        {
-          $sort: { rating: -1 },
-        },
-      ]);
-=======
       const temp = req.query.sort;
       console.log(temp);
       let courses;
@@ -187,7 +159,6 @@ const mainService = {
         }
       }
       console.log(courses);
->>>>>>> 35a83713f73fcc18604fcf757633468a6f2a388b
       res.render("vwSearchPage/searchPage", {
         courses: courses,
         text: req.query.search,
@@ -197,28 +168,344 @@ const mainService = {
     }
   },
 
-  
+  getCourseDetail: async (req, res) => {
+    const top5 = 5;
+    const course = await Course.findOne({ name: req.params.id }).lean();
+    const top5cate = await Course.find({
+      name: { $not: { $eq: req.params.id } },
+    })
+      .sort({ register_count: -1 })
+      .lean()
+      .limit(top5);
+    const feedbacks = [];
+    const curPage = req.query.page || 1;
+    const limit = 4;
+    const offset = (curPage - 1) * limit;
 
-  
+    const total = await Feedback.find().count();
+    var nPages;
 
-  
-  
+    total % limit != 0
+      ? (nPages = Math.ceil(total / limit))
+      : (nPages = total / limit);
 
-  
+    const pageNumbers = [];
 
-  
+    for (let i = 1; i <= nPages; i++) {
+      pageNumbers.push({
+        value: i,
+        isCurrent: i === +curPage,
+      });
+    }
 
-  
+    const queryFeedback = await Feedback.find({ course: course._id })
+      .sort({ time: -1 })
+      .skip(offset)
+      .limit(limit);
+
+    if (queryFeedback.length != 0) {
+      for (let i = 0; i < queryFeedback.length; i++) {
+        const content = queryFeedback[i].content;
+        var user;
+        if (queryFeedback[i].author) {
+          user = await User.findById(queryFeedback[i].author._id);
+        }
+        if (user) {
+          feedbacks.push({
+            content: content,
+            avatar: user.avatar,
+            author: user.username,
+            star: queryFeedback[i].star,
+            time: queryFeedback[i].time.toLocaleString(),
+          });
+        }
+      }
+    }
+
+    res.render("vwDetails/details", {
+      course: course,
+      feedbacks: feedbacks,
+      rec: top5cate,
+      pageNumbers: pageNumbers,
+    });
+  },
+
+  getSettingsPage: async (req, res) => {
+    try {
+      var curUser;
+      if (req.isAuthenticated()) {
+        curUser = req.user;
+      } else {
+        res.redirect("/login");
+        return;
+      }
+      let user, role;
+      if (curUser.hasOwnProperty("_json")) {
+        user = await User.findOne({
+          username: curUser._json.given_name + curUser._json.family_name,
+        }).lean();
+      } else {
+        user = await User.findById(curUser._id).lean();
+      }
+      if (user.role == 2) {
+        role = "Lecturer";
+      } else if (user.role == 3) {
+        role = "Admin";
+      } else {
+        role = "User";
+      }
+      res.render("vwSettingsPage/settingsPage", {
+        user: user,
+        role: role,
+      });
+    } catch (e) {
+      res.send(e);
+    }
+  },
+
+  getCoursePage: async (req, res) => {
+    var curUser;
+    if (req.isAuthenticated()) {
+      curUser = req.user;
+    } else {
+      res.redirect("/login");
+      return;
+    }
+    const limit = 3;
+    var nPages;
+    const curPage = req.query.page || 1;
+    const offset = (curPage - 1) * limit;
+    const courseLecture = await Course.find({ author: curUser.fullname })
+      .lean()
+      .skip(offset)
+      .limit(limit);
+    const total = await Course.find({ author: curUser.fullname }).count();
+
+    total % limit != 0
+      ? (nPages = Math.ceil(total / limit))
+      : (nPages = total / limit);
+
+    const pageNumbers = [];
+
+    for (let i = 1; i <= nPages; i++) {
+      pageNumbers.push({
+        value: i,
+        isCurrent: i === +curPage,
+      });
+    }
+    res.render("vwSettingsPage/courseLecture", {
+      course: courseLecture,
+      pageNumbers: pageNumbers,
+    });
+  },
+
+  getFavourite: async (req, res) => {
+    var curUser;
+    if (req.isAuthenticated()) {
+      curUser = req.user;
+    } else {
+      res.redirect("/login");
+      return;
+    }
+
+    const limit = 3;
+    var nPages;
+    const courses = [];
+    const curPage = req.query.page || 1;
+    const offset = (curPage - 1) * limit;
+    const favourite = await Favorite.find({ student: curUser._id }).lean().skip(offset).limit(limit);
+    const total = await Favorite.find({ student: curUser._id }).count();
+
+    if (favourite.length != 0) {
+      for (let i = 0; i < favourite.length; i++) {
+        var course;
+        if (favourite[i].course) {
+          course = await Course.findById(favourite[i].course._id);
+        }
+        if (course) {
+          courses.push({
+            img: course.img,
+            name: course.name,
+            overview: course.overview,
+            description: course.description,
+            rating: course.rating,
+            rating_count: course.rating_count,
+            register_count: course.register_count,
+            price: course.price,
+            discount: course.discount,
+            lastUpdate: course.lastUpdate,
+            chapters: course.chapters,
+            author: course.author,
+            category: course.category
+          });
+        }
+      }
+    }
+
+    total % limit != 0
+      ? (nPages = Math.ceil(total / limit))
+      : (nPages = total / limit);
+
+    const pageNumbers = [];
+
+    for (let i = 1; i <= nPages; i++) {
+      pageNumbers.push({
+        value: i,
+        isCurrent: i === +curPage,
+      });
+    }
+
+    res.render("vwSettingsPage/favouriteCourse", {
+      pageNumbers: pageNumbers,
+      courses: courses
+    });
+  },
+
+  getCourseStudentPage: async (req, res) => {
+    var curUser;
+    if (req.isAuthenticated()) {
+      curUser = req.user;
+    } else {
+      res.redirect("/login");
+      return;
+    }
+
+    const limit = 3;
+    var nPages;
+    const courses = [];
+    const curPage = req.query.page || 1;
+    const offset = (curPage - 1) * limit;
+    const favourite = await Register.find({ student: curUser._id }).lean().skip(offset).limit(limit);
+    const total = await Register.find({ student: curUser._id }).count();
+
+    if (favourite.length != 0) {
+      for (let i = 0; i < favourite.length; i++) {
+        var course;
+        if (favourite[i].course) {
+          course = await Course.findById(favourite[i].course._id);
+        }
+        if (course) {
+          courses.push({
+            img: course.img,
+            name: course.name,
+            overview: course.overview,
+            description: course.description,
+            rating: course.rating,
+            rating_count: course.rating_count,
+            register_count: course.register_count,
+            price: course.price,
+            discount: course.discount,
+            lastUpdate: course.lastUpdate,
+            chapters: course.chapters,
+            author: course.author,
+            category: course.category
+          });
+        }
+      }
+    }
+
+    total % limit != 0
+      ? (nPages = Math.ceil(total / limit))
+      : (nPages = total / limit);
+
+    const pageNumbers = [];
+
+    for (let i = 1; i <= nPages; i++) {
+      pageNumbers.push({
+        value: i,
+        isCurrent: i === +curPage,
+      });
+    }
+
+    res.render("vwSettingsPage/courseStudent", {
+      pageNumbers: pageNumbers,
+      courses: courses
+    });
+  },
+
+  getEditProfilePage: async (req, res) => {
+    try {
+      var curUser;
+      if (req.isAuthenticated()) {
+        curUser = req.user;
+      } else {
+        res.redirect("/login");
+        return;
+      }
+      let user, role;
+      if (curUser.hasOwnProperty("_json")) {
+        user = await User.findOne({
+          username: curUser._json.given_name + curUser._json.family_name,
+        }).lean();
+      } else {
+        user = await User.findById(curUser._id).lean();
+      }
+      if (user.role == 2) {
+        role = "Lecturer";
+      } else if (user.role == 3) {
+        role = "Admin";
+      } else {
+        role = "User";
+      }
+      res.render("vwSettingsPage/editPage", {
+        user: user,
+        role: role,
+      });
+    } catch (e) {
+      res.send(e);
+    }
+  },
+
+  postEditProfile: async (req, res) => {
+    try {
+      var curUser;
+      if (req.isAuthenticated()) {
+        curUser = req.user;
+      } else {
+        res.redirect("/login");
+        return;
+      }
+      console.log(curUser._id);
+      console.log(req.body);
+      await User.updateMany({ _id: curUser._id }, req.body);
+      res.redirect("/settings");
+    } catch (e) {
+      res.send(e);
+    }
+  },
+
+  getDashboardPage: async (req, res) => {
+    try {
+      var curUser;
+      if (req.isAuthenticated()) {
+        curUser = req.user;
+      } else {
+        res.redirect("/login");
+        return;
+      }
+
+      const students = await User.find({ role: 1 }).lean();
+      const lecturers = await User.find({ role: 2 }).lean();
+      const courses = await Course.find().lean();
+      const newStudents = await User.find({ role: 1 }).limit(5).lean();
+      const newCourses = await Course.find().limit(5).lean();
+      res.render("vwSettingsPage/dashboardPage", {
+        students: students,
+        lecturers: lecturers,
+        courses: courses,
+        newStudents: newStudents,
+        newCourses: newCourses,
+      });
+    } catch (e) {
+      res.send(e);
+    }
+  },
 
   getLoginPage: async (req, res) => {
     req.session.reqUrl = req.headers.referer || "/";
-<<<<<<< HEAD
-        if (req.isAuthenticated()) {
-=======
 
     console.log(req.session);
     if (req.isAuthenticated()) {
->>>>>>> 35a83713f73fcc18604fcf757633468a6f2a388b
       res.redirect("/");
     } else {
       res.render("vwLoginPage/loginPage");
@@ -278,19 +565,109 @@ const mainService = {
   },
 
   // lan sau de cai nay o student.service.js de day do
-  
+  feedbackService: async (req, res, next) => {
+    try {
+      var curUser;
+      if (req.isAuthenticated()) {
+        curUser = req.user;
+      } else {
+        res.redirect("/login");
+        return;
+      }
+      if (curUser.hasOwnProperty("_json")) {
+        req.body = {
+          ...req.body,
+          author: await User.findOne({
+            username: curUser._json.given_name + curUser._json.family_name,
+          }),
+        };
+      } else {
+        req.body = { ...req.body, author: await User.findById(curUser._id) };
+      }
+
+      const course = await Course.findOne({ name: req.params.id });
+
+      req.body = { ...req.body, course: course };
+      const feedback = new Feedback(req.body);
+      await feedback.save();
+
+      const queryRating = await Feedback.find({ course: course._id }).lean();
+      var sum = 0;
+      for (var x of queryRating) {
+        sum += x.star;
+        console.log(x);
+      }
+      const averageStar = sum / queryRating.length;
+      await Course.updateOne(
+        { _id: course._id },
+        { rating: averageStar, rating_count: queryRating.length }
+      );
+
+      res.redirect("/course/" + req.params.id);
+    } catch (e) {
+      res.send(e);
+    }
+  },
 
   createCoursePage: async (req, res) => {
     res.render("vwLecturer/createCourse");
   },
 
-  
+  createRegister: async (req, res, next) => {
+    var newRegister = {};
+    if (req.isAuthenticated()) {
+      var user = req.user;
+    } else {
+      res.redirect("/login/");
+      return;
+    }
+    const student = await User.findById(user._id);
+    const course = await Course.findOne({ name: req.params.id });
+    newRegister = { ...newRegister, student: student };
+    newRegister = { ...newRegister, course: course };
+    const createRegister = new Register(newRegister);
+    await createRegister.save();
+    await Course.updateOne(
+      { _id: course._id },
+      { register_count: await Register.find({ course: course._id }).count() }
+    );
+
+    res.redirect("/course/" + req.params.id);
+  },
 
   getOtpPage: async (req, res) => {
     res.render("vwLoginPage/otpPage");
   },
 
-  
+  createFavorite: async (req, res) => {
+    var newFavorite = {};
+    if (req.isAuthenticated()) {
+      var user = req.user;
+    } else {
+      res.redirect("/login");
+      return;
+    }
+    const student = await User.findById(user._id);
+    const course = await Course.findOne({ name: req.params.id });
+    newFavorite = { ...newFavorite, student: student };
+    newFavorite = { ...newFavorite, course: course };
+    const createFavorite = new Favorite(newFavorite);
+    await createFavorite.save();
+
+    res.redirect("/course/" + req.params.id);
+  },
+
+  removeFavorite: async (req, res) => {
+    var user;
+    if (req.isAuthenticated()) {
+      user = req.user;
+    } else {
+      res.redirect("/login");
+      return;
+    }
+    const result = await Favorite.deleteOne(req.params.id);
+    res.redirect("/settings/favourite");
+  },
 
   removeCourseStudentPage: async (req, res) => {
     var user;
