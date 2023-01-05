@@ -1,17 +1,22 @@
 import express from "express";
-import mainService from "../controllers/main.service.js";
+import settingService from "../controllers/setting.service.js";
 
 const router = express.Router();
 
-router.get("/", mainService.getSettingsPage);
+router.get("/", settingService.getSettingsPage);
 
-router.get("/courseLecture", mainService.getCoursePage);
+router.get("/courseLecture", settingService.getCoursePage); // 
 
-router.get("/editProfile", mainService.getEditProfilePage);
+router.get("/courseStudent", settingService.getCourseStudentPage);
 
-router.post("/editProfile/patch", mainService.postEditProfile);
+router.get("/favourite", settingService.getFavourite);
 
-router.get("/dashboard", mainService.getDashboardPage);
+router.post("/favourite/remove", settingService.removeFavorite);
 
+router.get("/editProfile", settingService.getEditProfilePage);
+
+router.post("/editProfile/patch", settingService.postEditProfile);
+
+router.get("/dashboard", settingService.getDashboardPage);
 
 export default router;

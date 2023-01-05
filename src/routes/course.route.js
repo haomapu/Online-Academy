@@ -1,14 +1,15 @@
 import express from "express";
-import mainService from "../controllers/main.service.js";
+import courseService from "../controllers/course.service.js";
 
 const router = express.Router();
 
-router.post("/course/:id/fb", mainService.feedbackService);
+router.get("/:id", courseService.getCourseDetail);
 
-router.post("/course/:id/buy", mainService.createRegister);
+router.post("/:id/fb", courseService.feedbackService);
 
-router.post("/course/:id/fav", mainService.createFavorite);
+router.post("/:id/buy", courseService.createRegister);
 
-router.get("/course/:id", mainService.getCourseDetail);
+router.post("/:id/fav", courseService.createFavorite);
+
 
 export default router;

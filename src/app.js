@@ -19,7 +19,7 @@ import FacebookStrategy from "passport-facebook";
 import LocalStrategy from "passport-local";
 import flash from "connect-flash";
 //Inport router
-import mainRouter from "./routes/main.route.js";
+import activate_routes from './middlewares/routes.mdw.js';
 
 
 import User from "./models/user.js";
@@ -153,8 +153,7 @@ app.set("view engine", "hbs");
 app.set("views", __dirname + "/views");
 
 //Router
-import AppRouter from './middlewares/routes.mdw.js'
-AppRouter(app);
+activate_routes(app);
 
 
 app.get('/auth/google', passport.authenticate('google', {

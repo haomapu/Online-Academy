@@ -150,7 +150,7 @@
       <div class="card-header bg-white">
         <div class="d-flex flex-start">
           <img class="rounded-circle shadow-1-strong me-3"
-            src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(19).webp" alt="avatar" width="60" height="60" />
+            src="{{user}}" alt="avatar" width="60" height="60" />
           <div class="form-outline w-100 fs-4">
             <label class="form-label" for="feedback">Message</label>
             <textarea class="form-control" id="content" rows="4" style="background: #fff;" type="text"
@@ -228,7 +228,9 @@
     </div>
   </div>
 </div>
-
+<p>
+  {{user}}
+</p>
 <script type="text/javascript">
   function myFunction(a) {
     document.getElementById('nameFav').value = a;
