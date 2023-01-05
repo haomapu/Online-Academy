@@ -6,7 +6,6 @@ import User from "../models/user.js";
 const courseService = {
 
 getCourseDetail: async (req, res) => {
-    console.log(req.params.id);
     const top5 = 5;
     const course = await Course.findOne({ name: req.params.id }).lean();
     const top5cate = await Course.find({
@@ -61,9 +60,11 @@ getCourseDetail: async (req, res) => {
     }
     var curUser;
     var buy;
+    var avatar;
     if (req.isAuthenticated()) {
       curUser = req.user;
       buy = await Register.find({$and:[ {student: curUser._id}, {course: course._id}]}).lean();
+      avatar = curUser.hasOwnProperty("_json")? curUser.photos[0].value : curUser.avatar;
     }
     res.render("vwDetails/details", {
       course: course,
@@ -71,6 +72,7 @@ getCourseDetail: async (req, res) => {
       rec: top5cate,
       pageNumbers: pageNumbers,
       buy: buy,
+      avatar: avatar,
     });
   },
 
@@ -146,6 +148,7 @@ getCourseDetail: async (req, res) => {
       res.redirect("/login");
       return;
     }
+
     const student = await User.findById(user._id);
     const course = await Course.findOne({ name: req.params.id });
     newFavorite = { ...newFavorite, student: student };
