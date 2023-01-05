@@ -11,6 +11,11 @@ const favoriteSchema = new mongoose.Schema({
         ref: "Course",
     },
     
+    date: {
+        type: Date,
+        default: Date.now,
+    },
+    
 });
 
 const Favorite = mongoose.model("Favorite", favoriteSchema);
