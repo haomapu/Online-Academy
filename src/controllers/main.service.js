@@ -13,7 +13,6 @@ let userMail;
 
 const mainService = {
   getHomePage: async (req, res) => {
-
     const categories = await Category.find().populate("sub_categories").lean();
     const course = await Course.find().sort({ lastUpdate: 1 }).lean().limit(4);
     res.render("home", {
@@ -24,139 +23,87 @@ const mainService = {
 
   getSearchCourses: async (req, res) => {
     try {
-      const temp = req.query.sort;
-      let courses;
-      if (req.query.search) {
-        if (temp === "rating") {
-          courses = await Course.aggregate([
-            {
-              $search: {
-                compound: {
-                  should: [
-                    {
-                      autocomplete: {
-                        path: "name",
-                        query: req.query.search,
-                        score: { boost: { value: 3 } },
-                      },
-                    },
-                    {
-                      text: {
-                        path: "name",
-                        query: req.query.search,
-                        fuzzy: { maxEdits: 1 },
-                      },
-                    },
-                  ],
-                },
-              },
-            },
-            {
-              $project: {
-                _id: 1,
-                img: 1,
-                name: 1,
-                overview: 1,
-                rating: 1,
-                register_count: 1,
-                price: 1,
-                discount: 1,
-              },
-            },
-            {
-              $sort: { rating: -1 },
-            },
-          ]);
-        } else if (temp === "price") {
-          courses = await Course.aggregate([
-            {
-              $search: {
-                compound: {
-                  should: [
-                    {
-                      autocomplete: {
-                        path: "name",
-                        query: req.query.search,
-                        score: { boost: { value: 3 } },
-                      },
-                    },
-                    {
-                      text: {
-                        path: "name",
-                        query: req.query.search,
-                        fuzzy: { maxEdits: 1 },
-                      },
-                    },
-                  ],
-                },
-              },
-            },
-            {
-              $project: {
-                _id: 1,
-                img: 1,
-                name: 1,
-                overview: 1,
-                rating: 1,
-                register_count: 1,
-                price: 1,
-                discount: 1,
-              },
-            },
-            {
-              $sort: { price: -1 },
-            },
-          ]);
-        } else {
-          courses = await Course.aggregate([
-            {
-              $search: {
-                compound: {
-                  should: [
-                    {
-                      autocomplete: {
-                        path: "name",
-                        query: req.query.search,
-                        score: { boost: { value: 3 } },
-                      },
-                    },
-                    {
-                      text: {
-                        path: "name",
-                        query: req.query.search,
-                        fuzzy: { maxEdits: 1 },
-                      },
-                    },
-                  ],
-                },
-              },
-            },
-            {
-              $project: {
-                _id: 1,
-                img: 1,
-                name: 1,
-                overview: 1,
-                rating: 1,
-                register_count: 1,
-                price: 1,
-                discount: 1,
-              },
-            },
-          ]);
-        }
-      } else {
-        if (temp === "rating") {
-          courses = await Course.find().sort({ rating: -1 }).lean();
-        } else if (temp === "price") {
-          courses = await Course.find().sort({ price: -1 }).lean();
-        } else {
-          courses = await Course.find().lean();
-        }
+      const sort = req.query.sort;
+
+      let cat;
+      if (req.query.cat) {
+        cat = await Sub_Category.findOne({ name: req.query.cat });
       }
+      let courses;
+
+      if (req.query.search) {
+        courses = await Course.aggregate([
+          {
+            $search: {
+              compound: {
+                should: [
+                  {
+                    autocomplete: {
+                      path: "name",
+                      query: req.query.search,
+                    },
+                  },
+                  {
+                    text: {
+                      path: "name",
+                      query: req.query.search,
+                      fuzzy: { maxEdits: 1 },
+                    },
+                  },
+                ],
+              },
+            },
+          },
+          {
+            $project: {
+              _id: 1,
+              img: 1,
+              name: 1,
+              overview: 1,
+              rating: 1,
+              register_count: 1,
+              price: 1,
+              discount: 1,
+              category: 1,
+            },
+          },
+        ]);
+      } else {
+        courses = await Course.find().lean();
+      }
+
+      if (sort === "rating") {
+        courses.sort(function (a, b) {
+          return parseFloat(b.rating) - parseFloat(a.rating);
+        });
+      } else if (sort === "price") {
+        courses.sort(function (a, b) {
+          return parseFloat(a.price) - parseFloat(b.price);
+        });
+      }
+
+      let index;
+      if (cat) {
+        function removeItemAll(arr, value) {
+          var i = 0;
+          while (i < arr.length) {
+            console.log(arr[i].category);
+            if (String(arr[i].category) !== String(value._id)) {
+              arr.splice(i, 1);
+            } else {
+              ++i;
+            }
+          }
+          return arr;
+        }
+        courses = removeItemAll(courses, cat);
+      }
+
+      const categories = await Sub_Category.find().lean();
       res.render("vwSearchPage/searchPage", {
         courses: courses,
         text: req.query.search,
+        categories: categories,
       });
     } catch (err) {
       res.status(500).json(err);
@@ -226,12 +173,10 @@ const mainService = {
   },
 
   // lan sau de cai nay o student.service.js de day do
-  
 
   createCoursePage: async (req, res) => {
     res.render("vwLecturer/createCourse");
   },
-
 
   getOtpPage: async (req, res) => {
     res.render("vwLoginPage/otpPage");

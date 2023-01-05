@@ -43,45 +43,15 @@
                 <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
                   data-bs-parent="#accordionCollapse" style="font-size: 15px">
                   <div class="accordion-body">
+                    {{#each this.categories}}
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                      <input class="form-check-input" type="checkbox" name="cat" value="{{name}}" id="flexCheckDefault"
+                        form="filter" />
                       <label class="form-check-label" for="flexCheckDefault">
-                        Python
+                        {{name}}
                       </label>
                     </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                      <label class="form-check-label" for="flexCheckDefault">
-                        Python
-                      </label>
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                      <label class="form-check-label" for="flexCheckDefault">
-                        Python
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="accordion open" id="accordionCollapse">
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="headingTwo">
-                  <button class="accordion-button fw-bold fs-6 collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    Language
-                  </button>
-                </h2>
-                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                  data-bs-parent="#accordionCollapse" style="font-size: 15px">
-                  <div class="accordion-body">
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                      <label class="form-check-label" for="flexCheckDefault">
-                        English
-                      </label>
-                    </div>
+                    {{/each}}
                   </div>
                 </div>
               </div>
@@ -98,13 +68,15 @@
                   data-bs-parent="#accordionCollapse" style="font-size: 15px">
                   <div class="accordion-body">
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                      <input class="form-check-input" type="checkbox" name="cost" value="paid" id="flexCheckDefault"
+                        form="filter" />
                       <label class="form-check-label" for="flexCheckDefault">
                         Paid
                       </label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                      <input class="form-check-input" type="checkbox" value="cost" value="free" id="flexCheckDefault"
+                        form="filter" />
                       <label class="form-check-label" for="flexCheckDefault">
                         Free
                       </label>
@@ -125,7 +97,8 @@
                   data-bs-parent="#accordionCollapse" style="font-size: 15px">
                   <div class="accordion-body">
                     <div class="form-check">
-                      <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
+                      <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
+                        form="filter" value="4.5>=" />
                       <i class="fa-sharp fa-solid fa-star text-pink"></i>
                       <i class="fa-sharp fa-solid fa-star text-pink"></i>
                       <i class="fa-sharp fa-solid fa-star text-pink"></i>
@@ -136,7 +109,8 @@
                       </label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
+                      <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
+                        form="filter" value="4.0>=" />
                       <i class="fa-sharp fa-solid fa-star text-pink"></i>
                       <i class="fa-sharp fa-solid fa-star text-pink"></i>
                       <i class="fa-sharp fa-solid fa-star text-pink"></i>
@@ -147,7 +121,8 @@
                       </label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
+                      <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
+                        form="filter" value="3.5>=" />
                       <i class="fa-sharp fa-solid fa-star text-pink"></i>
                       <i class="fa-sharp fa-solid fa-star text-pink"></i>
                       <i class="fa-sharp fa-solid fa-star text-pink"></i>
@@ -158,7 +133,8 @@
                       </label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
+                      <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
+                        form="filter" value="3.0>=" />
                       <i class="fa-sharp fa-solid fa-star text-pink"></i>
                       <i class="fa-sharp fa-solid fa-star text-pink"></i>
                       <i class="fa-sharp fa-solid fa-star text-pink"></i>
@@ -199,6 +175,10 @@
                 </div>
               </div>
             </div>
+            <button class="btn btn-secondary text-white dropdown-toggle" type="button" onClick="this.form.submit()"
+              form="filter">
+              Submit
+            </button>
           </div>
         </div>
       </div>
