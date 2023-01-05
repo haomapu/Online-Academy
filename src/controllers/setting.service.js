@@ -190,7 +190,8 @@ const settingService = {
           res.redirect("/login");
           return;
         }
-        const result = await Register.deleteOne(req.params.id);
+        const course = await Course.findOne({name: req.body.nameCou});
+        const result = await Register.deleteOne({course: course._id});
         res.redirect("/settings/courseStudent");
       },
     
