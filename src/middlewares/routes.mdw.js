@@ -4,6 +4,8 @@ import settingRoute from '../routes/setting.route.js'
 
 export default function(app){
 
+
+
     app.get('/err', function(req, res){
         throw new Error('Error!!!!');
     })

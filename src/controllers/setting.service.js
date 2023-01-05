@@ -136,14 +136,14 @@ const settingService = {
         const courses = [];
         const curPage = req.query.page || 1;
         const offset = (curPage - 1) * limit;
-        const favourite = await Favorite.find({ student: curUser._id }).lean().skip(offset).sort({date: -1}).limit(limit);
+        const favourite = await Favorite.find({ student: curUser._id }).lean().skip(offset).limit(limit);
         const total = await Favorite.find({ student: curUser._id }).count();
     
         if (favourite.length != 0) {
           for (let i = 0; i < favourite.length; i++) {
             var course;
             if (favourite[i].course) {
-              course = await Course.findById(favourite[i].course._id).lean();
+              course = await Course.findById(favourite[i].course._id);
             }
             if (course) {
               courses.push(course);

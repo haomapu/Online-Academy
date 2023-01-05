@@ -2,7 +2,6 @@ import Course from "../models/course.js";
 import Feedback from "../models/feedback.js";
 import Register from "../models/register.js";
 import Favorite from "../models/favorite.js";
-import User from "../models/user.js";
 const courseService = {
 
 getCourseDetail: async (req, res) => {
@@ -64,7 +63,6 @@ getCourseDetail: async (req, res) => {
       curUser = req.user;
       buy = await Register.find({$and:[ {student: curUser._id}, {course: course._id}]}).lean();
     }
-
     res.render("vwDetails/details", {
       course: course,
       feedbacks: feedbacks,
@@ -140,7 +138,6 @@ getCourseDetail: async (req, res) => {
 
   createFavorite: async (req, res) => {
     var newFavorite = {};
-
     if (req.isAuthenticated()) {
       var user = req.user;
     } else {
@@ -148,13 +145,11 @@ getCourseDetail: async (req, res) => {
       return;
     }
     const student = await User.findById(user._id);
-    const course = await Course.findOne({ name: req.body.nameFav });
+    const course = await Course.findOne({ name: req.params.id });
     newFavorite = { ...newFavorite, student: student };
     newFavorite = { ...newFavorite, course: course };
-    console.log(newFavorite);
     const createFavorite = new Favorite(newFavorite);
     await createFavorite.save();
-
 
     res.redirect("/course/" + req.params.id);
   },

@@ -10,11 +10,6 @@ const favoriteSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Course",
     },
-
-    date: {
-        type: Date, 
-        default: Date.now,
-    },
     
 });
 
