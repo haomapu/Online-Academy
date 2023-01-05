@@ -15,8 +15,7 @@ let userMail;
 
 const mainService = {
   getHomePage: async (req, res) => {
-    // console.log("home page");
-    // console.log(req.session);
+
     const categories = await Category.find().populate("sub_categories").lean();
     const course = await Course.find().sort({ lastUpdate: 1 }).lean().limit(4);
     res.render("home", {
@@ -27,36 +26,7 @@ const mainService = {
 
   getSearchCourses: async (req, res) => {
     try {
-<<<<<<< HEAD
-      const temp = req.query.rating;
-      const courses = await Course.aggregate([
-        {
-          $search: {
-            autocomplete: {
-              query: req.query.search,
-              path: "name",
-            },
-          },
-        },
-        {
-          $project: {
-            _id: 1,
-            img: 1,
-            name: 1,
-            overview: 1,
-            rating: 1,
-            register_count: 1,
-            price: 1,
-            discount: 1,
-          },
-        },
-        {
-          $sort: { rating: -1 },
-        },
-      ]);
-=======
       const temp = req.query.sort;
-      console.log(temp);
       let courses;
       if (req.query.search) {
         if (temp === "rating") {
@@ -186,8 +156,6 @@ const mainService = {
           courses = await Course.find().lean();
         }
       }
-      console.log(courses);
->>>>>>> 35a83713f73fcc18604fcf757633468a6f2a388b
       res.render("vwSearchPage/searchPage", {
         courses: courses,
         text: req.query.search,
@@ -197,28 +165,10 @@ const mainService = {
     }
   },
 
-  
-
-  
-
-  
-  
-
-  
-
-  
-
-  
-
   getLoginPage: async (req, res) => {
-    req.session.reqUrl = req.headers.referer || "/";
-<<<<<<< HEAD
-        if (req.isAuthenticated()) {
-=======
+    // req.session.reqUrl = req.heders.referer || "/";
 
-    console.log(req.session);
     if (req.isAuthenticated()) {
->>>>>>> 35a83713f73fcc18604fcf757633468a6f2a388b
       res.redirect("/");
     } else {
       res.render("vwLoginPage/loginPage");
@@ -240,7 +190,7 @@ const mainService = {
   },
 
   loginService: passport.authenticate("local", {
-    //successRedirect: req.session.reqUrl,
+    // successRedirect: req.session.reqUrl,
     failureRedirect: "/login",
     failureFlash: true,
     failureFlash: "Tài khoản hoặc mật khẩu không chính xác",
@@ -290,19 +240,6 @@ const mainService = {
     res.render("vwLoginPage/otpPage");
   },
 
-  
-
-  removeCourseStudentPage: async (req, res) => {
-    var user;
-    if (req.isAuthenticated()) {
-      user = req.user;
-    } else {
-      res.redirect("/login");
-      return;
-    }
-    const result = await Register.deleteOne(req.params.id);
-    res.redirect("/settings/courseStudent");
-  },
 
   otpService: async (req, res) => {
     const { first, second, third, fourth, fifth, sixth } = req.body;
