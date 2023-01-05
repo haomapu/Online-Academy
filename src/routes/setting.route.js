@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get("/", settingService.getSettingsPage);
 
-router.get("/courseLecture", settingService.getCoursePage); // 
+router.get("/courseLecture", settingService.getCoursePage); 
 
 router.get("/courseStudent", settingService.getCourseStudentPage);
 
@@ -15,9 +15,9 @@ router.get("/favourite", settingService.getFavourite);
 
 router.post("/favourite/remove", settingService.removeFavorite);
 
-router.get("/editProfile", settingService.getEditProfilePage);
+router.get("/profile", settingService.getEditProfilePage);
 
-router.post("/editProfile/patch", settingService.postEditProfile);
+router.post("/edit", settingService.postEditProfile);
 
 router.get("/dashboard", settingService.getDashboardPage);
 

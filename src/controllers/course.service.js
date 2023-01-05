@@ -6,7 +6,6 @@ import User from "../models/user.js";
 const courseService = {
 
 getCourseDetail: async (req, res) => {
-    console.log(req.params.id);
     const top5 = 5;
     const course = await Course.findOne({ name: req.params.id }).lean();
     const top5cate = await Course.find({
@@ -126,15 +125,18 @@ getCourseDetail: async (req, res) => {
     }
     const student = await User.findById(user._id);
     const course = await Course.findOne({ name: req.params.id });
-    newRegister = { ...newRegister, student: student };
-    newRegister = { ...newRegister, course: course };
-    const createRegister = new Register(newRegister);
-    await createRegister.save();
-    await Course.updateOne(
-      { _id: course._id },
-      { register_count: await Register.find({ course: course._id }).count() }
-    );
 
+    const check = await Register.findOne({student: student._id, course: course._id});
+    if(!check){
+      newRegister = { ...newRegister, student: student };
+      newRegister = { ...newRegister, course: course };
+      const createRegister = new Register(newRegister);
+      await createRegister.save();
+      await Course.updateOne(
+        { _id: course._id },
+        { register_count: await Register.find({ course: course._id }).count() }
+      );
+    }
     res.redirect("/course/" + req.params.id);
   },
 
@@ -148,11 +150,14 @@ getCourseDetail: async (req, res) => {
     }
     const student = await User.findById(user._id);
     const course = await Course.findOne({ name: req.body.nameFav });
-    newFavorite = { ...newFavorite, student: student };
-    newFavorite = { ...newFavorite, course: course };
-    const createFavorite = new Favorite(newFavorite);
-    await createFavorite.save();
 
+    const check = await Favorite.findOne({student: student._id, course: course._id});
+    if(!check){
+      newFavorite = { ...newFavorite, student: student };
+      newFavorite = { ...newFavorite, course: course };
+      const createFavorite = new Favorite(newFavorite);
+      await createFavorite.save();
+    }
     res.redirect("/course/" + req.params.id);
   },
 
