@@ -89,14 +89,14 @@ const settingService = {
         const courses = [];
         const curPage = req.query.page || 1;
         const offset = (curPage - 1) * limit;
-        const favourite = await Register.find({ student: curUser._id }).lean().skip(offset).limit(limit);
+        const favourite = await Register.find({ student: curUser._id }).lean().sort({date: -1}).skip(offset).limit(limit);
         const total = await Register.find({ student: curUser._id }).count();
     
         if (favourite.length != 0) {
           for (let i = 0; i < favourite.length; i++) {
             var course;
             if (favourite[i].course) {
-              course = await Course.findById(favourite[i].course._id);
+              course = await Course.findById(favourite[i].course._id).lean();
             }
             if (course) {
               courses.push(course);
@@ -136,14 +136,14 @@ const settingService = {
         const courses = [];
         const curPage = req.query.page || 1;
         const offset = (curPage - 1) * limit;
-        const favourite = await Favorite.find({ student: curUser._id }).lean().skip(offset).limit(limit);
+        const favourite = await Favorite.find({ student: curUser._id }).lean().sort({date: -1}).skip(offset).limit(limit);
         const total = await Favorite.find({ student: curUser._id }).count();
     
         if (favourite.length != 0) {
           for (let i = 0; i < favourite.length; i++) {
             var course;
             if (favourite[i].course) {
-              course = await Course.findById(favourite[i].course._id);
+              course = await Course.findById(favourite[i].course._id).lean();
             }
             if (course) {
               courses.push(course);
@@ -177,7 +177,8 @@ const settingService = {
           res.redirect("/login");
           return;
         }
-        const result = await Favorite.deleteOne(req.params.id);
+        const course = await Course.findOne({name: req.body.nameFav});
+        const result = await Favorite.deleteOne({course: course._id});
         res.redirect("/settings/favourite");
       },
 
@@ -189,7 +190,8 @@ const settingService = {
           res.redirect("/login");
           return;
         }
-        const result = await Register.deleteOne(req.params.id);
+        const course = await Course.findOne({name: req.body.nameCou});
+        const result = await Register.deleteOne({course: course._id});
         res.redirect("/settings/courseStudent");
       },
     

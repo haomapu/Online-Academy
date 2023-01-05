@@ -11,10 +11,10 @@ router.get("/login", mainService.getLoginPage);
 
 router.post("/login", mainService.loginService, 
 function(req, res) {
-    console.log(req.session);
+    // console.log(req.session);
     var redirectTo = '/';
-    console.log("here");
-    console.log(req.session.reqUrl);
+    // console.log("here");
+    // console.log(req.session.reqUrl);
     if (req.session.reqUrl) {
         redirectTo = req.session.reqUrl;
         req.session.reqUrl = null;
