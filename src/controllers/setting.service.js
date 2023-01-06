@@ -2,10 +2,9 @@ import Course from "../models/course.js";
 import Register from "../models/register.js";
 import Favorite from "../models/favorite.js";
 import User from "../models/user.js";
+import bcrypt from "bcrypt";
 
 const settingService = {
-
-
     getSettingsPage: async (req, res) => {
         try {
           var curUser;
@@ -271,5 +270,32 @@ const settingService = {
           res.send(e);
         }
       },
+
+    changePasswordService: async (req, res) => {
+      try {
+          var curUser;
+          if (req.isAuthenticated()) {
+            curUser = req.user;
+          } else {
+            res.redirect("/login");
+            return;
+          }
+          const {oldPass, newPass, confirmPass} = req.body;
+          var equal = await bcrypt.compareSync(oldPass, curUser.password);
+          if(!equal) {
+            res.render("vwSettingsPage/editPage", {
+              unsuccess: true
+            });
+          } else {
+            const newHashPassword = await bcrypt.hash(newPass, 10);
+            await User.updateOne({ _id: curUser._id },{password: newHashPassword});
+            res.render("vwSettingsPage/editPage", {
+              success: true
+            });
+          }
+      } catch (e) {
+        res.send(e);
+      }
+    }
 }
 export default settingService;
