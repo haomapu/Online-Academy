@@ -58,7 +58,7 @@
   <div class="main-body" style="flex: 3">
     <div class="row">
       <div class="col-lg-4">
-        <div class="card">
+        <div class="card h-100">
           <div class="card-body">
             <div class="d-flex flex-column align-items-center text-center">
               <img src={{user.avatar}} alt="Admin" class="rounded-circle p-1 bg-secondary" width="110" />
@@ -215,6 +215,45 @@
             </div>
           </div>
         </div> --}}
+        <form method="post" class="mt-3">
+          <div class="card">
+            <div class="card-body">
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Old Password</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <input type="text" class="form-control" name="oldPass"/>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">New Password</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <input type="text" class="form-control" name="newPass" />
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Confirm Password</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <input type="text" class="form-control" name="confirm" />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-9 text-secondary">
+                  <button type="submit" class="btn btn-secondary text-white px-4"
+                    formaction="/settings/pass/">
+                    Save Changes
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   </div>
