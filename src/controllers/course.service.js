@@ -7,16 +7,17 @@ const courseService = {
 
 getCourseDetail: async (req, res) => {
     const top5 = 5;
+    const limit = 4;
+    var curUser;
+    var buy;
+    var avatar;
+
     const course = await Course.findOne({ name: req.params.id }).lean();
     const top5cate = await Course.find({
-      name: { $not: { $eq: req.params.id } },
-    })
-      .sort({ register_count: -1 })
-      .lean()
-      .limit(top5);
+      name: { $not: { $eq: req.params.id } }}).sort({ register_count: -1 }).lean().limit(top5);
+    
     const feedbacks = [];
     const curPage = req.query.page || 1;
-    const limit = 4;
     const offset = (curPage - 1) * limit;
 
     const total = await Feedback.find({course: course._id}).count();
@@ -35,10 +36,7 @@ getCourseDetail: async (req, res) => {
       });
     }
 
-    const queryFeedback = await Feedback.find({ course: course._id })
-      .sort({ time: -1 })
-      .skip(offset)
-      .limit(limit);
+    const queryFeedback = await Feedback.find({ course: course._id }).sort({ time: -1 }).skip(offset).limit(limit);
 
     if (queryFeedback.length != 0) {
       for (let i = 0; i < queryFeedback.length; i++) {
@@ -58,9 +56,7 @@ getCourseDetail: async (req, res) => {
         }
       }
     }
-    var curUser;
-    var buy;
-    var avatar;
+
     if (req.isAuthenticated()) {
       curUser = req.user;
       buy = await Register.find({$and:[ {student: curUser._id}, {course: course._id}]}).lean();
@@ -73,9 +69,10 @@ getCourseDetail: async (req, res) => {
       pageNumbers: pageNumbers,
       buy: buy,
       avatar: avatar,
+      author: await User.findById(course.author).lean(),
     });
   },
-
+  
   feedbackService: async (req, res, next) => {
     try {
       var curUser;

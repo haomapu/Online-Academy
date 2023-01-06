@@ -1,9 +1,12 @@
-<link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/css/star-rating.min.css" media="all" rel="stylesheet" type="text/css" />
-<link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.css" media="all" rel="stylesheet" type="text/css" />
+<link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/css/star-rating.min.css" media="all"
+  rel="stylesheet" type="text/css" />
+<link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.css" media="all"
+  rel="stylesheet" type="text/css" />
 
 <!-- important mandatory libraries -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/star-rating.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/star-rating.min.js"
+  type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.js"></script>
 
 
@@ -18,9 +21,9 @@
     #coverImg {
       display: none;
     }
+
     #coverContent {}
   }
-
 </style>
 
 <div class="container">
@@ -32,23 +35,26 @@
     <div class="px-5 py-4 text-start col-md-8" id="coverContent">
       <h1 class="fw-bold">{{course.name}}</h1>
       <p class="fs-5 m-0">{{course.overview}}</p>
+
       <div class="d-flex">
-        <p class="fs-5 m-0 text-secondary me-1">Rating: </p>
-        <div class="rating d-flex fs-5 align-items-center">
-          <input id="#input-6" class="rating rating-loading" value="{{course.rating}}" data-min="0" data-max="5" data-step="0.5" data-show-caption="false" data-display-only="true" data-size="sm">          
-        </div>
-        <p class="fs-5 m-0" id="numRateReg"><span class="text-success">&nbsp;{{course.rating_count}}</span> ratings<span
-            class="text-success">&nbsp;{{format_number
-            course.register_count}}</span> register
-        </p>
-      </div>
-      <div class="d-flex">
+
         <div class="d-flex flex-column me-auto">
+          <div class="d-flex">
+            <p class="fs-5 m-0 text-secondary me-1">Rating: </p>
+            <div class="rating d-flex fs-5 align-items-center">
+              <input id="#input-6" class="rating rating-loading" value="{{course.rating}}" data-min="0" data-max="5"
+                data-step="0.5" data-show-caption="false" data-display-only="true" data-size="sm">
+            </div>
+            <p class="fs-5 m-0" id="numRateReg"><span class="text-success">&nbsp;{{course.rating_count}}</span>
+              ratings<span class="text-success">&nbsp;{{format_number
+                course.register_count}}</span> register
+            </p>
+          </div>
           <div class="d-flex">
             <p class="fs-5 m-0 text-secondary me-1">Lecturers: </p>
             <a class="fs-5 m-0 text-success" data-bs-toggle="offcanvas" href="#profile" role="button"
               aria-controls="offcanvasExample">
-              {{course.author}}
+              {{author.username}}
             </a>
           </div>
           <div class="d-flex">
@@ -59,13 +65,18 @@
         <div class="d-flex flex-column justify-content-center align-items-center">
           <p class="text-secondary m-0 fs-5">{{format_number course.price}} VND</p>
           {{#if buy}}
-          <button class="btn btn-md btn-secondary text-light fw-bold" disabled type="button">Already Bought</button>
+          <button class="btn btn-md btn-secondary text-light fw-bold w-100" disabled type="button">Already
+            Bought</button>
           {{else}}
-          <form method="post">
-            <button class="btn btn-md btn-secondary text-light fw-bold" formaction="/course/{{course.name}}/buy"
+          <form method="post" class="w-100">
+            <button class="btn btn-md btn-secondary text-light fw-bold w-100" formaction="/course/{{course.name}}/buy"
               type="submit">Add to cart</button>
           </form>
           {{/if}}
+          <form method="post" action="/course/{{course.name}}/fav" class="w-100 mt-1">
+            <button class="btn btn-secondary text-light btn-lg p-1 w-100 text-light" type="submit" name="nameFav"
+              value="{{course.name}}" id="btnFav"><i class="fas fa-heart"></i></button>
+          </form>
         </div>
       </div>
 
@@ -118,19 +129,20 @@
     <ul class="list-group list-group-flush">
       {{#each rec}}
       <li class="list-group-item d-flex border border-2 shadow p-3">
-        <img src="{{this.img}}" style="background-repeat: no-repeat; height: 100px; width: 100px; "
-          class="rounded align-self-center" />
+        <a class="align-self-center" href="/course/{{this.name}}"><img src="{{this.img}}"
+            style="background-repeat: no-repeat; height: 100px; width: 100px; " class="rounded align-self-center" /></a>
         <div class="px-2 me-auto" style="flex: 9">
-          <div class="fs-5 fw-bold m-0">{{this.name}}</div>
+          <u class="fs-5 fw-bold m-0"> <a class="links text-secondary" href="/course/{{this.name}}"> {{this.name}}</a></u>
           <div class="fs-6">{{this.overview}}</div>
-          <span class="fs-5">{{round_number this.rating}}<i class="fa fa-star fa-xs text-secondary" style="line-height: unset"></i>&nbsp;<u
-              class="fs-6 text-success">{{this.register_count}} students</u></span>
+          <span class="fs-5">{{round_number this.rating}}<i class="fa fa-star fa-xs text-secondary"
+              style="line-height: unset"></i>&nbsp;<u class="fs-6 text-success">{{this.register_count}}
+              students</u></span>
         </div>
         <div class="px-2 d-flex flex-column align-self-center" style="flex: 1">
           <button type="button" class="btn btn-secondary btn-md p-1 mb-1" type="button"><a class="links text-light"
               href="/course/{{this.name}}">Visit</a></button>
-          <button class="btn btn-outline-secondary btn-lg p-1" 
-            type="submit" form="myform" name="nameFav" value="{{this.name}}" id="btnFav"><i class="fas fa-heart"></i></button>
+          <button class="btn btn-outline-secondary btn-lg p-1" type="submit" form="myform" name="nameFav"
+            value="{{this.name}}" id="btnFav"><i class="fas fa-heart"></i></button>
         </div>
       </li>
       {{/each}}
@@ -147,8 +159,7 @@
     <div class="card container-fluid row d-flex justify-content-center mx-auto shadow" style="width: 90%">
       <div class="card-header bg-white">
         <div class="d-flex flex-start">
-          <img class="rounded-circle shadow-1-strong me-3"
-            src="{{avatar}}" alt="avatar" width="80" height="80" />
+          <img class="rounded-circle shadow-1-strong me-3" src="{{avatar}}" alt="avatar" width="80" height="80" />
           <div class="form-outline w-100 fs-4">
             <label class="form-label" for="feedback">Message</label>
             <textarea class="form-control" id="content" rows="4" style="background: #fff;" type="text"
@@ -158,9 +169,12 @@
         </div>
         <div class="d-flex justify-content-end pt-1 align-items-center">
           <div>
-            <input id="input-7" name="star" class="rating rating-loading" data-show-clear="false" data-size="sm" data-show-caption="false">
+            <input id="input-7" name="star" class="rating rating-loading" data-show-clear="false" data-size="sm"
+              data-show-caption="false">
           </div>
-          <button class="btn btn-secondary btn-lg my-auto" id="btnPost" type="button" form="postCmtForm" data-value1="{{buy}}" value="{{user}}" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" title="Warning">Post
+          <button class="btn btn-secondary btn-lg my-auto" id="btnPost" type="button" form="postCmtForm"
+            data-value1="{{buy}}" value="{{user}}" data-bs-container="body" data-bs-toggle="popover"
+            data-bs-placement="right" title="Warning">Post
             comment</button>
         </div>
       </div>
@@ -177,7 +191,8 @@
         </p>
       </div>
       <div class="rating d-flex fs-5">
-          <input class="rating rating-loading" value="{{star}}" data-min="0" data-max="5" data-step="0.5" data-show-caption="false" data-display-only="true" data-size="md">          
+        <input class="rating rating-loading" value="{{star}}" data-min="0" data-max="5" data-step="0.5"
+          data-show-caption="false" data-display-only="true" data-size="md">
       </div>
     </div>
 
@@ -210,11 +225,11 @@
       </a>
     </li>
   </ul>
-</div>  
+</div>
 
 <div class="offcanvas offcanvas-start" tabindex="-1" id="profile" aria-labelledby="profileLabel">
   <div class="offcanvas-header">
-    <u class="offcanvas-title h1 fw-bold" id="profileLabel">{{course.author}}</u>
+    <u class="offcanvas-title h1 fw-bold" id="profileLabel">{{author.username}}</u>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
@@ -225,37 +240,37 @@
 </div>
 
 <script type="text/javascript">
-    $('#btnPost').click(function(){
-      var check1;
-      var check2;
-      if (!($('#btnPost').val())){
-        $('#postCmtForm').submit();
+  $('#btnPost').click(function () {
+    var check1;
+    var check2;
+    if (!($('#btnPost').val())) {
+      $('#postCmtForm').submit();
 
-        return;
-      }
-      if (!$('#btnPost').attr('data-value1')){
-        $('#btnPost').attr('data-bs-content', 'You have to buy this course first');
-        $('#btnPost').popover('show');  
-        return;
-      };
-      if (!($('#content').val())){
-        $('#btnPost').popover('dispose');  
-        $('#btnPost').attr('data-bs-content', 'Missing Comment');
-        $('#btnPost').popover('enable');  
-        $('#btnPost').popover('show');  
-      } else if (!($('#input-7').val())){
-        $('#btnPost').popover('dispose');  
-        $('#btnPost').attr('data-bs-content', 'Missing Rating');
-        $('#btnPost').popover('enable');  
-        $('#btnPost').popover('show');  
-      } else{
-        $('#btnPost').popover('disable');  
-        $('#btnPost').popover('hide');  
-        $('#postCmtForm').submit();
-      }
+      return;
+    }
+    if (!$('#btnPost').attr('data-value1')) {
+      $('#btnPost').attr('data-bs-content', 'You have to buy this course first');
+      $('#btnPost').popover('show');
+      return;
+    };
+    if (!($('#content').val())) {
+      $('#btnPost').popover('dispose');
+      $('#btnPost').attr('data-bs-content', 'Missing Comment');
+      $('#btnPost').popover('enable');
+      $('#btnPost').popover('show');
+    } else if (!($('#input-7').val())) {
+      $('#btnPost').popover('dispose');
+      $('#btnPost').attr('data-bs-content', 'Missing Rating');
+      $('#btnPost').popover('enable');
+      $('#btnPost').popover('show');
+    } else {
+      $('#btnPost').popover('disable');
+      $('#btnPost').popover('hide');
+      $('#postCmtForm').submit();
+    }
 
 
-      
-    });
-    
+
+  });
+
 </script>

@@ -26,6 +26,7 @@ const userSchema = new mongoose.Schema({
     
     avatar: {
         type: String,
+        default: "https://i0.wp.com/sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png?fit=300%2C300&ssl=1",
     },
 
     otp: {
