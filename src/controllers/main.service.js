@@ -23,6 +23,7 @@ const mainService = {
 
   getSearchCourses: async (req, res) => {
     try {
+
       const sort = req.query.sort;
       const limit = 5;
       var nPages;
@@ -35,44 +36,125 @@ const mainService = {
       }
 
       let courses;
-
       if (req.query.search) {
-        courses = await Course.aggregate([
-          {
-            $search: {
-              compound: {
-                should: [
-                  {
-                    autocomplete: {
-                      path: "name",
-                      query: req.query.search,
+        if (temp === "rating") {
+          courses = await Course.aggregate([
+            {
+              $search: {
+                compound: {
+                  should: [
+                    {
+                      autocomplete: {
+                        path: "name",
+                        query: req.query.search,
+                        score: { boost: { value: 3 } },
+                      },
                     },
-                  },
-                  {
-                    text: {
-                      path: "name",
-                      query: req.query.search,
-                      fuzzy: { maxEdits: 1 },
+                    {
+                      text: {
+                        path: "name",
+                        query: req.query.search,
+                        fuzzy: { maxEdits: 1 },
+                      },
                     },
-                  },
-                ],
+                  ],
+                },
               },
             },
-          },
-          {
-            $project: {
-              _id: 1,
-              img: 1,
-              name: 1,
-              overview: 1,
-              rating: 1,
-              register_count: 1,
-              price: 1,
-              discount: 1,
-              category: 1,
+            {
+              $project: {
+                _id: 1,
+                img: 1,
+                name: 1,
+                overview: 1,
+                rating: 1,
+                register_count: 1,
+                price: 1,
+                discount: 1,
+              },
             },
-          },
-        ]);
+            {
+              $sort: { rating: -1 },
+            },
+          ]);
+        } else if (temp === "price") {
+          courses = await Course.aggregate([
+            {
+              $search: {
+                compound: {
+                  should: [
+                    {
+                      autocomplete: {
+                        path: "name",
+                        query: req.query.search,
+                        score: { boost: { value: 3 } },
+                      },
+                    },
+                    {
+                      text: {
+                        path: "name",
+                        query: req.query.search,
+                        fuzzy: { maxEdits: 1 },
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+            {
+              $project: {
+                _id: 1,
+                img: 1,
+                name: 1,
+                overview: 1,
+                rating: 1,
+                register_count: 1,
+                price: 1,
+                discount: 1,
+              },
+            },
+            {
+              $sort: { price: -1 },
+            },
+          ]);
+        } else {
+          courses = await Course.aggregate([
+            {
+              $search: {
+                compound: {
+                  should: [
+                    {
+                      autocomplete: {
+                        path: "name",
+                        query: req.query.search,
+                        score: { boost: { value: 3 } },
+                      },
+                    },
+                    {
+                      text: {
+                        path: "name",
+                        query: req.query.search,
+                        fuzzy: { maxEdits: 1 },
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+            {
+              $project: {
+                _id: 1,
+                img: 1,
+                name: 1,
+                overview: 1,
+                rating: 1,
+                register_count: 1,
+                price: 1,
+                discount: 1,
+              },
+            },
+          ]);
+        }
       } else {
         courses = await Course.find().lean();
       }
@@ -99,7 +181,6 @@ const mainService = {
           }
           return arr;
         }
-        courses = removeItemAll(courses, cat);
       }
 
       if (req.query.rating) {
@@ -167,6 +248,7 @@ const mainService = {
       res.render("vwSearchPage/searchPage", {
         courses: curCourses,
         text: req.query.search,
+
         categories: categories,
         pageNumbers: pageNumbers,
         total: total,
@@ -239,10 +321,12 @@ const mainService = {
   },
 
   // lan sau de cai nay o student.service.js de day do
+  
 
   createCoursePage: async (req, res) => {
     res.render("vwLecturer/createCourse");
   },
+
 
   getOtpPage: async (req, res) => {
     res.render("vwLoginPage/otpPage");

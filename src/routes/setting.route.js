@@ -21,4 +21,5 @@ router.post("/edit", settingService.postEditProfile);
 
 router.get("/dashboard", settingService.getDashboardPage);
 
+router.post("/changePass", settingService.changePasswordService);
 export default router;
