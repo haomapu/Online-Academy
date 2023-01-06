@@ -14,10 +14,21 @@ let userMail;
 const mainService = {
   getHomePage: async (req, res) => {
     const categories = await Category.find().populate("sub_categories").lean();
-    const course = await Course.find().sort({ lastUpdate: 1 }).lean().limit(4);
+    const course = await Course.find().sort({ lastUpdate: 1 }).lean().limit(12);
+    const newCourse = [];
+    while (course.length) newCourse.push(course.splice(0,4));
+
+    const querryCourse = await Course.find().sort({ totalView: 1 }).lean().limit(12);
+    const mostViewCourse = [];
+    while (querryCourse.length) mostViewCourse.push(querryCourse.splice(0,4));
+
+    const hightlightCourse = await Course.find().sort({rating: 1}).lean().limit(3);
+    
     res.render("home", {
       categories: categories,
-      newCourse: course,
+      newCourse: newCourse,
+      mostViewCourse: mostViewCourse,
+      hightlightCourse: hightlightCourse,
     });
   },
 

@@ -40,14 +40,18 @@ const courseSchema = new mongoose.Schema({
   lastUpdate: {
     type: Date,
   },
-
+  totalView: {
+    type: Number,
+    default: 0,
+  },
   chapters: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: "Chapter",
   },
 
   author: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
 
   category: {
