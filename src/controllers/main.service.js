@@ -35,11 +35,16 @@ const mainService = {
   getSearchCourses: async (req, res) => {
     try {
       const sort = req.query.sort;
+      const limit = 5;
+      var nPages;
+      const curPage = req.query.page || 1;
+      const offset = (curPage - 1) * limit;
 
       let cat;
       if (req.query.cat) {
         cat = await Sub_Category.findOne({ name: req.query.cat });
       }
+
       let courses;
 
       if (req.query.search) {
@@ -93,12 +98,10 @@ const mainService = {
         });
       }
 
-      let index;
       if (cat) {
         function removeItemAll(arr, value) {
           var i = 0;
           while (i < arr.length) {
-            console.log(arr[i].category);
             if (String(arr[i].category) !== String(value._id)) {
               arr.splice(i, 1);
             } else {
@@ -110,11 +113,74 @@ const mainService = {
         courses = removeItemAll(courses, cat);
       }
 
+      if (req.query.rating) {
+        function removeItemAll(arr, value) {
+          var i = 0;
+          while (i < arr.length) {
+            if (arr[i].rating < value) {
+              arr.splice(i, 1);
+            } else {
+              ++i;
+            }
+          }
+          return arr;
+        }
+        courses = removeItemAll(courses, req.query.rating);
+      }
+
+      if (req.query.cost) {
+        function removeItemAll(arr, value) {
+          var i = 0;
+          if (value === "paid") {
+            while (i < arr.length) {
+              if (arr[i].price === 0) {
+                arr.splice(i, 1);
+              } else {
+                ++i;
+              }
+            }
+          } else if (value === "free") {
+            while (i < arr.length) {
+              if (arr[i].price !== 0) {
+                arr.splice(i, 1);
+              } else {
+                ++i;
+              }
+            }
+          }
+          return arr;
+        }
+        courses = removeItemAll(courses, req.query.cost);
+      }
+
+      const total = courses.length;
+      let curCourses = [];
+      for (let i = offset; i < total; i++) {
+        curCourses.push(courses[i]);
+        if (curCourses.length === limit) {
+          break;
+        }
+      }
+      total % limit != 0
+        ? (nPages = Math.ceil(total / limit))
+        : (nPages = total / limit);
+
+      const pageNumbers = [];
+
+      for (let i = 1; i <= nPages; i++) {
+        pageNumbers.push({
+          value: i,
+          isCurrent: i === +curPage,
+        });
+      }
+
       const categories = await Sub_Category.find().lean();
       res.render("vwSearchPage/searchPage", {
-        courses: courses,
+        courses: curCourses,
         text: req.query.search,
         categories: categories,
+        pageNumbers: pageNumbers,
+        total: total,
       });
     } catch (err) {
       res.status(500).json(err);
@@ -122,11 +188,9 @@ const mainService = {
   },
 
   getLoginPage: async (req, res) => {
-
     // req.session.reqUrl = req.heders.referer || "/";
 
     if (req.isAuthenticated()) {
-
       res.redirect("/");
     } else {
       res.render("vwLoginPage/loginPage");
