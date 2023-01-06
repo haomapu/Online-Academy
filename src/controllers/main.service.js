@@ -22,13 +22,24 @@ const mainService = {
     const mostViewCourse = [];
     while (querryCourse.length) mostViewCourse.push(querryCourse.splice(0,4));
 
-    const hightlightCourse = await Course.find().sort({rating: 1}).lean().limit(3);
-    
+    const highlightCourse = await Course.find().sort({rating: 1}).lean().limit(3);
+    const highlightCourse_active = highlightCourse.slice(0,1);
+    const highlightCourse_inactive = highlightCourse.slice(1);
+
+    const categoriesID = await Course.aggregate([
+      {$sortByCount: "$category"}
+    ]);
+    const highlightCategories = []
+    for (let i = 0 ; i < categoriesID.length; i++) {
+      highlightCategories.push(await Category.findById(categoriesID[i]._id).lean());
+    }
+    console.log(highlightCategories);
     res.render("home", {
-      categories: categories,
       newCourse: newCourse,
       mostViewCourse: mostViewCourse,
-      hightlightCourse: hightlightCourse,
+      highlightCourse_active: highlightCourse_active,
+      highlightCourse_inactive: highlightCourse_inactive,
+      highlightCategories: highlightCategories,
     });
   },
 
@@ -188,7 +199,6 @@ const mainService = {
   },
 
   getLoginPage: async (req, res) => {
-    // req.session.reqUrl = req.heders.referer || "/";
 
     if (req.isAuthenticated()) {
       res.redirect("/");
@@ -212,7 +222,7 @@ const mainService = {
   },
 
   loginService: passport.authenticate("local", {
-    // successRedirect: req.session.reqUrl,
+    successRedirect: "/",
     failureRedirect: "/login",
     failureFlash: true,
     failureFlash: "Tài khoản hoặc mật khẩu không chính xác",
