@@ -476,6 +476,16 @@ const settingService = {
     });
   },
 
+  lockStudent: async (req, res) => {
+    await User.updateOne({ _id: req.params.id }, { verified: false });
+    res.redirect("/settings/studentAdmin");
+  },
+
+  unlockStudent: async (req, res) => {
+    await User.updateOne({ _id: req.params.id }, { verified: true });
+    res.redirect("/settings/studentAdmin");
+  },
+
   getLecturerAdmin: async (req, res) => {
     var curUser;
     if (req.isAuthenticated()) {
@@ -513,6 +523,16 @@ const settingService = {
       lecturers: lecturers,
       admin: true,
     });
+  },
+
+  lockLecturer: async (req, res) => {
+    await User.updateOne({ _id: req.params.id }, { verified: false });
+    res.redirect("/settings/studentAdmin");
+  },
+
+  unlockLecturer: async (req, res) => {
+    await User.updateOne({ _id: req.params.id }, { verified: true });
+    res.redirect("/settings/studentAdmin");
   },
 };
 export default settingService;

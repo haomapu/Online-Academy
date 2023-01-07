@@ -158,6 +158,33 @@
     </div>
     <div style="flex: 3">
       {{#each this.courses}}
+      {{#if discount}}
+      <div class="searchCourse" style="border: 3px solid orange;
+                        padding: 10px;
+                        border-radius: 5px;
+                        display: flex;
+                        justify-content: space-between;
+                        gap: 20px;
+                        margin-bottom: 20px;">
+        <img src={{img}} alt="" class="scImg" style="width: 262px; height: 148px; object-fit: cover" />
+        <div style="display: flex; flex-direction: column; flex: 2">
+          <span class="fs-6 fw-bold">{{name}}</span>
+          <span style="font-size: 14px">{{overview}}</span>
+          <span class="text-muted" ; style="font-size: 14px">Lecturer: {{author}}</span>
+          <span class="text-muted" ; style="font-size: 14px">{{rating}}</span>
+          <span class="text-muted" ; style="font-size: 14px">{{register_count}} students</span>
+        </div>
+        <div style="text-align: right; display: flex; flex-direction: column; gap: 5px;">
+          <span class="fs-6 fw-bold">{{price}}$</span>
+          {{#if discount}}
+          <div class="bg-secondary">
+            <i class="bg-secondary fa-solid fa-fire"></i>
+            <span>Sale {{discount}}%</span>
+          </div>
+          {{/if}}
+        </div>
+      </div>
+      {{else}}
       <div class="searchCourse" style="border: 1px solid lightgray;
                         padding: 10px;
                         border-radius: 5px;
@@ -175,8 +202,15 @@
         </div>
         <div style="text-align: right; display: flex; flex-direction: column; gap: 5px;">
           <span class="fs-6 fw-bold">{{price}}$</span>
+          {{#if discount}}
+          <div class="bg-secondary">
+            <i class="bg-secondary fa-solid fa-fire"></i>
+            <span>Sale {{discount}}%</span>
+          </div>
+          {{/if}}
         </div>
       </div>
+      {{/if}}
       {{/each}}
       <div class="d-flex justify-content-center pt-4">
         <nav aria-label="Page navigation example">
@@ -188,11 +222,12 @@
             {{#each pageNumbers}}
             {{#if isCurrent}}
             <li class="page-item active" aria-current="page">
-              <span class="page-link bg-light border-secondary text-dark fs-5">{{value}}</span>
+              <input class="page-link bg-light border-secondary text-dark fs-5" name="page" value="{{value}}"
+                form="filter" type="submit" />
             </li>
             {{else}}
             <li class="page-item">
-              <a class="page-link text-dark fs-5" href="?page={{value}}">{{value}}</a>
+              <input class="page-link text-dark fs-5" name="page" value="{{value}}" form="filter" type="submit">
             </li>
             {{/if}}
             {{/each}}

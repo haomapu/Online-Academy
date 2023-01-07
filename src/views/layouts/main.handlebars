@@ -31,35 +31,32 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               {{#each categories}}
-                <li>
-                <a class="dropdown-item" href="#">
-                  {{this.name}} &raquo;
-                </a>
+              <li>
+                <input class="dropdown-item" name="main_cat" value="{{this.name}}" type="submit" form="search" />
                 <ul class="dropdown-menu dropdown-submenu">
                   {{#each this.sub_categories}}
-                    <li>
-                      <a class="dropdown-item" href="#">{{this.name}}</a>
-                    </li>
+                  <input class="dropdown-item" name="cat" value="{{this.name}}" type="submit" form="search" />
                   {{/each}}
                 </ul>
               </li>
               {{/each}}
-              
+
             </ul>
           </li>
         </ul>
-        <form class="d-flex justify-content-between w-100" role="search" action="/search" method="get">
+        <form class="d-flex justify-content-between w-100" role="search" action="/search" method="get" id="search">
           <input class="rounded-pill form-control me-2" type="search" placeholder="Search" aria-label="Search"
             name="search" value="" />
         </form>
         {{#if user}}
-          {{#if user.username}}
-            <a href="/settings" class="text-primary align-middle me-2 fs-5 links">{{user.username}}</a>
-          {{else}}
-            <a href="/settings" class="text-primary align-middle me-2 fs-5 links">{{user.displayName}}</a>
-          {{/if}}
-          <a href="/settings" class="me-2"><img src = "{{user.avatar}}" class="rounded-circle" alt="" width="35" height="35"></a>
-            <a class="btn btn-outline-secondary me-2 btn-w" href="/logout" role="button">Log Out</a>
+        {{#if user.username}}
+        <a href="/settings" class="text-primary align-middle me-2 fs-5 links">{{user.username}}</a>
+        {{else}}
+        <a href="/settings" class="text-primary align-middle me-2 fs-5 links">{{user.displayName}}</a>
+        {{/if}}
+        <a href="/settings" class="me-2"><img src="{{user.avatar}}" class="rounded-circle" alt="" width="35"
+            height="35"></a>
+        <a class="btn btn-outline-secondary me-2 btn-w" href="/logout" role="button">Log Out</a>
         {{else}}
         <a class="btn btn-outline-secondary me-2 btn-w" href="/signup" role="button">Sign Up</a>
         <a class="btn btn-outline-secondary me-2 btn-w" href="/login" role="button">Log In</a>

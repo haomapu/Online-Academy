@@ -3,6 +3,10 @@
     .mainContent li span {
       display: none;
     }
+
+    a span {
+      display: none;
+    }
   }
 
   .mainContent li.nav-item:hover {
@@ -120,10 +124,21 @@
             <td><img src={{avatar}} alt="" class="rounded-circle p-1 bg-secondary" width="50" /></td>
             <td>{{username}}</td>
             <td>{{role}}</td>
-            <td class="text-right">
-              <a data-id="{{id}}" class=" btn btn-sm btn-danger delItem" href="javascript:;" role="button">
-                <i class="fa-solid fa-trash-can"></i>
-              </a>
+            <td>
+              <form method="post">
+                <button class=" btn btn-sm btn-danger delItem" formaction="/settings/lecturerAdmin/remove/{{_id}}">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+                {{#if verified}}
+                <button class=" btn btn-sm btn-danger delItem" formaction="/settings/lecturerAdmin/lock/{{_id}}">
+                  <i class="fa-solid fa-unlock"></i>
+                </button>
+                {{else}}
+                <button class=" btn btn-sm btn-danger delItem" formaction="/settings/lecturerAdmin/unlock/{{_id}}">
+                  <i class="fa-solid fa-lock"></i>
+                </button>
+                {{/if}}
+              </form>
             </td>
           </tr>
           {{/each}}
