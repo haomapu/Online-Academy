@@ -65,16 +65,16 @@
         <div class="d-flex flex-column justify-content-center align-items-center">
           <p class="text-secondary m-0 fs-5">{{format_number course.price}} VND</p>
           {{#if buy}}
-          <button class="btn btn-md btn-secondary text-light fw-bold w-100" disabled type="button">Already
+          <button class="btn btn-md btn-secondary text-light fw-bold p-1 w-100" disabled type="button">Already
             Bought</button>
           {{else}}
           <form method="post" class="w-100">
-            <button class="btn btn-md btn-secondary text-light fw-bold w-100" formaction="/course/{{course.name}}/buy"
+            <button class="btn btn-md btn-secondary text-light fw-bold p-1 w-100" formaction="/course/{{course.name}}/buy"
               type="submit">Add to cart</button>
           </form>
           {{/if}}
           <form method="post" action="/course/{{course.name}}/fav" class="w-100 mt-1">
-            <button class="btn btn-secondary text-light btn-lg p-1 w-100 text-light" type="submit" name="nameFav"
+            <button class="btn btn-secondary text-light btn-lg p-1 w-100 text-light fw-bold" type="submit" name="nameFav"
               value="{{course.name}}" id="btnFav"><i class="fas fa-heart"></i></button>
           </form>
         </div>
@@ -202,12 +202,16 @@
   </div>
   <hr class="my-3" style="height: 1px;" />
   {{/each}}
-  <ul class="pagination pagination-lg justify-content-center">
+  <ul id="nPage" value="{{pageNumbers.length}}" class="pagination pagination-lg justify-content-center">
+    {{#each pageNumbers}}
+    {{#if isCurrent}}
     <li class="page-item">
-      <a class="page-link text-secondary border-secondary fw-bold" href="?page=" aria-label="Previous">
+      <a class="page-link text-secondary border-secondary fw-bold" id="prev" href="?page={{minus_one value}}" value="{{minus_one value}}" aria-label="Previous">
         <span aria-hidden="true">&laquo;</span>
       </a>
     </li>
+    {{/if}}
+    {{/each}}
     {{#each pageNumbers}}
     {{#if isCurrent}}
     <li class="page-item active" aria-current="page">
@@ -219,11 +223,15 @@
     </li>
     {{/if}}
     {{/each}}
+    {{#each pageNumbers}}
+    {{#if isCurrent}}
     <li class="page-item">
-      <a class="page-link text-secondary fw-bold border-secondary" href="?page=" aria-label="Next">
+      <a class="page-link text-secondary fw-bold border-secondary" id="next" href="?page={{add_one value}}" value="{{add_one value}}" aria-label="Next">
         <span aria-hidden="true">&raquo;</span>
       </a>
     </li>
+    {{/if}}
+    {{/each}}
   </ul>
 </div>
 
@@ -245,7 +253,6 @@
     var check2;
     if (!($('#btnPost').val())) {
       $('#postCmtForm').submit();
-
       return;
     }
     if (!$('#btnPost').attr('data-value1')) {
@@ -268,9 +275,18 @@
       $('#btnPost').popover('hide');
       $('#postCmtForm').submit();
     }
-
-
-
   });
 
+  $('#prev').click(function(event){
+    
+    if ($('#prev').attr('value') <= 0){
+      event.preventDefault();
+    }
+  })
+
+  $('#next').click(function(event){
+    if ($('#next').attr('value') > $('#nPage').attr('value')){
+      event.preventDefault();
+    }
+  })
 </script>

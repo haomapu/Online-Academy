@@ -145,7 +145,13 @@ app.engine(
       },
       round_number(val){
         return Number(val).toFixed(1);
-      }
+      },
+      minus_one(val) {
+        return val - 1;
+      },
+      add_one(val) {
+        return val + 1;
+      },
     }
   })
 );

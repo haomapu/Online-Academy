@@ -12,13 +12,13 @@ getCourseDetail: async (req, res) => {
     var buy;
     var avatar;
 
-    const course = await Course.findOne({ name: req.params.id }).lean();
+    const course = await Course.findOne({ name: req.params.id }).populate('author').lean();
     const top5cate = await Course.find({
       name: { $not: { $eq: req.params.id } }}).sort({ register_count: -1 }).lean().limit(top5);
     
     const feedbacks = [];
     const curPage = req.query.page || 1;
-    const offset = (curPage - 1) * limit;
+    var offset = (curPage - 1) * limit;
 
     const total = await Feedback.find({course: course._id}).count();
     var nPages;
@@ -35,7 +35,10 @@ getCourseDetail: async (req, res) => {
         isCurrent: i === +curPage,
       });
     }
-
+    if (curPage > nPages || curPage <= 0) {
+      res.redirect('/course/' + course.name);
+      return;
+    }
     const queryFeedback = await Feedback.find({ course: course._id }).sort({ time: -1 }).skip(offset).limit(limit);
 
     if (queryFeedback.length != 0) {
@@ -69,7 +72,7 @@ getCourseDetail: async (req, res) => {
       pageNumbers: pageNumbers,
       buy: buy,
       avatar: avatar,
-      author: await User.findById(course.author).lean(),
+      author: course.author,
     });
   },
   
