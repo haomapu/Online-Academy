@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get("/", settingService.getSettingsPage);
 
-router.get("/courseLecture", settingService.getCoursePage); 
+router.get("/courseLecture", settingService.getCoursePage);
 
 router.get("/courseStudent", settingService.getCourseStudentPage);
 
@@ -19,7 +19,10 @@ router.get("/profile", settingService.getEditProfilePage);
 
 router.post("/edit", settingService.postEditProfile);
 
+router.post("/otp", settingService.otpService);
+
 router.get("/dashboard", settingService.getDashboardPage);
 
 router.post("/changePass", settingService.changePasswordService);
+
 export default router;

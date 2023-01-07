@@ -16,24 +16,32 @@ const mainService = {
     const categories = await Category.find().populate("sub_categories").lean();
     const course = await Course.find().sort({ lastUpdate: 1 }).lean().limit(12);
     const newCourse = [];
-    while (course.length) newCourse.push(course.splice(0,4));
+    while (course.length) newCourse.push(course.splice(0, 4));
 
-    const querryCourse = await Course.find().sort({ totalView: 1 }).lean().limit(12);
+    const querryCourse = await Course.find()
+      .sort({ totalView: 1 })
+      .lean()
+      .limit(12);
     const mostViewCourse = [];
-    while (querryCourse.length) mostViewCourse.push(querryCourse.splice(0,4));
+    while (querryCourse.length) mostViewCourse.push(querryCourse.splice(0, 4));
 
-    const highlightCourse = await Course.find().sort({rating: 1}).lean().limit(3);
-    const highlightCourse_active = highlightCourse.slice(0,1);
+    const highlightCourse = await Course.find()
+      .sort({ rating: 1 })
+      .lean()
+      .limit(3);
+    const highlightCourse_active = highlightCourse.slice(0, 1);
     const highlightCourse_inactive = highlightCourse.slice(1);
 
     const categoriesID = await Course.aggregate([
-      {$sortByCount: "$category"}
+      { $sortByCount: "$category" },
     ]);
-    const highlightCategories = []
-    for (let i = 0 ; i < categoriesID.length; i++) {
-      highlightCategories.push(await Category.findById(categoriesID[i]._id).lean());
+    const highlightCategories = [];
+    for (let i = 0; i < categoriesID.length; i++) {
+      highlightCategories.push(
+        await Category.findById(categoriesID[i]._id).lean()
+      );
     }
-    console.log(highlightCategories);
+    // console.log(highlightCategories);
     res.render("home", {
       newCourse: newCourse,
       mostViewCourse: mostViewCourse,
@@ -45,7 +53,6 @@ const mainService = {
 
   getSearchCourses: async (req, res) => {
     try {
-
       const sort = req.query.sort;
       const limit = 5;
       var nPages;
@@ -281,7 +288,6 @@ const mainService = {
   },
 
   getLoginPage: async (req, res) => {
-
     if (req.isAuthenticated()) {
       res.redirect("/");
     } else {
@@ -333,6 +339,7 @@ const mainService = {
         userMail = email;
         res.render("vwLoginPage/otpPage", {
           mail: email,
+          otpcount: 1,
         });
       }
     } catch (e) {
@@ -342,15 +349,9 @@ const mainService = {
   },
 
   // lan sau de cai nay o student.service.js de day do
-  
 
   createCoursePage: async (req, res) => {
     res.render("vwLecturer/createCourse");
-  },
-
-
-  getOtpPage: async (req, res) => {
-    res.render("vwLoginPage/otpPage");
   },
 
   otpService: async (req, res) => {
@@ -368,15 +369,13 @@ const mainService = {
         await mailer.sendMail(userMail);
         await User.updateOne({ email: userMail }, { otp: mailer.otp });
         await User.updateOne({ email: userMail }, { otp_count: 0 });
-        res.render("vwLoginPage/otpPage", {
-          title: "Verify",
-          noti: "You entered your OTP incorrectly 3 times. We've just resent the code to your email",
-        });
+        res.redirect("/signup");
       } else {
         await User.updateOne({ email: userMail }, { otp_count: otpcount });
         res.render("vwLoginPage/otpPage", {
           title: "Verify",
           noti: "Wrong OTP! Please enter again",
+          otpcount: otpcount + 1,
         });
       }
     }

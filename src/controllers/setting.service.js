@@ -3,9 +3,13 @@ import Register from "../models/register.js";
 import Favorite from "../models/favorite.js";
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
+import mailer from "../utils/mailer.js";
+
+let userMail;
+let newInfo;
 
 const settingService = {
-getSettingsPage: async (req, res) => {
+  getSettingsPage: async (req, res) => {
     try {
       var curUser;
 
@@ -249,10 +253,49 @@ getSettingsPage: async (req, res) => {
         return;
       }
 
-      await User.updateMany({ _id: curUser._id }, req.body);
-      res.redirect("/settings");
+      if (curUser.email !== req.body.email) {
+        await mailer.sendMail(req.body.email);
+        userMail = curUser.email;
+        newInfo = req.body;
+        await User.updateOne({ email: userMail }, { otp: mailer.otp });
+        res.render("vwSettingsPage/otpPage", {
+          mail: newInfo.email,
+          otpcount: 1,
+        });
+      } else {
+        await User.updateMany({ _id: curUser._id }, req.body);
+        res.redirect("/settings");
+      }
     } catch (e) {
       res.send(e);
+    }
+  },
+
+  otpService: async (req, res) => {
+    const { first, second, third, fourth, fifth, sixth } = req.body;
+    const userOtp = `${first}${second}${third}${fourth}${fifth}${sixth}`;
+    const user = await User.findOne({ email: userMail });
+    const Otp = user.otp;
+
+    if (userOtp.toUpperCase() == Otp.toUpperCase()) {
+      await User.updateOne({ email: userMail }, newInfo);
+      req.user.email = newInfo.email;
+      res.redirect("/settings");
+    } else {
+      const otpcount = user.otp_count + 1;
+      if (otpcount === 3) {
+        await mailer.sendMail(userMail);
+        await User.updateOne({ email: userMail }, { otp: mailer.otp });
+        await User.updateOne({ email: userMail }, { otp_count: 0 });
+        res.redirect("/settings/profile");
+      } else {
+        await User.updateOne({ email: userMail }, { otp_count: otpcount });
+        res.render("vwSettingsPage/otpPage", {
+          title: "Verify",
+          noti: "Wrong OTP! Please enter again",
+          otpcount: otpcount + 1,
+        });
+      }
     }
   },
 
@@ -286,32 +329,35 @@ getSettingsPage: async (req, res) => {
       res.send(e);
     }
   },
-  
+
   changePasswordService: async (req, res) => {
-      try {
-          var curUser;
-          if (req.isAuthenticated()) {
-            curUser = req.user;
-          } else {
-            res.redirect("/login");
-            return;
-          }
-          const {oldPass, newPass, confirmPass} = req.body;
-          var equal = await bcrypt.compareSync(oldPass, curUser.password);
-          if(!equal) {
-            res.render("vwSettingsPage/editPage", {
-              unsuccess: true
-            });
-          } else {
-            const newHashPassword = await bcrypt.hash(newPass, 10);
-            await User.updateOne({ _id: curUser._id },{password: newHashPassword});
-            res.render("vwSettingsPage/editPage", {
-              success: true
-            });
-          }
-      } catch (e) {
-        res.send(e);
+    try {
+      var curUser;
+      if (req.isAuthenticated()) {
+        curUser = req.user;
+      } else {
+        res.redirect("/login");
+        return;
       }
+      const { oldPass, newPass, confirmPass } = req.body;
+      var equal = await bcrypt.compareSync(oldPass, curUser.password);
+      if (!equal) {
+        res.render("vwSettingsPage/editPage", {
+          unsuccess: true,
+        });
+      } else {
+        const newHashPassword = await bcrypt.hash(newPass, 10);
+        await User.updateOne(
+          { _id: curUser._id },
+          { password: newHashPassword }
+        );
+        res.render("vwSettingsPage/editPage", {
+          success: true,
+        });
+      }
+    } catch (e) {
+      res.send(e);
     }
+  },
 };
 export default settingService;
