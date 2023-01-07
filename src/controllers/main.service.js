@@ -136,6 +136,7 @@ const mainService = {
           }
           return arr;
         }
+        courses = removeItemAll(courses, cat);
       }
 
       if (req.query.rating) {

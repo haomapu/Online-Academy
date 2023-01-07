@@ -29,6 +29,14 @@ router.get("/courseAdmin", settingService.getCourseAdmin);
 
 router.get("/studentAdmin", settingService.getStudentAdmin);
 
+router.post("/studentAdmin/lock/:id", settingService.lockStudent);
+
+router.post("/studentAdmin/unlock/:id", settingService.unlockStudent);
+
 router.get("/lecturerAdmin", settingService.getLecturerAdmin);
+
+router.post("/lecturerAdmin/lock/:id", settingService.lockLecturer);
+
+router.post("/lecturerAdmin/unlock/:id", settingService.unlockLecturer);
 
 export default router;
