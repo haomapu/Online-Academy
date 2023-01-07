@@ -199,12 +199,12 @@ const mainService = {
         });
       }
 
-      const categories = await Sub_Category.find().lean();
+      const subCategories = await Sub_Category.find().lean();
       res.render("vwSearchPage/searchPage", {
         courses: curCourses,
         text: req.query.search,
 
-        categories: categories,
+        subCategories: subCategories,
         pageNumbers: pageNumbers,
         total: total,
       });
