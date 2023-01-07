@@ -14,6 +14,7 @@ let userMail;
 const mainService = {
   getHomePage: async (req, res) => {
     const categories = await Category.find().populate("sub_categories").lean();
+    req.session.categories = categories;
     const course = await Course.find().sort({ lastUpdate: 1 }).lean().limit(12);
     const newCourse = [];
     while (course.length) newCourse.push(course.splice(0, 4));
@@ -43,6 +44,7 @@ const mainService = {
     }
     // console.log(highlightCategories);
     res.render("home", {
+      categories: categories,
       newCourse: newCourse,
       mostViewCourse: mostViewCourse,
       highlightCourse_active: highlightCourse_active,

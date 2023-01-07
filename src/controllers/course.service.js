@@ -5,7 +5,7 @@ import Favorite from "../models/favorite.js";
 import User from "../models/user.js";
 const courseService = {
 
-getCourseDetail: async (req, res) => {
+  getCourseDetail: async (req, res) => {
     const top5 = 5;
     const limit = 4;
     var curUser;
@@ -161,6 +161,9 @@ getCourseDetail: async (req, res) => {
     }
     res.redirect("/course/" + req.params.id);
   },
-
+  
+  viewCourse: async (req,res) => {
+    res.render("vwDetails/courseDetails");
+  },
 }
 export default courseService;
