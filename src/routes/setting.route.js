@@ -25,4 +25,10 @@ router.get("/dashboard", settingService.getDashboardPage);
 
 router.post("/changePass", settingService.changePasswordService);
 
+router.get("/courseAdmin", settingService.getCourseAdmin);
+
+router.get("/studentAdmin", settingService.getStudentAdmin);
+
+router.get("/lecturerAdmin", settingService.getLecturerAdmin);
+
 export default router;
