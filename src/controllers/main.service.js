@@ -198,6 +198,13 @@ const mainService = {
         });
       }
 
+      let main_cat;
+      if (req.query.main_cat) {
+        main_cat = await Category.findOne({ name: req.query.main_cat })
+          .populate("sub_categories")
+          .lean();
+      }
+
       if (cat) {
         function removeItemAll(arr, value) {
           var i = 0;

@@ -26,6 +26,7 @@
             <span>Profile</span>
           </a>
         </li>
+        {{#if admin}}
         <li class="nav-item">
           <a href="/settings/dashboard" class="nav-link active" aria-current="page">
             <i class="fa-solid fa-table-columns"></i>
@@ -39,15 +40,38 @@
           </a>
         </li>
         <li class="nav-item">
+          <a href="/settings/courseAdmin" class="nav-link link-dark">
+            <i class="fas fa-book"></i>
+            <span>CoursesA</span>
+          </a>
+        </li>
+        <div class="dropdown">
+          <a class="btn dropdown-toggle nav-link link-dark" href="#" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <i class="fas fa-users"></i>
+            <span>Users</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="nav-item dropdown-item">
+              <a href="/settings/lecturerAdmin" class="nav-link link-dark">
+                <i class="fas fa-users"></i>
+                <span>Lecturers</span>
+              </a>
+            </li>
+            <li class="nav-item dropdown-item">
+              <a href="/settings/studentAdmin" class="nav-link link-dark">
+                <i class="fas fa-users"></i>
+                <span>Students</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        {{/if}}
+        {{#if student}}
+        <li class="nav-item">
           <a href="/settings/favourite" class="nav-link link-dark">
             <i class="fas fa-book"></i>
             <span>Favorite</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="/settings/courseLecture" class="nav-link link-dark">
-            <i class="fas fa-book"></i>
-            <span>CoursesL</span>
           </a>
         </li>
         <li class="nav-item">
@@ -56,12 +80,15 @@
             <span>CoursesS</span>
           </a>
         </li>
+        {{/if}}
+        {{#if lecturer}}
         <li class="nav-item">
-          <a href="#" class="nav-link link-dark">
-            <i class="fas fa-users"></i>
-            <span>Users</span>
+          <a href="/settings/courseLecture" class="nav-link link-dark">
+            <i class="fas fa-book"></i>
+            <span>CoursesL</span>
           </a>
         </li>
+        {{/if}}
       </ul>
       <hr />
       <ul class="nav nav-pills flex-column">
@@ -76,42 +103,50 @@
   <div class="main-body" style="flex: 3">
     <div class="content position-relative">
       <div class="cards d-flex align-items-center justify-content-between flex-wrap py-2 px-5">
-        <div class="card d-flex align-items-center justify-content-around" style="width: 250px; height: 150px; background: white; margin: 20px 10px;
+        <a href="/settings/studentAdmin" class="btn text-center ">
+          <div class="card d-flex align-items-center justify-content-around" style="width: 250px; height: 150px; background: white; margin: 20px 10px;
           box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
-          <div class="box">
-            <div class="fs-3">{{students.length}} Students</div>
+            <div class="box">
+              <div class="fs-3">{{students.length}} Students</div>
+            </div>
+            <div class="icon-case">
+              <img src="/public/images/students.png" alt="" />
+            </div>
           </div>
-          <div class="icon-case">
-            <img src="/public/images/students.png" alt="" />
-          </div>
-        </div>
-        <div class="card d-flex align-items-center justify-content-around" style="width: 250px; height: 150px; background: white; margin: 20px 10px;
+        </a>
+        <a href="/settings/lecturerAdmin" class="btn text-center ">
+          <div class="card d-flex align-items-center justify-content-around" style="width: 250px; height: 150px; background: white; margin: 20px 10px;
           box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
-          <div class="box">
-            <div class="fs-3">{{lecturers.length}} Lecturers</div>
+            <div class="box">
+              <div class="fs-3">{{lecturers.length}} Lecturers</div>
+            </div>
+            <div class="icon-case">
+              <img src="/public/images/teachers.png" alt="" />
+            </div>
           </div>
-          <div class="icon-case">
-            <img src="/public/images/teachers.png" alt="" />
-          </div>
-        </div>
-        <div class="card d-flex align-items-center justify-content-around" style="width: 250px; height: 150px; background: white; margin: 20px 10px;
+        </a>
+        <a href="/settings/lecturerAdmin" class="btn text-center ">
+          <div class="card d-flex align-items-center justify-content-around" style="width: 250px; height: 150px; background: white; margin: 20px 10px;
           box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
-          <div class="box">
-            <div class="fs-3">5 Categories</div>
+            <div class="box">
+              <div class="fs-3">5 Categories</div>
+            </div>
+            <div class="icon-case">
+              <img src="/public/images/categories.png" alt="" style="width: 64px" />
+            </div>
           </div>
-          <div class="icon-case">
-            <img src="/public/images/categories.png" alt="" style="width: 64px" />
-          </div>
-        </div>
-        <div class="card d-flex align-items-center justify-content-around" style="width: 250px; height: 150px; background: white; margin: 20px 10px;
+        </a>
+        <a href="/settings/courseAdmin" class="btn text-center ">
+          <div class="card d-flex align-items-center justify-content-around" style="width: 250px; height: 150px; background: white; margin: 20px 10px;
           box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
-          <div class="box">
-            <div class="fs-3">{{courses.length}} Courses</div>
+            <div class="box">
+              <div class="fs-3">{{courses.length}} Courses</div>
+            </div>
+            <div class="icon-case">
+              <img src="/public/images/courses.png" alt="" style="width: 64px" />
+            </div>
           </div>
-          <div class="icon-case">
-            <img src="/public/images/courses.png" alt="" style="width: 64px" />
-          </div>
-        </div>
+        </a>
       </div>
     </div>
     <div class="content-2 d-flex justify-content-around align-items-start flex-wrap">
@@ -119,7 +154,7 @@
           box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
         <div class="title d-flex align-items-center justify-content-around" style="border-bottom: 2px solid #999;">
           <h2>Recent Courses</h2>
-          <a href="#" class="btn btn-secondary text-center py-2 px-4 text-white">View All</a>
+          <a href="/settings/courseAdmin" class="btn btn-secondary text-center py-2 px-4 text-white">View All</a>
         </div>
         <table class="p-2">
           <tr>
@@ -142,7 +177,7 @@
         style="flex: 3; margin: 0 25px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
         <div class="title d-flex align-items-center justify-content-around" style="  border-bottom: 2px solid #999;">
           <h2>New Students</h2>
-          <a href="#" class="btn btn-secondary text-center py-2 px-4 text-white">View All</a>
+          <a href="/settings/studentAdmin" class="btn btn-secondary text-center py-2 px-4 text-white">View All</a>
         </div>
         <table>
           <tr>
