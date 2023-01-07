@@ -17,7 +17,7 @@
 </style>
 <div class="d-flex">
   <div class="mainContent d-flex flex-nowrap fs-5" style="min-height: 85vh; overflow-x: auto; overflow-y: hidden;">
-    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light">
+    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light w-100">
       <hr />
       <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item">
@@ -39,9 +39,21 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link link-dark">
+          <a href="/settings/favourite" class="nav-link link-dark">
             <i class="fas fa-book"></i>
-            <span>Courses</span>
+            <span>Favorite</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/settings/courseLecture" class="nav-link link-dark">
+            <i class="fas fa-book"></i>
+            <span>CoursesL</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/settings/courseStudent" class="nav-link link-dark">
+            <i class="fas fa-book"></i>
+            <span>CoursesS</span>
           </a>
         </li>
         <li class="nav-item">
@@ -119,7 +131,7 @@
           {{#each this.newCourses}}
           <tr>
             <td>{{name}}</td>
-            <td>{{author}}</td>
+            <td>{{author.username}}</td>
             <td>${{price}}</td>
             <td><a href="/course/{{name}}" class="btn btn-secondary text-center text-white">View</a></td>
           </tr>
@@ -139,7 +151,7 @@
           </tr>
           {{#each this.newStudents}}
           <tr>
-            <td><img src={{avatar}} alt="" /></td>
+            <td><img src={{avatar}} alt="" class="rounded-circle p-1 bg-secondary" width="50" /></td>
             <td>{{username}}</td>
           </tr>
           {{/each}}

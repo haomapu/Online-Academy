@@ -40,7 +40,10 @@ const courseSchema = new mongoose.Schema({
   lastUpdate: {
     type: Date,
   },
-
+  totalView: {
+    type: Number,
+    default: 0,
+  },
   chapters: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: "Chapter",
@@ -53,7 +56,7 @@ const courseSchema = new mongoose.Schema({
 
   category: {
     type: [mongoose.Schema.Types.ObjectId],
-    ref: "Category",
+    ref: "SubCategory",
   },
 });
 

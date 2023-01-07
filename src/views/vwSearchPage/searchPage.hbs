@@ -1,5 +1,5 @@
 <div class="container">
-  <h3>{{this.courses.length}} results for "{{this.text}}"</h3>
+  <h3>{{this.total}} results for "{{this.text}}"</h3>
   <div style="display: flex; flex-wrap: wrap; row-gap: .8rem;">
     <div class="dropdown ms-0">
       <form id="filter" method="get">
@@ -24,7 +24,7 @@
   <div style="display: flex; margin-top: 10px">
     <div class="offcanvasFilter">
       <div class="offcanvas-lg offcanvas-end" data-bs-scroll="true" tabindex="-1" id="filterSearch"
-        aria-labelledby="filterSearchLabel">
+        aria-labelledby="filterSearchLabel" style="width: 280px">
         <div class="offcanvas-header">
           <h5 class="offcanvas-title" id="filterSearchLabel">{{this.courses.length}} results</h5>
           <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#filterSearch"
@@ -35,32 +35,23 @@
             <div class="accordion open" id="accordionCollapse">
               <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOne">
-                  <button class="accordion-button fw-bold fs-6 collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                  <button class="accordion-button fw-bold fs-6" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                     Topic
                   </button>
                 </h2>
-                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
                   data-bs-parent="#accordionCollapse" style="font-size: 15px">
                   <div class="accordion-body">
+                    {{#each this.categories}}
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                      <input class="form-check-input" type="radio" name="cat" value="{{name}}" id="flexCheckDefault"
+                        form="filter" />
                       <label class="form-check-label" for="flexCheckDefault">
-                        Python
+                        {{name}}
                       </label>
                     </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                      <label class="form-check-label" for="flexCheckDefault">
-                        Python
-                      </label>
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                      <label class="form-check-label" for="flexCheckDefault">
-                        Python
-                      </label>
-                    </div>
+                    {{/each}}
                   </div>
                 </div>
               </div>
@@ -70,16 +61,24 @@
                 <h2 class="accordion-header" id="headingTwo">
                   <button class="accordion-button fw-bold fs-6 collapsed" type="button" data-bs-toggle="collapse"
                     data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    Language
+                    Price
                   </button>
                 </h2>
                 <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
                   data-bs-parent="#accordionCollapse" style="font-size: 15px">
                   <div class="accordion-body">
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                      <input class="form-check-input" type="checkbox" name="cost" value="paid" id="flexCheckDefault"
+                        form="filter" />
                       <label class="form-check-label" for="flexCheckDefault">
-                        English
+                        Paid
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="cost" value="free" id="flexCheckDefault"
+                        form="filter" />
+                      <label class="form-check-label" for="flexCheckDefault">
+                        Free
                       </label>
                     </div>
                   </div>
@@ -91,41 +90,15 @@
                 <h2 class="accordion-header" id="headingThree">
                   <button class="accordion-button fw-bold fs-6 collapsed" type="button" data-bs-toggle="collapse"
                     data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                    Price
+                    Ratings
                   </button>
                 </h2>
                 <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
                   data-bs-parent="#accordionCollapse" style="font-size: 15px">
                   <div class="accordion-body">
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                      <label class="form-check-label" for="flexCheckDefault">
-                        Paid
-                      </label>
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                      <label class="form-check-label" for="flexCheckDefault">
-                        Free
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="accordion open" id="accordionCollapse">
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="headingFour">
-                  <button class="accordion-button fw-bold fs-6 collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                    Ratings
-                  </button>
-                </h2>
-                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour"
-                  data-bs-parent="#accordionCollapse" style="font-size: 15px">
-                  <div class="accordion-body">
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
+                      <input class="form-check-input" type="radio" name="rating" id="flexRadioDefault1" form="filter"
+                        value="4.5" />
                       <i class="fa-sharp fa-solid fa-star text-pink"></i>
                       <i class="fa-sharp fa-solid fa-star text-pink"></i>
                       <i class="fa-sharp fa-solid fa-star text-pink"></i>
@@ -136,7 +109,8 @@
                       </label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
+                      <input class="form-check-input" type="radio" name="rating" id="flexRadioDefault1" form="filter"
+                        value="4.0" />
                       <i class="fa-sharp fa-solid fa-star text-pink"></i>
                       <i class="fa-sharp fa-solid fa-star text-pink"></i>
                       <i class="fa-sharp fa-solid fa-star text-pink"></i>
@@ -147,7 +121,8 @@
                       </label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
+                      <input class="form-check-input" type="radio" name="rating" id="flexRadioDefault1" form="filter"
+                        value="3.5" />
                       <i class="fa-sharp fa-solid fa-star text-pink"></i>
                       <i class="fa-sharp fa-solid fa-star text-pink"></i>
                       <i class="fa-sharp fa-solid fa-star text-pink"></i>
@@ -158,7 +133,8 @@
                       </label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
+                      <input class="form-check-input" type="radio" name="rating" id="flexRadioDefault1" form="filter"
+                        value="3.0" />
                       <i class="fa-sharp fa-solid fa-star text-pink"></i>
                       <i class="fa-sharp fa-solid fa-star text-pink"></i>
                       <i class="fa-sharp fa-solid fa-star text-pink"></i>
@@ -172,33 +148,10 @@
                 </div>
               </div>
             </div>
-            <div class="accordion open" id="accordionCollapse">
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="headingFive">
-                  <button class="accordion-button fw-bold fs-6 collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-                    Video Duration
-                  </button>
-                </h2>
-                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive"
-                  data-bs-parent="#accordionCollapse" style="font-size: 15px">
-                  <div class="accordion-body">
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                      <label class="form-check-label" for="flexCheckDefault">
-                        0-1 Hour
-                      </label>
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                      <label class="form-check-label" for="flexCheckDefault">
-                        1-3 Hours
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <button class="btn btn-secondary text-white dropdown-toggle mt-2" type="button" onClick="this.form.submit()"
+              form="filter">
+              Submit
+            </button>
           </div>
         </div>
       </div>
@@ -225,6 +178,30 @@
         </div>
       </div>
       {{/each}}
+      <div class="d-flex justify-content-center pt-4">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item" style="color: se;">
+              <a class="page-link text-dark fs-5" href="?page=" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span></a>
+            </li>
+            {{#each pageNumbers}}
+            {{#if isCurrent}}
+            <li class="page-item active" aria-current="page">
+              <span class="page-link bg-light border-secondary text-dark fs-5">{{value}}</span>
+            </li>
+            {{else}}
+            <li class="page-item">
+              <a class="page-link text-dark fs-5" href="?page={{value}}">{{value}}</a>
+            </li>
+            {{/if}}
+            {{/each}}
+            <a class="page-link text-dark fs-5" href="?page=" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span></a>
+            </li>
+          </ul>
+        </nav>
+      </div>
       <div class="col-6">
         <h3 class="mb-3">Hot and Fresh Courses</h3>
       </div>
@@ -401,23 +378,6 @@
           <span class="visually-hidden">Next</span>
         </button>
       </div>
-      <nav aria-label="Page navigation example">
-        <ul class="pagination">
-          <li class="page-item">
-            <a class="page-link" href="#" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-          </li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
     </div>
   </div>
 </div>

@@ -54,10 +54,11 @@
         </form>
         {{#if user}}
           {{#if user.username}}
-            <a href="#" class="text-primary align-middle me-2 fs-5 links">{{user.username}}</a>
+            <a href="/settings" class="text-primary align-middle me-2 fs-5 links">{{user.username}}</a>
           {{else}}
-            <a href="#" class="text-primary align-middle me-2 fs-5 links">{{user.displayName}}</a>
+            <a href="/settings" class="text-primary align-middle me-2 fs-5 links">{{user.displayName}}</a>
           {{/if}}
+          <a href="/settings" class="me-2"><img src = "{{user.avatar}}" class="rounded-circle" alt="" width="35" height="35"></a>
             <a class="btn btn-outline-secondary me-2 btn-w" href="/logout" role="button">Log Out</a>
         {{else}}
         <a class="btn btn-outline-secondary me-2 btn-w" href="/signup" role="button">Sign Up</a>
