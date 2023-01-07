@@ -11,7 +11,7 @@
 </style>
 
 <div class="d-flex">
-  <div class="mainContent d-flex flex-nowrap fs-5" style="min-height: 100vh; overflow-x: auto; overflow-y: hidden;">
+  <div class="mainContent d-flex flex-nowrap fs-5" style="min-height: 85vh; overflow-x: auto; overflow-y: hidden;">
     <div class="d-flex flex-column flex-shrink-0 p-3 bg-light w-100">
       <hr />
       <ul class="nav nav-pills flex-column mb-auto">
@@ -21,6 +21,7 @@
             <span>Profile</span>
           </a>
         </li>
+        {{#if admin}}
         <li class="nav-item">
           <a href="/settings/dashboard" class="nav-link link-dark">
             <i class="fa-solid fa-table-columns"></i>
@@ -34,15 +35,38 @@
           </a>
         </li>
         <li class="nav-item">
+          <a href="/settings/courseAdmin" class="nav-link link-dark">
+            <i class="fas fa-book"></i>
+            <span>CoursesA</span>
+          </a>
+        </li>
+        <div class="dropdown">
+          <a class="btn dropdown-toggle nav-link link-dark" href="#" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <i class="fas fa-users"></i>
+            <span>Users</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="nav-item dropdown-item">
+              <a href="/settings/lecturerAdmin" class="nav-link link-dark">
+                <i class="fas fa-users"></i>
+                <span>Lecturers</span>
+              </a>
+            </li>
+            <li class="nav-item dropdown-item">
+              <a href="/settings/studentAdmin" class="nav-link link-dark">
+                <i class="fas fa-users"></i>
+                <span>Students</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        {{/if}}
+        {{#if student}}
+        <li class="nav-item">
           <a href="/settings/favourite" class="nav-link link-dark">
             <i class="fas fa-book"></i>
             <span>Favorite</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="/settings/courseLecture" class="nav-link active" aria-current="page">
-            <i class="fas fa-book"></i>
-            <span>CoursesL</span>
           </a>
         </li>
         <li class="nav-item">
@@ -51,12 +75,15 @@
             <span>CoursesS</span>
           </a>
         </li>
+        {{/if}}
+        {{#if lecturer}}
         <li class="nav-item">
-          <a href="#" class="nav-link link-dark">
-            <i class="fas fa-users"></i>
-            <span>Users</span>
+          <a href="/settings/courseLecture" class="nav-link active" aria-current="page">
+            <i class="fas fa-book"></i>
+            <span>CoursesL</span>
           </a>
         </li>
+        {{/if}}
       </ul>
       <hr />
       <ul class="nav nav-pills flex-column">
@@ -68,7 +95,7 @@
       </ul>
     </div>
   </div>
-  <div class="container">
+  <div class="container" style="flex: 3">
     <dic class="d-flex flex-column">
       <h2 class="mt-3 ml-5">Your Course</h2>
       <hr style="margin-top: -10px;" />
