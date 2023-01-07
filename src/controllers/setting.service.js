@@ -380,20 +380,14 @@ const settingService = {
       }
       const { oldPass, newPass, confirmPass } = req.body;
       var equal = await bcrypt.compareSync(oldPass, curUser.password);
-      if (!equal) {
-        res.render("vwSettingsPage/editPage", {
-          unsuccess: true,
-        });
-      } else {
-        const newHashPassword = await bcrypt.hash(newPass, 10);
-        await User.updateOne(
-          { _id: curUser._id },
-          { password: newHashPassword }
-        );
-        res.render("vwSettingsPage/editPage", {
-          success: true,
-        });
+      if(!equal) {
+        res.json({unsuccess:true});
       }
+      const newHashPassword = await bcrypt.hash(newPass, 10);
+      // await User.updateOne(
+      //   { _id: curUser._id },
+      //   { password: newHashPassword }
+      // );
     } catch (e) {
       res.send(e);
     }

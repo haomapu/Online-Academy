@@ -1,3 +1,6 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
 <style>
   @media screen and (max-width: 940px) {
     .mainContent li span {
@@ -166,7 +169,8 @@
             </div>
           </div>
         </form>
-        <form name="changePassForm" method="post" class="mt-3" onsubmit="validateForm()" action="/settings/changePass">
+
+        <form id ="changePassForm" method="post" class="mt-3" action="/settings/changePass">
           <div class="card">
             <div class="card-body">
               <div class="row mb-3">
@@ -174,7 +178,7 @@
                   <h6 class="mb-0">Old Password</h6>
                 </div>
                 <div class="col-sm-9 text-secondary">
-                  <input type="text" class="form-control" name="oldPass" />
+                  <input type="text" class="form-control" name="oldPass" id="oldPass"/>
                 </div>
               </div>
               <div class="row mb-3">
@@ -182,7 +186,7 @@
                   <h6 class="mb-0">New Password</h6>
                 </div>
                 <div class="col-sm-9 text-secondary">
-                  <input type="text" class="form-control" name="newPass" />
+                  <input type="text" class="form-control" name="newPass" id="newPass"/>
                 </div>
               </div>
               <div class="row mb-3">
@@ -190,7 +194,7 @@
                   <h6 class="mb-0">Confirm Password</h6>
                 </div>
                 <div class="col-sm-9 text-secondary">
-                  <input type="text" class="form-control" name="confirmPass" />
+                  <input type="text" class="form-control" name="confirmPass" id="confirmPass"/>
                 </div>
               </div>
               <div class="row">
@@ -199,16 +203,22 @@
                   <button id="btnChange" type="submit" class="btn btn-secondary text-white px-4">
                     Save Changes
                   </button>
-                  {{#if success}}
-                  <div style="display:inline-block; font-size:20px;" class="alert alert-success" role="alert">
-                    Change Password Successfully!
-                  </div>
-                  {{/if}}
-                  {{#if unsuccess}}
-                  <div style="display:inline-block; font-size:20px;" class="alert alert-danger" role="alert">
-                    Old Password Is Not Correct!
-                  </div>
-                  {{/if}}
+                    <div id="empty" hidden style="display:inline-block; font-size:12px;"class="alert alert-danger" role="alert">
+                      All Fields Need To Be Filled!
+                    </div>
+                     <div id="minLength" hidden style="display:inline-block; font-size:12px;"class="alert alert-danger" role="alert">
+                      The Password Must Be At Least 5 Characters!
+                    </div>
+                    <div id="notEqual" hidden style="display:inline-block; font-size:12px;"class="alert alert-danger" role="alert">
+                      New Password and Confirm Password Can't Be Different!
+                    </div>
+                    <div id="notEqual1" hidden style="display:inline-block; font-size:12px;"class="alert alert-danger" role="alert">
+                      Old Password and New Password Can't Be The Same!
+                    </div>
+                    {{!-- <div id="unsuccess" hidden style="display:inline-block; font-size:12px;"class="alert alert-danger" role="alert">
+                      Old Password Is Not Correct!
+                    </div> --}}
+
                 </div>
               </div>
             </div>
@@ -219,17 +229,41 @@
   </div>
 </div>
 
-
-<script type="text/javascript">
-  $('#btnChange').click(function () {
-    var oldPass = document.getElementById().value;
-    console.log(1)
-    var newPass = document.changePassForm.newPass.value;
-    var confirmPass = document.changePassForm.confirmPass.value;
-
-    if (oldPass == null || oldPass == "" || newPass == null || newPass == "" || confirmPass == null || confirmPass == "") {
-      console.log('abc');
-      return false;
+<script type="text/javascript">  
+$('#btnChange').click(function(e){
+ // $('#unsuccess').atrr('hidden',''); 
+  $('#empty').attr('hidden','');
+  $('#minLength').attr('hidden','');
+  $('#notEqual').attr('hidden','');
+  $('#notEqual1').attr('hidden','');
+  const oldPass = $('#oldPass').val();
+  const newPass = $('#newPass').val();
+  const confirmPass = $('#confirmPass').val();
+  if (oldPass.length === 0 || newPass.length === 0 || confirmPass.length === 0){  
+    $('#empty').removeAttr('hidden');
+    return;
+  } else if (newPass.length < 5 || confirmPass.length < 5) {
+    $('#minLength').removeAttr('hidden');
+    return;
+  } else if(newPass != confirmPass) {
+    $('#notEqual').removeAttr('hidden');
+    return;
+  } else if(newPass == oldPass) {
+    $('#notEqual1').removeAttr('hidden');
+    return;
+  } 
+});  
+</script>  
+{{!-- 
+<script>
+  $('#changePassForm').on('submit', function (e) {
+    e.preventDefault();
+ alert('Please input old password.');
+    const oldPass = $('#oldPass').val();
+    if (oldPass.length === 0) {
+      e.preventDefault();
+      alert('Please input old password.');
     }
   });
-</script>
+</script> --}}
+
