@@ -8,7 +8,7 @@ import passport from "passport";
 import authenticationMiddleware from "../middlewares/authentication.js";
 import mailer from "../utils/mailer.js";
 import userAuthorization from "../middlewares/authorization.js";
-
+import mongoose from "mongoose";
 let userMail;
 
 const mainService = {
@@ -381,5 +381,6 @@ const mainService = {
     }
   },
 };
+
 
 export default mainService;
