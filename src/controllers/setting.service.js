@@ -4,6 +4,7 @@ import Favorite from "../models/favorite.js";
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
 import mailer from "../utils/mailer.js";
+import Category from "../models/category.js";
 
 let userMail;
 let newInfo;
@@ -34,10 +35,27 @@ const settingService = {
       } else {
         role = "User";
       }
-      res.render("vwSettingsPage/settingsPage", {
-        user: user,
-        role: role,
-      });
+      if (user.role === 3) {
+        res.render("vwSettingsPage/settingsPage", {
+          user: user,
+          role: role,
+          admin: true,
+        });
+      }
+      if (user.role === 2) {
+        res.render("vwSettingsPage/settingsPage", {
+          user: user,
+          role: role,
+          lecturer: true,
+        });
+      }
+      if (user.role === 1) {
+        res.render("vwSettingsPage/settingsPage", {
+          user: user,
+          role: role,
+          student: true,
+        });
+      }
     } catch (e) {
       res.send(e);
     }
@@ -55,11 +73,11 @@ const settingService = {
     var nPages;
     const curPage = req.query.page || 1;
     const offset = (curPage - 1) * limit;
-    const courseLecture = await Course.find({ author: curUser.fullname })
+    const courseLecture = await Course.find({ author: curUser._id })
       .lean()
       .skip(offset)
       .limit(limit);
-    const total = await Course.find({ author: curUser.fullname }).count();
+    const total = await Course.find({ author: curUser._id }).count();
 
     total % limit != 0
       ? (nPages = Math.ceil(total / limit))
@@ -76,6 +94,7 @@ const settingService = {
     res.render("vwSettingsPage/courseLecture", {
       course: courseLecture,
       pageNumbers: pageNumbers,
+      lecturer: true,
     });
   },
 
@@ -128,6 +147,7 @@ const settingService = {
     res.render("vwSettingsPage/courseStudent", {
       pageNumbers: pageNumbers,
       courses: courses,
+      student: true,
     });
   },
 
@@ -180,6 +200,7 @@ const settingService = {
     res.render("vwSettingsPage/favouriteCourse", {
       pageNumbers: pageNumbers,
       courses: courses,
+      student: true,
     });
   },
 
@@ -234,10 +255,27 @@ const settingService = {
       } else {
         role = "User";
       }
-      res.render("vwSettingsPage/editPage", {
-        user: user,
-        role: role,
-      });
+      if (user.role === 3) {
+        res.render("vwSettingsPage/editPage", {
+          user: user,
+          role: role,
+          admin: true,
+        });
+      }
+      if (user.role === 2) {
+        res.render("vwSettingsPage/editPage", {
+          user: user,
+          role: role,
+          lecturer: true,
+        });
+      }
+      if (user.role === 1) {
+        res.render("vwSettingsPage/editPage", {
+          user: user,
+          role: role,
+          student: true,
+        });
+      }
     } catch (e) {
       res.send(e);
     }
@@ -324,6 +362,7 @@ const settingService = {
         courses: courses,
         newStudents: newStudents,
         newCourses: newCourses,
+        admin: true,
       });
     } catch (e) {
       res.send(e);
@@ -358,6 +397,128 @@ const settingService = {
     } catch (e) {
       res.send(e);
     }
+  },
+
+  getCourseAdmin: async (req, res) => {
+    var curUser;
+    if (req.isAuthenticated()) {
+      curUser = req.user;
+    } else {
+      res.redirect("/login");
+      return;
+    }
+
+    const category = await Category.find().lean();
+    const cat = req.query.cat;
+
+    const limit = 3;
+    var nPages;
+    const curPage = req.query.page || 1;
+    const offset = (curPage - 1) * limit;
+    const courses = await Course.find()
+      .lean()
+      .sort({ lastUpdate: -1 })
+      .skip(offset)
+      .limit(limit);
+    const total = await Course.find().count();
+
+    total % limit != 0
+      ? (nPages = Math.ceil(total / limit))
+      : (nPages = total / limit);
+
+    const pageNumbers = [];
+
+    for (let i = 1; i <= nPages; i++) {
+      pageNumbers.push({
+        value: i,
+        isCurrent: i === +curPage,
+      });
+    }
+
+    res.render("vwSettingsPage/courseAdmin", {
+      pageNumbers: pageNumbers,
+      courses: courses,
+      admin: true,
+      cat: category,
+    });
+  },
+
+  getStudentAdmin: async (req, res) => {
+    var curUser;
+    if (req.isAuthenticated()) {
+      curUser = req.user;
+    } else {
+      res.redirect("/login");
+      return;
+    }
+
+    const limit = 5;
+    var nPages;
+    const curPage = req.query.page || 1;
+    const offset = (curPage - 1) * limit;
+    const students = await User.find({ role: 1 })
+      .lean()
+      .skip(offset)
+      .limit(limit);
+    const total = await User.find({ role: 1 }).count();
+
+    total % limit != 0
+      ? (nPages = Math.ceil(total / limit))
+      : (nPages = total / limit);
+
+    const pageNumbers = [];
+
+    for (let i = 1; i <= nPages; i++) {
+      pageNumbers.push({
+        value: i,
+        isCurrent: i === +curPage,
+      });
+    }
+
+    res.render("vwSettingsPage/studentAdmin", {
+      pageNumbers: pageNumbers,
+      students: students,
+      admin: true,
+    });
+  },
+
+  getLecturerAdmin: async (req, res) => {
+    var curUser;
+    if (req.isAuthenticated()) {
+      curUser = req.user;
+    } else {
+      res.redirect("/login");
+      return;
+    }
+
+    const limit = 5;
+    var nPages;
+    const curPage = req.query.page || 1;
+    const offset = (curPage - 1) * limit;
+    const lecturers = await User.find({ role: 2 })
+      .lean()
+      .skip(offset)
+      .limit(limit);
+    const total = await User.find({ role: 2 }).count();
+
+    total % limit != 0
+      ? (nPages = Math.ceil(total / limit))
+      : (nPages = total / limit);
+
+    const pageNumbers = [];
+
+    for (let i = 1; i <= nPages; i++) {
+      pageNumbers.push({
+        value: i,
+        isCurrent: i === +curPage,
+      });
+    }
+
+    res.render("vwSettingsPage/lecturerAdmin", {
+      pageNumbers: pageNumbers,
+      lecturers: lecturers,
+      admin: true,
+    });
   },
 };
 export default settingService;
