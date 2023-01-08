@@ -1,3 +1,4 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
   @media screen and (min-width: 1000px){
     #textInput{
@@ -42,9 +43,45 @@
         <div class="text-center mb-3 px-5">
             <button id="btnSignUp" type="submit" class="btn btn-secondary text-light w-auto btn-block btn-lg mb-3">Sign up</button>
         </div>
-
+        <div id="empty" hidden style="margin: 0 auto; width:40%; font-size:12px; text-align:center"class="alert alert-danger" role="alert">
+            All Fields Need To Be Filled!
+        </div>
+        <div id="minLength" hidden style="margin: 0 auto; width:40%; font-size:12px; text-align:center"class="alert alert-danger" role="alert">
+            Password Must Be At Least 5 Characters!
+        </div>
+         <div id="existed" hidden style="margin: 0 auto; width:40%; font-size:12px; text-align:center"class="alert alert-danger" role="alert">
+            This Email Is Already Existed!
+        </div>
+    
         <div class="text-center px-5 ">
             <p>Already have an account? <a href="/login" class="text-secondary">Login</a></p>
         </div>
     </form>
 </div>
+
+
+<script type="text/javascript">  
+$('#btnSignUp').click(function(e){
+  var check = false;
+  $('#existed').attr('hidden','');
+  $('#empty').attr('hidden','');
+  $('#minLength').attr('hidden','');
+  const email = $('#email').val();
+  const username = $('#username').val();
+  const password = $('#password').val();
+  if (email.length === 0 || username.length === 0 || password.length === 0){  
+    $('#empty').removeAttr('hidden');
+    e.preventDefault();
+  } else if (password.length < 5) {
+    $('#minLength').removeAttr('hidden');
+    e.preventDefault();
+  } else {
+    $.getJSON(`/is-available?email=${email}`, function (data) {
+    if (data === true) {
+      $('#existed').removeAttr('hidden');
+      e.preventDefault();
+    }
+  }); 
+  }
+});  
+</script>  

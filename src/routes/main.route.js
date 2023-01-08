@@ -20,4 +20,5 @@ router.get("/logout", mainService.logoutService);
 
 router.get("/postCourse", mainService.createCoursePage);
 
+router.get('/is-available', mainService.checkEmail);
 export default router;

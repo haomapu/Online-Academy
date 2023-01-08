@@ -247,11 +247,8 @@ const mainService = {
     try {
       const { username, email, password } = req.body;
       const hashedPassword = await bcrypt.hash(password, 10);
-      const user = await User.findOne({ email: email }).lean();
-
-      if (user) {
-        return res.redirect("/signup");
-      } else {
+      const user = await User.findOne({email:email});
+      if(!user) {
         await mailer.sendMail(email);
         const savedUser = new User({
           username: username,
@@ -267,13 +264,12 @@ const mainService = {
         res.render("vwLoginPage/otpPage", {
           mail: email,
           otpcount: 1,
-        });
+        });   
       }
     } catch (e) {
       res.send(e);
-      return res.redirect("/signup");
-    }
-  },
+  }
+},
 
   // lan sau de cai nay o student.service.js de day do
 
@@ -307,6 +303,15 @@ const mainService = {
       }
     }
   },
+
+  checkEmail: async function (req, res) {
+    const email = req.query.email;
+    const user = await User.findOne({email:email});
+    if (user === null)
+      return res.json(false);
+  
+    res.json(true);
+  }
 };
 
 export default mainService;
