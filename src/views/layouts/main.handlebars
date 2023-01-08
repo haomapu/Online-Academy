@@ -24,25 +24,26 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav">
           <!-- Dropdown -->
-          <li class="nav-item dropdown">
-            <a class="text-primary nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              Categories
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              {{#each categories}}
-              <li>
-                <input class="dropdown-item" name="main_cat" value="{{this.name}}" type="submit" form="search" />
-                <ul class="dropdown-menu dropdown-submenu">
-                  {{#each this.sub_categories}}
-                  <input class="dropdown-item" name="cat" value="{{this.name}}" type="submit" form="search" />
-                  {{/each}}
-                </ul>
-              </li>
-              {{/each}}
-
-            </ul>
-          </li>
+          <form action="/search" method="get" id="searchCat">
+            <li class="nav-item dropdown">
+              <a class="text-primary nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Categories
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                {{#each categories}}
+                <li>
+                  <input class="dropdown-item" name="main_cat" value="{{this.name}}" type="submit" form="searchCat" />
+                  <ul class="dropdown-menu dropdown-submenu">
+                    {{#each this.sub_categories}}
+                    <input class="dropdown-item" name="cat" value="{{this.name}}" type="submit" form="searchCat" />
+                    {{/each}}
+                  </ul>
+                </li>
+                {{/each}}
+              </ul>
+            </li>
+          </form>
         </ul>
         <form class="d-flex justify-content-between w-100" role="search" action="/search" method="get" id="search">
           <input class="rounded-pill form-control me-2" type="search" placeholder="Search" aria-label="Search"
