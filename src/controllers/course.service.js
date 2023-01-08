@@ -13,6 +13,7 @@ const courseService = {
     var avatar;
 
     const course = await Course.findOne({ name: req.params.id }).populate('author').lean();
+    await  Course.updateOne({name: req.params.id}, {totalView: course.totalView + 1})
     const top5cate = await Course.find({
       name: { $not: { $eq: req.params.id } }}).sort({ register_count: -1 }).lean().limit(top5);
     
