@@ -1,5 +1,6 @@
 <style>
   @media screen and (max-width: 940px) {
+    
     .mainContent li span {
       display: none;
     }
@@ -13,9 +14,8 @@
     background: #f05462;
   }
 </style>
-
 <div class="d-flex">
-  <div class="mainContent d-flex flex-nowrap fs-5" style="min-height: 85vh; overflow-x: auto; overflow-y: hidden;">
+    <div class="mainContent d-flex flex-nowrap fs-5" style="min-height: 85vh; overflow-x: auto; overflow-y: hidden;">
     <div class="d-flex flex-column flex-shrink-0 p-3 bg-light w-100">
       <hr />
       <ul class="nav nav-pills flex-column mb-auto">
@@ -33,7 +33,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="/settings/category" class="nav-link link-dark">
+          <a href="/settings/category" class="nav-link active" aria-current="page">
             <i class="fas fa-grip-horizontal"></i>
             <span>Categories</span>
           </a>
@@ -58,7 +58,7 @@
               </a>
             </li>
             <li class="nav-item dropdown-item">
-              <a href="/settings/studentAdmin" class="nav-link active" aria-current="page">
+              <a href="/settings/studentAdmin" class="nav-link link-dark">
                 <i class="fas fa-users"></i>
                 <span>Students</span>
               </a>
@@ -99,76 +99,30 @@
       </ul>
     </div>
   </div>
-  <div class="container" style="flex: 3">
-    <div class="card">
-      <h4 class="card-header">
-        Students
-      </h4>
-      <form action="" method="post" id="frmDelItem">
-        <input type="hidden" id="txtDelProID" name="id">
-      </form>
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th class="text-center">#</th>
-            <th>avatar</th>
-            <th>username</th>
-            <th>role</th>
-            <th>&nbsp;</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#each this.students}}
-          <tr>
-            <td scope="row" class="text-center">{{id}}</td>
-            <td><img src={{avatar}} alt="" class="rounded-circle p-1 bg-secondary" width="50" /></td>
-            <td>{{username}}</td>
-            <td>{{role}}</td>
-            <td>
-              <form method="post">
-                <button class=" btn btn-sm btn-danger delItem" formaction="/settings/studentAdmin/remove/{{_id}}">
-                  <i class="fa-solid fa-trash-can"></i>
-                </button>
-                {{#if verified}}
-                <button class=" btn btn-sm btn-danger delItem" formaction="/settings/studentAdmin/lock/{{_id}}">
-                  <i class="fa-solid fa-unlock"></i>
-                </button>
-                {{else}}
-                <button class=" btn btn-sm btn-danger delItem" formaction="/settings/studentAdmin/unlock/{{_id}}">
-                  <i class="fa-solid fa-lock"></i>
-                </button>
-                {{/if}}
-              </form>
-            </td>
-          </tr>
-          {{/each}}
-        </tbody>
-      </table>
-      <div class="d-flex justify-content-center pt-4">
-        <nav aria-label="Page navigation example">
-          <ul class="pagination">
-            <li class="page-item" style="color: se;">
-              <a class="page-link text-dark fs-5" href="?page=" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span></a>
-            </li>
-            {{#each pageNumbers}}
-            {{#if isCurrent}}
-            <li class="page-item active" aria-current="page">
-              <span class="page-link bg-light border-secondary text-dark fs-5">{{value}}</span>
-            </li>
-            {{else}}
-            <li class="page-item">
-              <a class="page-link text-dark fs-5" href="?page={{value}}">{{value}}</a>
-            </li>
-            {{/if}}
-            {{/each}}
-            <a class="page-link text-dark fs-5" href="?page=" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span></a>
-            </li>
-          </ul>
-        </nav>
-      </div>
+
+  <div class="main-body container" style="flex: 3">
+    <div class="d-flex justify-content-between align-items-center">
+        <p class="lead fs-1 fst-talic fw-bold">
+            Categories
+        </p>
+        <div>
+            <a class="btn btn-outline-secondary me-2 fw-bold" href="#" role="button">Edit</a>
+        </div>
+    </div>
+
+    <div class="border list-group list-group small">
+        {{#each categories}}
+        <div class="border">
+            <a href="#" class="list-group-item list-group-item-action fs-4 fw-bold" >
+                    {{this.name}}
+            </a>
+            <div class="list-group">
+                {{#each this.sub_categories}}
+                <a href="#" class="ps-5 fs-5 list-group-item list-group-item-action">{{this.name}}</a>
+                {{/each}}
+            </div>
+        </div>
+        {{/each}}
     </div>
   </div>
-</div>
 </div>

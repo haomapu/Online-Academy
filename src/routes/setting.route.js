@@ -25,6 +25,8 @@ router.get("/isSamePass", settingService.isSamePass);
 
 router.get("/dashboard", settingService.getDashboardPage);
 
+router.get("/category", settingService.getCategorySetting);
+
 router.post("/changePass", settingService.changePasswordService);
 
 router.get("/courseAdmin", settingService.getCourseAdmin);

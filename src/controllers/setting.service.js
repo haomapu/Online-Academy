@@ -346,7 +346,7 @@ const settingService = {
         res.redirect("/login");
         return;
       }
-
+      const cats = await Category.find().lean();
       const students = await User.find({ role: 1 }).lean();
       const lecturers = await User.find({ role: 2 }).lean();
       const courses = await Course.find().lean();
@@ -363,6 +363,7 @@ const settingService = {
         newStudents: newStudents,
         newCourses: newCourses,
         admin: true,
+        cats: cats,
       });
     } catch (e) {
       res.send(e);
@@ -543,5 +544,37 @@ const settingService = {
     }
     res.json(true);
   },
+  
+  getCategorySetting: async (req, res) => {
+    try {
+      var curUser;
+      if (req.isAuthenticated()) {
+        curUser = req.user;
+      } else {
+        res.redirect("/login");
+        return;
+      }
+
+      const students = await User.find({ role: 1 }).lean();
+      const lecturers = await User.find({ role: 2 }).lean();
+      const courses = await Course.find().lean();
+      const newStudents = await User.find({ role: 1 }).limit(5).lean();
+      const newCourses = await Course.find()
+        .populate("author")
+        .sort({ lastUpdate: -1 })
+        .limit(5)
+        .lean();
+      res.render("vwSettingsPage/vwAdminPage/categoryAdmin", {
+        students: students,
+        lecturers: lecturers,
+        courses: courses,
+        newStudents: newStudents,
+        newCourses: newCourses,
+        admin: true,
+      });
+    } catch (e) {
+      res.send(e);
+    }
+  }
 };
 export default settingService;
