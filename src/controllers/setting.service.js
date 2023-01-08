@@ -91,7 +91,7 @@ const settingService = {
         isCurrent: i === +curPage,
       });
     }
-    res.render("vwSettingsPage/courseLecture", {
+    res.render("vwSettingsPage/vwLecturerPage/courseLecture", {
       course: courseLecture,
       pageNumbers: pageNumbers,
       lecturer: true,
@@ -144,7 +144,7 @@ const settingService = {
       });
     }
 
-    res.render("vwSettingsPage/courseStudent", {
+    res.render("vwSettingsPage/vwStudentPage/courseStudent", {
       pageNumbers: pageNumbers,
       courses: courses,
       student: true,
@@ -197,7 +197,7 @@ const settingService = {
       });
     }
 
-    res.render("vwSettingsPage/favouriteCourse", {
+    res.render("vwSettingsPage/vwStudentPage/favouriteCourse", {
       pageNumbers: pageNumbers,
       courses: courses,
       student: true,
@@ -356,7 +356,7 @@ const settingService = {
         .sort({ lastUpdate: -1 })
         .limit(5)
         .lean();
-      res.render("vwSettingsPage/dashboardPage", {
+      res.render("vwSettingsPage/vwAdminPage/dashboardPage", {
         students: students,
         lecturers: lecturers,
         courses: courses,
@@ -380,8 +380,8 @@ const settingService = {
       }
       const { oldPass, newPass, confirmPass } = req.body;
       var equal = await bcrypt.compareSync(oldPass, curUser.password);
-      if(!equal) {
-        res.json({unsuccess:true});
+      if (!equal) {
+        res.json({ unsuccess: true });
       }
       const newHashPassword = await bcrypt.hash(newPass, 10);
       // await User.updateOne(
@@ -429,7 +429,7 @@ const settingService = {
       });
     }
 
-    res.render("vwSettingsPage/courseAdmin", {
+    res.render("vwSettingsPage/vwAdminPage/courseAdmin", {
       pageNumbers: pageNumbers,
       courses: courses,
       admin: true,
@@ -469,7 +469,7 @@ const settingService = {
       });
     }
 
-    res.render("vwSettingsPage/studentAdmin", {
+    res.render("vwSettingsPage/vwAdminPage/studentAdmin", {
       pageNumbers: pageNumbers,
       students: students,
       admin: true,
@@ -518,7 +518,7 @@ const settingService = {
       });
     }
 
-    res.render("vwSettingsPage/lecturerAdmin", {
+    res.render("vwSettingsPage/vwAdminPage/lecturerAdmin", {
       pageNumbers: pageNumbers,
       lecturers: lecturers,
       admin: true,

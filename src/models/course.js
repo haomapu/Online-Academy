@@ -58,6 +58,11 @@ const courseSchema = new mongoose.Schema({
     type: [mongoose.Schema.Types.ObjectId],
     ref: "SubCategory",
   },
+
+  sub_category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Category",
+  },
 });
 
 const Course = mongoose.model("Course", courseSchema);
