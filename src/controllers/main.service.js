@@ -117,18 +117,31 @@ const mainService = {
         });
       }
 
-      // let main_cat;
-      // if (req.query.main_cat) {
-      //   main_cat = await Category.findOne({ name: req.query.main_cat })
-      //     .populate("sub_categories")
-      //     .lean();
-      // }
+      let main_cat;
+      if (req.query.main_cat) {
+        main_cat = await Category.findOne({ name: req.query.main_cat });
+      }
+
+      if (main_cat) {
+        function removeItemAll(arr, value) {
+          var i = 0;
+          while (i < arr.length) {
+            if (String(arr[i].category) !== String(value._id)) {
+              arr.splice(i, 1);
+            } else {
+              ++i;
+            }
+          }
+          return arr;
+        }
+        courses = removeItemAll(courses, main_cat);
+      }
 
       if (cat) {
         function removeItemAll(arr, value) {
           var i = 0;
           while (i < arr.length) {
-            if (String(arr[i].category) !== String(value._id)) {
+            if (String(arr[i].sub_category) !== String(value._id)) {
               arr.splice(i, 1);
             } else {
               ++i;

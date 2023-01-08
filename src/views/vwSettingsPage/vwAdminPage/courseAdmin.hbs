@@ -101,16 +101,34 @@
   </div>
   <div class="container" style="flex: 3">
     <div class="card">
-      <div class="card-header d-flex justify-content-between">
+      <div class="card-header d-flex">
         <h4>Courses</h4>
-        <form id="filter" method="get">
+        <form id="filter" method="get" enctype="application/x-www-form-urlencoded">
           <button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownMenuButton1"
-            data-bs-toggle="dropdown" aria-expanded="false">
+            data-bs-toggle="dropdown" aria-expanded="false" style="margin-left: 5px">
             Category
           </button>
           <div class="dropdown-menu">
-            {{#each this.cat}}
-            <input class="dropdown-item" name="cat" type="submit" value="{{name}}" />
+            {{#each categories}}
+            <li>
+              <input class="dropdown-item" name="main_cat" value="{{this.name}}" type="submit" form="filter" />
+              <ul class="dropdown-menu dropdown-submenu">
+                {{#each this.sub_categories}}
+                <input class="dropdown-item" name="cat" value="{{this.name}}" type="submit" form="filter" />
+                {{/each}}
+              </ul>
+            </li>
+            {{/each}}
+          </div>
+          <button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownMenuButton1"
+            data-bs-toggle="dropdown" aria-expanded="false" style="margin-left: 5px">
+            Lecturer
+          </button>
+          <div class="dropdown-menu">
+            {{#each this.author}}
+            <li>
+              <input class="dropdown-item" name="author" value="{{author.username}}" type="submit" form="filter" />
+            </li>
             {{/each}}
           </div>
         </form>
@@ -131,6 +149,7 @@
         </thead>
         <tbody>
           {{#each this.courses}}
+          {{#if enable}}
           <tr>
             <td scope="row" class="text-center">{{id}}</td>
             <td>{{name}}</td>
@@ -139,38 +158,34 @@
                 aria-hidden="true"></i></td>
             <td>{{format_date lastUpdate}}</td>
             <td class="text-right">
-              <a data-id="{{id}}" class=" btn btn-sm btn-danger delItem" href="javascript:;" role="button">
-                <i class="fa-solid fa-trash-can"></i>
-              </a>
+              <form method="post">
+                <button class=" btn btn-sm btn-danger delItem" formaction="/settings/courseAdmin/disable/{{_id}}">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </form>
             </td>
           </tr>
+          {{else}}
+          <tr class="bg-danger">
+            <td scope="row" class="text-center">{{id}}</td>
+            <td>{{name}}</td>
+            <td>{{price}}</td>
+            <td class="text-center">{{round_number rating}}<i class="fa fa-star" style="color:rgba(228, 228, 22, 0.675)"
+                aria-hidden="true"></i></td>
+            <td>{{format_date lastUpdate}}</td>
+            <td class="text-right">
+              <form method="post">
+                <button class=" btn btn-sm btn-outline-light delItem"
+                  formaction="/settings/courseAdmin/disable/{{_id}}">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </form>
+            </td>
+          </tr>
+          {{/if}}
           {{/each}}
         </tbody>
       </table>
-      <div class="d-flex justify-content-center pt-4">
-        <nav aria-label="Page navigation example">
-          <ul class="pagination">
-            <li class="page-item" style="color: se;">
-              <a class="page-link text-dark fs-5" href="?page=" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span></a>
-            </li>
-            {{#each pageNumbers}}
-            {{#if isCurrent}}
-            <li class="page-item active" aria-current="page">
-              <span class="page-link bg-light border-secondary text-dark fs-5">{{value}}</span>
-            </li>
-            {{else}}
-            <li class="page-item">
-              <a class="page-link text-dark fs-5" href="?page={{value}}">{{value}}</a>
-            </li>
-            {{/if}}
-            {{/each}}
-            <a class="page-link text-dark fs-5" href="?page=" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span></a>
-            </li>
-          </ul>
-        </nav>
-      </div>
     </div>
   </div>
 </div>
