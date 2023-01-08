@@ -5,7 +5,7 @@ import Favorite from "../models/favorite.js";
 import User from "../models/user.js";
 const courseService = {
 
-  getCourseDetail: async (req, res) => {
+  getCourseDetail: async function(req, res){
     const top5 = 5;
     const limit = 4;
     var curUser;
@@ -60,11 +60,34 @@ const courseService = {
       }
     }
 
+    // if (req.query.page){
+    //   res.send({
+    //     feedbacks: feedbacks,
+    //     pageNumbers: pageNumbers,
+    //   })
+    //   return;
+    // }
+
     if (req.isAuthenticated()) {
       curUser = req.user;
       buy = await Register.find({$and:[ {student: curUser._id}, {course: course._id}]}).lean();
       avatar = curUser.hasOwnProperty("_json")? curUser.photos[0].value : curUser.avatar;
     }
+
+    if (req.query.ajax){
+      res.render("vwDetails/details", {
+        layout: false,
+        course: course,
+        feedbacks: feedbacks,
+        rec: top5cate,
+        pageNumbers: pageNumbers,
+        buy: buy,
+        avatar: avatar,
+        author: course.author,
+      });
+      return;
+    }
+
     res.render("vwDetails/details", {
       course: course,
       feedbacks: feedbacks,
@@ -75,6 +98,8 @@ const courseService = {
       author: course.author,
     });
   },
+
+
   
   feedbackService: async (req, res, next) => {
     try {
