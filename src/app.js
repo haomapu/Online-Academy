@@ -89,7 +89,7 @@ passport.use(
       console.log("[Error passport]", ex);
     }
     if (!user || !user.password || !state) {
-      return done(null, false, { error: "Sai email hoặc mật khẩu" });
+      return done(null, false, { error: "Sai username hoặc mật khẩu" });
     }
     if(!user.verified) {
       return done(null, false, { error: "Chưa xác nhận OTP"});
