@@ -128,13 +128,22 @@
         <div class="m-4">
             <ul class="nav nav-pills" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                <button class="fs-5 nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#one" type="button" role="tab" aria-controls="one" aria-selected="true">Add Category</button>
+                <button class="fs-6 nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#one" type="button" role="tab" aria-controls="one" aria-selected="true">Add Category</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                <button class="fs-5 nav-link" id="home-tab" data-bs-toggle="tab" data-bs-target="#two" type="button" role="tab" aria-controls="one" aria-selected="false">Update Category</button>
+                <button class="fs-6 nav-link" id="home-tab" data-bs-toggle="tab" data-bs-target="#two" type="button" role="tab" aria-controls="one" aria-selected="false">Add Sub Category</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                <button class="fs-5 nav-link" id="home-tab" data-bs-toggle="tab" data-bs-target="#three" type="button" role="tab" aria-controls="one" aria-selected="false">Remove Category</button>
+                <button class="fs-6 nav-link" id="home-tab" data-bs-toggle="tab" data-bs-target="#three" type="button" role="tab" aria-controls="one" aria-selected="false">Remove Category</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                <button class="fs-6 nav-link" id="home-tab" data-bs-toggle="tab" data-bs-target="#four" type="button" role="tab" aria-controls="one" aria-selected="false">Remove Sub Category</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                <button class="fs-6 nav-link" id="home-tab" data-bs-toggle="tab" data-bs-target="#five" type="button" role="tab" aria-controls="one" aria-selected="false">Update Category</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                <button class="fs-6 nav-link" id="home-tab" data-bs-toggle="tab" data-bs-target="#six" type="button" role="tab" aria-controls="one" aria-selected="false">Update Sub Category</button>
                 </li>
             </ul>
 
@@ -142,23 +151,84 @@
                 <div class="border p-3 tab-pane fade show active" id="one">
                     <form action="/settings/category/add" method="post">
                         <div class="mb-3">
-                            <label for="Category" class="form-label">Category</label>
-                            <input type="text" class="w-25 form-control" name="Category">
+                            <label for="name" class="form-label">Category</label>
+                            <input type="text" class="w-25 form-control" name="name">
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary">Add</button>
                     </form>
                 </div>
 
-                <div class="tab-pane fade" id="two">
-                Button 2 content
+                <div class="border p-3 tab-pane fade" id="two">
+                    <form action="/settings/subcategory/add" method="post">
+                        <label for="category" class="form-label">Category</label><br>
+                            {{#each categories}}
+                            <input class="ms-5" type="radio" name="mainCategory" value="{{this.name}}">
+                            <label class="fs-5">{{this.name}}</label><br>
+                            {{/each}}
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Sub Category</label>
+                            <input type="text" class="w-25 form-control" name="name">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </form>
                 </div>
 
-                <div class="tab-pane fade" id="three">
-                Button 2 contendsadt
+                <div class="border p-3 tab-pane fade" id="three">
+                    <form action="/settings/category/delete" method="post">
+                        <label for="category" class="form-label">Category</label><br>
+                            {{#each categories}}
+                            <input class="ms-5" type="radio" name="mainCategory" value="{{this.name}}">
+                            <label class="fs-5">{{this.name}}</label><br>
+                            {{/each}}
+                        <button type="submit" class="btn btn-primary">Remove</button>
+                    </form>
+                </div>
+                <div class="border p-3 tab-pane fade" id="four">
+                    <form action="/settings/subcategory/delete" method="post">
+                        <label for="category" class="form-label">Sub Category</label><br>
+                            {{#each categories}}
+                            {{#each this.sub_categories}}
+                                <input class="ms-5" type="radio" name="subCategory" value="{{this.name}}">
+                                <label class="fs-5">{{this.name}}</label><br>
+                            {{/each}}
+                            {{/each}}
+                        <button type="submit" class="btn btn-primary">Remove</button>
+                    </form>
+                </div>
+                <div class="border p-3 tab-pane fade" id="five">
+                    <form action="/settings/category/update" method="post">
+                        <label for="category" class="form-label">Category</label><br>
+                            {{#each categories}}
+                            <input class="ms-5" type="radio" name="mainCategory" value="{{this.name}}">
+                            <label class="fs-5">{{this.name}}</label><br>
+                            {{/each}}
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Enter name to change</label>
+                            <input type="text" class="w-25 form-control" name="name">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </form>
+                </div>
+                <div class="border p-3 tab-pane fade" id="six">
+                    <form action="/settings/subcategory/update" method="post">
+                        <label for="category" class="form-label">Sub Category</label><br>
+                            {{#each categories}}
+                            {{#each this.sub_categories}}
+                            <input class="ms-5" type="radio" name="subCategory" value="{{this.name}}">
+                            <label class="fs-5">{{this.name}}</label><br>
+                            {{/each}}
+                            {{/each}}
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Enter name to change</label>
+                            <input type="text" class="w-25 form-control" name="name">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </form>
+                </div>
                 </div>
             </div>
         </div>
-  </div>
+        <br><br><br><br><br><br><br><br><br>    
 </div>
 
 
