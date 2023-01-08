@@ -21,6 +21,8 @@ router.post("/edit", settingService.postEditProfile);
 
 router.post("/otp", settingService.otpService);
 
+router.get("/isSamePass", settingService.isSamePass);
+
 router.get("/dashboard", settingService.getDashboardPage);
 
 router.post("/changePass", settingService.changePasswordService);
