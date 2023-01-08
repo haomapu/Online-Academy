@@ -3,9 +3,9 @@
     </script>
 
 <div class="container">
-    <form method="POST">
+    <form id="myform" method="post" action="/postCourse">
         <!--begin::Card-->
-        <div class="card shadow">
+        {{!-- <div class="card shadow">
             <div class="card-header">
                 <div class="card-title">
                     <h3 class="card-label fw-bold">Infomation</h3>
@@ -47,13 +47,6 @@
                     </div>
                 </div>
                 <div class="form-group row justify-content-md-center  my-2">
-                    <label class="col-lg-3 fs-4 text-end">Description:</label>
-                    <div class="col-lg-7">
-                        <input name="shortDescription" class="form-control"
-                            placeholder="Introduction shorted to the course"></input>
-                    </div>
-                </div>
-                <div class="form-group row justify-content-md-center  my-2">
                     <label class="col-lg-3 fs-4 text-end">Overall:</label>
                     <div class="col-lg-7">
                         <textarea name="overview" class="form-control" rows="5"
@@ -79,10 +72,10 @@
             </div>
 
             <!--end::Form-->
-        </div>
+        </div> --}}
         <!--end::Card-->
         <!--begin::Card-->
-        <div class="card shadow my-3">
+        {{!-- <div class="card shadow my-3">
             <div class="card-header">
                 <div class="d-flex justify-content-between">
                     <h3 class="fw-bold m-0">Chapters</h3>
@@ -95,7 +88,7 @@
                     <div id="newinput1"></div>
                 </form>
             </div>
-        </div>
+        </div> --}}
         <!--begin::Form-->
 
         {{!-- <div class="card-body">
@@ -104,21 +97,20 @@
                 <!--begin::Card Chapter-->
                 <!--end::Card-->
             </div>
-        </div>
+        </div>--}}
 
         <div class="card card-custom roseanna px-10">
-            <div id="toolbar" class="h1">
-            </div>
             <div id="editor"></div>
-
+            <input name="text" style="display:none" id="hiddenArea"></input>
+            <button type="submit" value="Save">Save</button>
             <!--end::Form-->
-        </div> --}}
+        </div> 
         <!--end::Card-->
-        <div class="d-flex justify-content-center">
+        {{!-- <div class="d-flex justify-content-center">
             <button type="submit"
                 class="btn btn-md btn-secondary text-light fw-bold m-2">&emsp;&emsp;Create&emsp;&emsp;</button>
             <a href="/" class="btn btn-md btn-secondary text-light fw-bold m-2">&emsp;&emsp;Cancel&emsp;&emsp;</a>
-        </div>
+        </div> --}}
     </form>
 </div>
 
@@ -225,7 +217,6 @@
 
         ['clean']                                         // remove formatting button
     ];
-
     var quill = new Quill('#editor', {
         placeholder: 'Compose an epic...',
         theme: 'snow',
@@ -234,4 +225,8 @@
         },
         theme: 'snow'
     });
+
+    $("#myform").on("submit",function() {
+        $("#hiddenArea").val($("#editor").html());
+    })
 </script>
