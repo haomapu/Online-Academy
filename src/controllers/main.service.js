@@ -218,7 +218,9 @@ const mainService = {
     if (req.isAuthenticated()) {
       res.redirect("/");
     } else {
-      res.render("vwLoginPage/loginPage");
+      res.render("vwLoginPage/loginPage", {
+        message: req.flash('error')
+      });
     }
   },
 
@@ -240,7 +242,7 @@ const mainService = {
     successRedirect: "/",
     failureRedirect: "/login",
     failureFlash: true,
-    failureFlash: "Tài khoản hoặc mật khẩu không chính xác",
+    badRequestMessage: 'All Fields Need To Be Filled!'
   }),
 
   signupService: async (req, res) => {
@@ -270,8 +272,6 @@ const mainService = {
       res.send(e);
   }
 },
-
-  // lan sau de cai nay o student.service.js de day do
 
   createCoursePage: async (req, res) => {
     res.render("vwLecturer/createCourse");
@@ -311,7 +311,7 @@ const mainService = {
       return res.json(false);
   
     res.json(true);
-  }
+  },
 };
 
 export default mainService;

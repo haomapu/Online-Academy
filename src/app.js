@@ -17,7 +17,7 @@ import cookieSession from "cookie-session"
 import GoogleStrategy from "passport-google-oauth20";
 import FacebookStrategy from "passport-facebook";
 import LocalStrategy from "passport-local";
-import flash from "connect-flash";
+import flash from "connect-flash"
 //Inport router
 import activate_routes from './middlewares/routes.mdw.js';
 
@@ -55,6 +55,10 @@ app.use(passport.session());
 app.use(userAuthorization());
 //app.use(userAuthentication());
 app.use(flash());
+app.use((req, res, next) => {
+  res.locals.message = req.flash('message');
+  next();
+});
 
 passport.use(new GoogleStrategy({
   clientID: process.env.clientID,
@@ -81,18 +85,20 @@ function(accessToken, refreshToken, profile, cb) {
 passport.use(
   new LocalStrategy(async (username, password, done) => {
     const user = await User.findOne({ username: username });
-    
-    let state = null;
+    if(!user) {
+      return done(null, false,{message:'Username Does Not Exists!'});
+    }
+    let state = null; 
     try {
       state = await bcrypt.compareSync(password, user.password);
     } catch (ex) {
       console.log("[Error passport]", ex);
     }
     if (!user || !user.password || !state) {
-      return done(null, false, { error: "Sai username hoặc mật khẩu" });
+      return done(null, false, {message: "Wrong Password!" });
     }
     if(!user.verified) {
-      return done(null, false, { error: "Chưa xác nhận OTP"});
+      return done(null, false, {message: "OTP Isn't Verified!"});
     }
     return done(null, user);
   })
