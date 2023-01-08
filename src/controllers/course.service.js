@@ -5,7 +5,7 @@ import Favorite from "../models/favorite.js";
 import User from "../models/user.js";
 const courseService = {
 
-  getCourseDetail: async (req, res) => {
+  getCourseDetail: async function(req, res){
     const top5 = 5;
     const limit = 4;
     var curUser;
@@ -98,6 +98,8 @@ const courseService = {
       author: course.author,
     });
   },
+
+
   
   feedbackService: async (req, res, next) => {
     try {
