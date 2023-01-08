@@ -35,7 +35,7 @@ const courseService = {
         isCurrent: i === +curPage,
       });
     }
-    if (curPage > nPages || curPage <= 0) {
+    if ((curPage > nPages || curPage <= 0) && nPages != 0) {
       res.redirect('/course/' + course.name);
       return;
     }
