@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get("/:id", courseService.getCourseDetail);
 
-router.get("/test/course", courseService.viewCourse);
+router.get("/learn/courseID", courseService.viewCourse);
 
 router.post("/:id/fb", courseService.feedbackService);
 

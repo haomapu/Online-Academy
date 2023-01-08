@@ -1,12 +1,13 @@
 <style>
+    
+@media only screen and (max-device-width : 480px) {
+    .table-reponsive {
+        height: 300px !important;
+    }
+}
 .table-responsive {
   overflow-y:scroll;
   height:500px;
-}
-@media (min-width: 1080px) {
-    .table-reponsive {
-        height: 200px ;
-    }
 }
 </style>
 
@@ -18,8 +19,8 @@
       </div>
     <h4>Course Name</h4>
     </div>
-    <div class="col-sm-4 table-responsive">
-        <table class="border border-1 table align-middle mb-0 bg-white table-hover">
+    <div class="border col-sm-4 table-responsive">
+        <table class="table align-middle mb-0 bg-white table-hover">
             <thead class="bg-light">
                 <tr>
                     <th>Course Content</th>
