@@ -141,8 +141,8 @@ app.engine(
   "hbs",
   engine({
     defaultLayout: "main.handlebars",
-    section: hbs_sections(),
     helpers:{
+      section: hbs_sections(),
       format_number(val) {
         return numeral(val).format('0,0');
       },
