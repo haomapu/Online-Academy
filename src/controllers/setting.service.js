@@ -379,15 +379,15 @@ const settingService = {
         return;
       }
       const { oldPass, newPass, confirmPass } = req.body;
-      var equal = await bcrypt.compareSync(oldPass, curUser.password);
-      if (!equal) {
-        res.json({ unsuccess: true });
-      }
-      const newHashPassword = await bcrypt.hash(newPass, 10);
-      // await User.updateOne(
-      //   { _id: curUser._id },
-      //   { password: newHashPassword }
-      // );
+      const equal = await bcrypt.compareSync(oldPass, curUser.password);
+      if (equal) {
+        const newHashPassword = await bcrypt.hash(newPass, 10);
+        await User.updateOne(
+          { _id: curUser._id },
+          { password: newHashPassword }
+        );
+        res.redirect('/settings');
+      } 
     } catch (e) {
       res.send(e);
     }
@@ -533,6 +533,15 @@ const settingService = {
   unlockLecturer: async (req, res) => {
     await User.updateOne({ _id: req.params.id }, { verified: true });
     res.redirect("/settings/studentAdmin");
+  },
+
+  isSamePass: async function (req, res) {
+    const oldPass = req.query.oldPass;
+    const equal = await bcrypt.compareSync(oldPass, req.user.password);
+    if (!equal) {
+      return res.json(false);
+    }
+    res.json(true);
   },
 };
 export default settingService;
