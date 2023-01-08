@@ -1,3 +1,5 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <style>
   @media screen and (min-width: 1000px){
     #textInput{
@@ -29,11 +31,14 @@
                 <input type="password" name="password" id="password" class="form-control border border-1 border-info" />
             </div>
         </div>
-
+        
         <div class="text-center px-5">
             <button id="btnSignIn" type="submit" class="btn btn-secondary text-light w-auto btn-block btn-lg mb-4">Sign in</button>
         </div>
-
+        {{#if message}}
+            <div style="margin: 0 auto; width:40%; font-size:12px; text-align:center"class="alert alert-danger" role="alert"> {{message}}
+            </div>
+        {{/if}}
         <div class="text-center px-5">
             <p>Not a member? <a href="/signup" class="text-secondary">Register</a></p>
             <p>or sign in with:</p>
@@ -51,3 +56,4 @@
         </div>
     </form>
 </div>
+
