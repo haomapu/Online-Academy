@@ -610,12 +610,12 @@ const settingService = {
       const categories = await Category.find().populate("sub_categories").lean();
       req.session.categories = categories;
       var curUser;
-      // if (req.isAuthenticated()) {
-      //   curUser = req.user;
-      // } else {
-      //   res.redirect("/login");
-      //   return;
-      // }
+      if (req.isAuthenticated()) {
+        curUser = req.user;
+      } else {
+        res.redirect("/login");
+        return;
+      }
 
       const students = await User.find({ role: 1 }).lean();
       const lecturers = await User.find({ role: 2 }).lean();
