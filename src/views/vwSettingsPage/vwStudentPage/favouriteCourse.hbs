@@ -3,6 +3,10 @@
     .mainContent li span {
       display: none;
     }
+
+    a span {
+      display: none;
+    }
   }
 
   .mainContent li.nav-item:hover {
@@ -54,7 +58,7 @@
               </a>
             </li>
             <li class="nav-item dropdown-item">
-              <a href="/settings/studentAdmin" class="nav-link active" aria-current="page">
+              <a href="/settings/studentAdmin" class="nav-link link-dark">
                 <i class="fas fa-users"></i>
                 <span>Students</span>
               </a>
@@ -64,7 +68,7 @@
         {{/if}}
         {{#if student}}
         <li class="nav-item">
-          <a href="/settings/favourite" class="nav-link link-dark">
+          <a href="/settings/favourite" class="nav-link active" aria-current="page">
             <i class="fas fa-book"></i>
             <span>Favorite</span>
           </a>
@@ -96,67 +100,62 @@
     </div>
   </div>
   <div class="container" style="flex: 3">
-    <div class="card">
-      <h4 class="card-header">
-        Students
-      </h4>
-      <form action="" method="post" id="frmDelItem">
-        <input type="hidden" id="txtDelProID" name="id">
-      </form>
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th class="text-center">#</th>
-            <th>avatar</th>
-            <th>username</th>
-            <th>role</th>
-            <th>&nbsp;</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#each this.students}}
-          <tr>
-            <td scope="row" class="text-center">{{id}}</td>
-            <td><img src={{avatar}} alt="" class="rounded-circle p-1 bg-secondary" width="50" /></td>
-            <td>{{username}}</td>
-            <td>{{role}}</td>
-            <td>
-              <a data-id="{{id}}" class=" btn btn-sm btn-danger delItem" href="javascript:;" role="button">
-                <i class="fa-solid fa-trash-can"></i>
-              </a>
-              <a data-id="{{id}}" class=" btn btn-sm btn-danger delItem" href="javascript:;" role="button">
-                <i class="fa-solid fa-unlock"></i>
-              </a>
-            </td>
-          </tr>
-          {{/each}}
-        </tbody>
-      </table>
-      <div class="d-flex justify-content-center pt-4">
-        <nav aria-label="Page navigation example">
-          <ul class="pagination">
-            <li class="page-item" style="color: se;">
-              <a class="page-link text-dark fs-5" href="?page=" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span></a>
-            </li>
-            {{#each pageNumbers}}
-            {{#if isCurrent}}
-            <li class="page-item active" aria-current="page">
-              <span class="page-link bg-light border-secondary text-dark fs-5">{{value}}</span>
-            </li>
-            {{else}}
-            <li class="page-item">
-              <a class="page-link text-dark fs-5" href="?page={{value}}">{{value}}</a>
-            </li>
-            {{/if}}
-            {{/each}}
-            <a class="page-link text-dark fs-5" href="?page=" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span></a>
-            </li>
-          </ul>
-        </nav>
+    <dic class="d-flex flex-column">
+      <h2 class="mt-3 ml-5">Your Favourite Course</h2>
+      <hr style="margin-top: -10px;" />
+      <div class="d-flex flex-column pt-3">
+        {{#each this.courses}}
+        <div class="d-flex flex-row shadow py-3" style="height: 200px">
+          <a href="/course/{{name}}" class="w-25"><img src={{img}} alt="imageCourse" class="py-2 ms-2"
+              style="width: 100%; height: 100%" /></a>
+          <div class="d-flex justify-content-between h-75" style="width: 100%; padding-right: 15px;">
+            <div class="d-flex flex-column ps-4 w-50">
+              <div>{{name}}</div>
+              <div>Students: {{register_count}}</div>
+              <div>Lecture: {{author}}</div>
+            </div>
+            <div class="d-flex flex-column text-end">
+              <div>Update: {{format_date lastUpdate}}</div>
+              <div>Status: Finish</div>
+              <div class="d-flex flex-row-reverse">
+                <button class="btn btn-secondary text-light" type="submit" form="myform" name="nameFav"
+                  value="{{this.name}}" id="btnFav">Remove</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {{/each}}
+
+
+        <div class="d-flex justify-content-center pt-4">
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <li class="page-item" style="color: se;">
+                <a class="page-link text-dark fs-5" href="?page=" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span></a>
+              </li>
+              {{#each pageNumbers}}
+              {{#if isCurrent}}
+              <li class="page-item active" aria-current="page">
+                <span class="page-link bg-light border-secondary text-dark fs-5">{{value}}</span>
+              </li>
+              {{else}}
+              <li class="page-item">
+                <a class="page-link text-dark fs-5" href="?page={{value}}">{{value}}</a>
+              </li>
+              {{/if}}
+              {{/each}}
+              <a class="page-link text-dark fs-5" href="?page=" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span></a>
+              </li>
+            </ul>
+          </nav>
+        </div>
       </div>
-    </div>
   </div>
 </div>
 </div>
+
+<form method="post" id="myform" action="/settings/favourite/remove">
+
+</form>

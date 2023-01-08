@@ -3,6 +3,10 @@
     .mainContent li span {
       display: none;
     }
+
+    a span {
+      display: none;
+    }
   }
 
   .mainContent li.nav-item:hover {
@@ -35,7 +39,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="/settings/courseAdmin" class="nav-link active" aria-current="page">
+          <a href="/settings/courseAdmin" class="nav-link link-dark">
             <i class="fas fa-book"></i>
             <span>CoursesA</span>
           </a>
@@ -54,7 +58,7 @@
               </a>
             </li>
             <li class="nav-item dropdown-item">
-              <a href="/settings/studentAdmin" class="nav-link link-dark">
+              <a href="/settings/studentAdmin" class="nav-link active" aria-current="page">
                 <i class="fas fa-users"></i>
                 <span>Students</span>
               </a>
@@ -97,20 +101,9 @@
   </div>
   <div class="container" style="flex: 3">
     <div class="card">
-      <div class="card-header d-flex justify-content-between">
-        <h4>Courses</h4>
-        <form id="filter" method="get">
-          <button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownMenuButton1"
-            data-bs-toggle="dropdown" aria-expanded="false">
-            Category
-          </button>
-          <div class="dropdown-menu">
-            {{#each this.cat}}
-            <input class="dropdown-item" name="cat" type="submit" value="{{name}}" />
-            {{/each}}
-          </div>
-        </form>
-      </div>
+      <h4 class="card-header">
+        Students
+      </h4>
       <form action="" method="post" id="frmDelItem">
         <input type="hidden" id="txtDelProID" name="id">
       </form>
@@ -118,26 +111,34 @@
         <thead>
           <tr>
             <th class="text-center">#</th>
-            <th>Courses</th>
-            <th>Price</th>
-            <th>Rating</th>
-            <th>Date</th>
+            <th>avatar</th>
+            <th>username</th>
+            <th>role</th>
             <th>&nbsp;</th>
           </tr>
         </thead>
         <tbody>
-          {{#each this.courses}}
+          {{#each this.students}}
           <tr>
             <td scope="row" class="text-center">{{id}}</td>
-            <td>{{name}}</td>
-            <td>{{price}}</td>
-            <td class="text-center">{{round_number rating}}<i class="fa fa-star" style="color:rgba(228, 228, 22, 0.675)"
-                aria-hidden="true"></i></td>
-            <td>{{format_date lastUpdate}}</td>
-            <td class="text-right">
-              <a data-id="{{id}}" class=" btn btn-sm btn-danger delItem" href="javascript:;" role="button">
-                <i class="fa-solid fa-trash-can"></i>
-              </a>
+            <td><img src={{avatar}} alt="" class="rounded-circle p-1 bg-secondary" width="50" /></td>
+            <td>{{username}}</td>
+            <td>{{role}}</td>
+            <td>
+              <form method="post">
+                <button class=" btn btn-sm btn-danger delItem" formaction="/settings/studentAdmin/remove/{{_id}}">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+                {{#if verified}}
+                <button class=" btn btn-sm btn-danger delItem" formaction="/settings/studentAdmin/lock/{{_id}}">
+                  <i class="fa-solid fa-unlock"></i>
+                </button>
+                {{else}}
+                <button class=" btn btn-sm btn-danger delItem" formaction="/settings/studentAdmin/unlock/{{_id}}">
+                  <i class="fa-solid fa-lock"></i>
+                </button>
+                {{/if}}
+              </form>
             </td>
           </tr>
           {{/each}}
