@@ -3,12 +3,16 @@ import Course from "../models/course.js";
 import Category from "../models/category.js";
 import Sub_Category from "../models/sub_category.js";
 import User from "../models/user.js";
+import Video from "../models/video.js";
 import bcrypt from "bcrypt";
 import passport from "passport";
 import authenticationMiddleware from "../middlewares/authentication.js";
 import mailer from "../utils/mailer.js";
 import userAuthorization from "../middlewares/authorization.js";
 import mongoose from "mongoose";
+
+import fs from "fs";
+
 let userMail;
 
 const mainService = {
@@ -255,6 +259,50 @@ const mainService = {
     failureFlash: true,
     failureFlash: "Tài khoản hoặc mật khẩu không chính xác",
   }),
+
+  // done
+  test: async (req, res) => {
+    const video = await Video.find().lean(); 
+    const list = [];
+    for(let i = 0; i < video.length; i++){
+      list.push({
+        video: video[i].img.image.toString('base64'),
+      });
+    }
+
+    res.render("vwHomepage/test", {
+        video: list,
+    });
+  },
+
+
+  //done
+  testUpload: async (req, res) => {
+    console.log(req.file.path);
+
+  const img = fs.readFileSync(req.file.path);
+  const img_enc = img.toString('base64');
+  const obj = {
+    name: req.body.firstName,
+    img: {
+      contentType: "video/mp4",
+      image: new Buffer.from(img_enc, 'base64'),
+    },
+  };
+  const newVideo = new Video(obj);
+  await newVideo.save();
+  res.redirect('/test');
+  },
+
+
+// **RETRIEVE**
+// route.get('/sad',(req,res)=>{
+//      img.find({}).then((img)=>{
+//        res.json(img)      
+// //How do decode my buffer to show an image in Postman?
+// })
+// }
+// )
 
   signupService: async (req, res) => {
     try {

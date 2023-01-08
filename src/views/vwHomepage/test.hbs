@@ -1,1 +1,12 @@
-<h1> test thoi</h1>
+<form id="formElem" method="post" action="/test" enctype="multipart/form-data">
+  <input type="text" name="firstName" value="John">
+  Picture: 
+  <input type="file" id="picture" name="picture" accept="video/*">
+  <button type="submit" id="btn">Submit</button>
+</form>
+
+{{#each video}}
+<video width="500" height="240" controls>
+  <source src="data:video/mp4;base64,{{video}}">
+</video>
+{{/each}}
