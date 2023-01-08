@@ -63,6 +63,11 @@ const courseSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Category",
   },
+
+  enable: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const Course = mongoose.model("Course", courseSchema);

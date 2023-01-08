@@ -5,6 +5,7 @@ import User from "../models/user.js";
 import bcrypt from "bcrypt";
 import mailer from "../utils/mailer.js";
 import Category from "../models/category.js";
+import Sub_Category from "../models/sub_category.js";
 
 let userMail;
 let newInfo;
@@ -346,7 +347,7 @@ const settingService = {
         res.redirect("/login");
         return;
       }
-
+      const cats = await Category.find().lean();
       const students = await User.find({ role: 1 }).lean();
       const lecturers = await User.find({ role: 2 }).lean();
       const courses = await Course.find().lean();
@@ -363,6 +364,7 @@ const settingService = {
         newStudents: newStudents,
         newCourses: newCourses,
         admin: true,
+        cats: cats,
       });
     } catch (e) {
       res.send(e);
@@ -379,15 +381,15 @@ const settingService = {
         return;
       }
       const { oldPass, newPass, confirmPass } = req.body;
-      var equal = await bcrypt.compareSync(oldPass, curUser.password);
-      if (!equal) {
-        res.json({ unsuccess: true });
-      }
-      const newHashPassword = await bcrypt.hash(newPass, 10);
-      // await User.updateOne(
-      //   { _id: curUser._id },
-      //   { password: newHashPassword }
-      // );
+      const equal = await bcrypt.compareSync(oldPass, curUser.password);
+      if (equal) {
+        const newHashPassword = await bcrypt.hash(newPass, 10);
+        await User.updateOne(
+          { _id: curUser._id },
+          { password: newHashPassword }
+        );
+        res.redirect('/settings');
+      } 
     } catch (e) {
       res.send(e);
     }
@@ -402,39 +404,87 @@ const settingService = {
       return;
     }
 
-    const category = await Category.find().lean();
-    const cat = req.query.cat;
+    let courses;
+    courses = await Course.find().populate("author").lean();
+    const author = courses.reduce((acc, current) => {
+      const x = acc.find(item => item.author === current.author);
+      if (!x) {
+        return acc.concat([current]);
+      } else {
+        return acc;
+      }
+    }, []);
 
-    const limit = 3;
-    var nPages;
-    const curPage = req.query.page || 1;
-    const offset = (curPage - 1) * limit;
-    const courses = await Course.find()
-      .lean()
-      .sort({ lastUpdate: -1 })
-      .skip(offset)
-      .limit(limit);
-    const total = await Course.find().count();
+    let main_cat;
+    if (req.query.main_cat) {
+      main_cat = await Category.findOne({ name: req.query.main_cat });
+    }
 
-    total % limit != 0
-      ? (nPages = Math.ceil(total / limit))
-      : (nPages = total / limit);
+    let cat;
+    if (req.query.cat) {
+      cat = await Sub_Category.findOne({ name: req.query.cat });
+    }
 
-    const pageNumbers = [];
+    if (main_cat) {
+      function removeItemAll(arr, value) {
+        var i = 0;
+        while (i < arr.length) {
+          if (String(arr[i].category) !== String(value._id)) {
+            arr.splice(i, 1);
+          } else {
+            ++i;
+          }
+        }
+        return arr;
+      }
+      courses = removeItemAll(courses, main_cat);
+    }
 
-    for (let i = 1; i <= nPages; i++) {
-      pageNumbers.push({
-        value: i,
-        isCurrent: i === +curPage,
-      });
+    if (cat) {
+      function removeItemAll(arr, value) {
+        var i = 0;
+        while (i < arr.length) {
+          if (String(arr[i].sub_category) !== String(value._id)) {
+            arr.splice(i, 1);
+          } else {
+            ++i;
+          }
+        }
+        return arr;
+      }
+      courses = removeItemAll(courses, cat);
+    }
+
+    let aut;
+    if (req.query.author) {
+      aut = await User.findOne({ username: req.query.author });
+    }
+
+    if (aut) {
+      function removeItemAll(arr, value) {
+        var i = 0;
+        while (i < arr.length) {
+          if (String(arr[i].author._id) !== String(value._id)) {
+            arr.splice(i, 1);
+          } else {
+            ++i;
+          }
+        }
+        return arr;
+      }
+      courses = removeItemAll(courses, aut);
     }
 
     res.render("vwSettingsPage/vwAdminPage/courseAdmin", {
-      pageNumbers: pageNumbers,
       courses: courses,
       admin: true,
-      cat: category,
+      author: author,
     });
+  },
+
+  disableCourse: async (req, res) => {
+    await Course.updateOne({ _id: req.params.id }, { enable: false });
+    res.redirect("/settings/courseAdmin");
   },
 
   getStudentAdmin: async (req, res) => {
@@ -474,6 +524,11 @@ const settingService = {
       students: students,
       admin: true,
     });
+  },
+
+  updateRole: async (req, res) => {
+    await User.updateOne({ _id: req.params.id }, { role: 2 });
+    res.redirect("/settings/studentAdmin");
   },
 
   lockStudent: async (req, res) => {
@@ -525,6 +580,11 @@ const settingService = {
     });
   },
 
+  studentRole: async (req, res) => {
+    await User.updateOne({ _id: req.params.id }, { role: 1 });
+    res.redirect("/settings/LecturerAdmin");
+  },
+
   lockLecturer: async (req, res) => {
     await User.updateOne({ _id: req.params.id }, { verified: false });
     res.redirect("/settings/studentAdmin");
@@ -534,5 +594,46 @@ const settingService = {
     await User.updateOne({ _id: req.params.id }, { verified: true });
     res.redirect("/settings/studentAdmin");
   },
+
+  isSamePass: async function (req, res) {
+    const oldPass = req.query.oldPass;
+    const equal = await bcrypt.compareSync(oldPass, req.user.password);
+    if (!equal) {
+      return res.json(false);
+    }
+    res.json(true);
+  },
+  
+  getCategorySetting: async (req, res) => {
+    try {
+      var curUser;
+      if (req.isAuthenticated()) {
+        curUser = req.user;
+      } else {
+        res.redirect("/login");
+        return;
+      }
+
+      const students = await User.find({ role: 1 }).lean();
+      const lecturers = await User.find({ role: 2 }).lean();
+      const courses = await Course.find().lean();
+      const newStudents = await User.find({ role: 1 }).limit(5).lean();
+      const newCourses = await Course.find()
+        .populate("author")
+        .sort({ lastUpdate: -1 })
+        .limit(5)
+        .lean();
+      res.render("vwSettingsPage/vwAdminPage/categoryAdmin", {
+        students: students,
+        lecturers: lecturers,
+        courses: courses,
+        newStudents: newStudents,
+        newCourses: newCourses,
+        admin: true,
+      });
+    } catch (e) {
+      res.send(e);
+    }
+  }
 };
 export default settingService;

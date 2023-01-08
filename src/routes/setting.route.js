@@ -21,19 +21,29 @@ router.post("/edit", settingService.postEditProfile);
 
 router.post("/otp", settingService.otpService);
 
+router.get("/isSamePass", settingService.isSamePass);
+
 router.get("/dashboard", settingService.getDashboardPage);
+
+router.get("/category", settingService.getCategorySetting);
 
 router.post("/changePass", settingService.changePasswordService);
 
 router.get("/courseAdmin", settingService.getCourseAdmin);
 
+router.post("/courseAdmin/disable/:id", settingService.disableCourse);
+
 router.get("/studentAdmin", settingService.getStudentAdmin);
+
+router.post("/studentAdmin/updateRole/:id", settingService.updateRole);
 
 router.post("/studentAdmin/lock/:id", settingService.lockStudent);
 
 router.post("/studentAdmin/unlock/:id", settingService.unlockStudent);
 
 router.get("/lecturerAdmin", settingService.getLecturerAdmin);
+
+router.post("/lecturerAdmin/studentRole/:id", settingService.studentRole);
 
 router.post("/lecturerAdmin/lock/:id", settingService.lockLecturer);
 
