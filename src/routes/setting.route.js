@@ -49,4 +49,6 @@ router.post("/lecturerAdmin/lock/:id", settingService.lockLecturer);
 
 router.post("/lecturerAdmin/unlock/:id", settingService.unlockLecturer);
 
+router.post("/category/add", settingService.addCategory);
+
 export default router;

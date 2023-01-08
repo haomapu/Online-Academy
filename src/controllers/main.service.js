@@ -3,12 +3,16 @@ import Course from "../models/course.js";
 import Category from "../models/category.js";
 import Sub_Category from "../models/sub_category.js";
 import User from "../models/user.js";
+import Video from "../models/video.js";
 import bcrypt from "bcrypt";
 import passport from "passport";
 import authenticationMiddleware from "../middlewares/authentication.js";
 import mailer from "../utils/mailer.js";
 import userAuthorization from "../middlewares/authorization.js";
 import mongoose from "mongoose";
+
+import fs from "fs";
+
 let userMail;
 
 const mainService = {
@@ -231,7 +235,9 @@ const mainService = {
     if (req.isAuthenticated()) {
       res.redirect("/");
     } else {
-      res.render("vwLoginPage/loginPage");
+      res.render("vwLoginPage/loginPage", {
+        message: req.flash('error')
+      });
     }
   },
 
@@ -253,8 +259,52 @@ const mainService = {
     successRedirect: "/",
     failureRedirect: "/login",
     failureFlash: true,
-    failureFlash: "Tài khoản hoặc mật khẩu không chính xác",
+    badRequestMessage: 'All Fields Need To Be Filled!'
   }),
+
+  // done
+  test: async (req, res) => {
+    const video = await Video.find().lean(); 
+    const list = [];
+    for(let i = 0; i < video.length; i++){
+      list.push({
+        video: video[i].img.image.toString('base64'),
+      });
+    }
+
+    res.render("vwHomepage/test", {
+        video: list,
+    });
+  },
+
+
+  //done
+  testUpload: async (req, res) => {
+    console.log(req.file.path);
+
+  const img = fs.readFileSync(req.file.path);
+  const img_enc = img.toString('base64');
+  const obj = {
+    name: req.body.firstName,
+    img: {
+      contentType: "video/mp4",
+      image: new Buffer.from(img_enc, 'base64'),
+    },
+  };
+  const newVideo = new Video(obj);
+  await newVideo.save();
+  res.redirect('/test');
+  },
+
+
+// **RETRIEVE**
+// route.get('/sad',(req,res)=>{
+//      img.find({}).then((img)=>{
+//        res.json(img)      
+// //How do decode my buffer to show an image in Postman?
+// })
+// }
+// )
 
   signupService: async (req, res) => {
     try {
@@ -283,8 +333,6 @@ const mainService = {
       res.send(e);
   }
 },
-
-  // lan sau de cai nay o student.service.js de day do
 
   createCoursePage: async (req, res) => {
     res.render("vwLecturer/createCourse");
@@ -324,7 +372,7 @@ const mainService = {
       return res.json(false);
   
     res.json(true);
-  }
+  },
 };
 
 export default mainService;
