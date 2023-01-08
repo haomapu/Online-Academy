@@ -634,6 +634,14 @@ const settingService = {
     } catch (e) {
       res.send(e);
     }
+  },
+  addCategory: async (req, res) => {
+    try {
+      console.log(req.body);
+      res.redirect("/settings/category");
+    } catch (e) {
+      res.send(e);
+    }
   }
 };
 export default settingService;
