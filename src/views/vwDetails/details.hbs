@@ -26,7 +26,7 @@
   }
 </style>
 
-<div class="container">
+<div class="container" id="test">
 
   {{! Buy in and description }}
 
@@ -69,13 +69,13 @@
             Bought</button>
           {{else}}
           <form method="post" class="w-100">
-            <button class="btn btn-md btn-secondary text-light fw-bold p-1 w-100" formaction="/course/{{course.name}}/buy"
-              type="submit">Add to cart</button>
+            <button class="btn btn-md btn-secondary text-light fw-bold p-1 w-100"
+              formaction="/course/{{course.name}}/buy" type="submit">Add to cart</button>
           </form>
           {{/if}}
           <form method="post" action="/course/{{course.name}}/fav" class="w-100 mt-1">
-            <button class="btn btn-secondary text-light btn-lg p-1 w-100 text-light fw-bold" type="submit" name="nameFav"
-              value="{{course.name}}" id="btnFav"><i class="fas fa-heart"></i></button>
+            <button class="btn btn-secondary text-light btn-lg p-1 w-100 text-light fw-bold" type="submit"
+              name="nameFav" value="{{course.name}}" id="btnFav"><i class="fas fa-heart"></i></button>
           </form>
         </div>
       </div>
@@ -132,7 +132,8 @@
         <a class="align-self-center" href="/course/{{this.name}}"><img src="{{this.img}}"
             style="background-repeat: no-repeat; height: 100px; width: 100px; " class="rounded align-self-center" /></a>
         <div class="px-2 me-auto" style="flex: 9">
-          <u class="fs-5 fw-bold m-0"> <a class="links text-secondary" href="/course/{{this.name}}"> {{this.name}}</a></u>
+          <u class="fs-5 fw-bold m-0"> <a class="links text-secondary" href="/course/{{this.name}}">
+              {{this.name}}</a></u>
           <div class="fs-6">{{this.overview}}</div>
           <span class="fs-5">{{round_number this.rating}}<i class="fa fa-star fa-xs text-secondary"
               style="line-height: unset"></i>&nbsp;<u class="fs-6 text-success">{{this.register_count}}
@@ -162,7 +163,7 @@
           <img class="rounded-circle shadow-1-strong me-3" src="{{avatar}}" alt="avatar" width="80" height="80" />
           <div class="form-outline w-100 fs-4">
             <label class="form-label" for="feedback">Message</label>
-            <textarea class="form-control" id="content" rows="4" style="background: #fff;" type="text"
+            <textarea class="form-control" id="content" rows="4" style="background: #fff;" type="text" value=""
               name="content"></textarea>
 
           </div>
@@ -206,7 +207,8 @@
     {{#each pageNumbers}}
     {{#if isCurrent}}
     <li class="page-item">
-      <a class="page-link text-secondary border-secondary fw-bold" id="prev" href="?page={{minus_one value}}" value="{{minus_one value}}" aria-label="Previous">
+      <a class="page-link text-secondary border-secondary fw-bold" id="prev" href="?page={{minus_one value}}"
+        value="{{minus_one value}}" aria-label="Previous">
         <span aria-hidden="true">&laquo;</span>
       </a>
     </li>
@@ -219,14 +221,16 @@
     </li>
     {{else}}
     <li class="page-item">
-      <a class="page-link text-secondary border-secondary fw-bold" href="?page={{value}}">{{value}}</a>
+      <button class="page-link text-secondary border-secondary fw-bold" type="button" id="pagination{{value}}"
+        value="{{value}}">{{value}}</button>
     </li>
     {{/if}}
     {{/each}}
     {{#each pageNumbers}}
     {{#if isCurrent}}
     <li class="page-item">
-      <a class="page-link text-secondary fw-bold border-secondary" id="next" href="?page={{add_one value}}" value="{{add_one value}}" aria-label="Next">
+      <a class="page-link text-secondary fw-bold border-secondary" id="next" href="?page={{add_one value}}"
+        value="{{add_one value}}" aria-label="Next">
         <span aria-hidden="true">&raquo;</span>
       </a>
     </li>
@@ -249,6 +253,7 @@
 
 <script type="text/javascript">
   $('#btnPost').click(function () {
+    console.log(this);
     var check1;
     var check2;
     if (!($('#btnPost').val())) {
@@ -256,37 +261,62 @@
       return;
     }
     if (!$('#btnPost').attr('data-value1')) {
-      $('#btnPost').attr('data-bs-content', 'You have to buy this course first');
-      $('#btnPost').popover('show');
+      $(this).popover('dispose')
+      $(this).popover({
+        content: 'Need to buy first',
+        placement: 'right',
+        container: this,
+        title: 'Warning',
+      }).popover('show');
       return;
     };
     if (!($('#content').val())) {
-      $('#btnPost').popover('dispose');
-      $('#btnPost').attr('data-bs-content', 'Missing Comment');
-      $('#btnPost').popover('enable');
-      $('#btnPost').popover('show');
+      //$('#btnPost').attr('data-bs-content', 'Missing Comment');
+      $(this).popover('dispose')
+      $(this).popover({
+        content: 'Please Comment',
+        placement: 'right',
+        container: this,
+        title: 'Warning',
+      }).popover('show');
     } else if (!($('#input-7').val())) {
-      $('#btnPost').popover('dispose');
-      $('#btnPost').attr('data-bs-content', 'Missing Rating');
-      $('#btnPost').popover('enable');
-      $('#btnPost').popover('show');
+      $(this).popover('dispose')
+      $(this).popover({
+        content: 'Please Rate',
+        placement: 'right',
+        container: this,
+        title: 'Warning',
+      }).popover('show');
     } else {
-      $('#btnPost').popover('disable');
-      $('#btnPost').popover('hide');
+      $(this).popover('dispose');
       $('#postCmtForm').submit();
     }
   });
 
-  $('#prev').click(function(event){
-    
-    if ($('#prev').attr('value') <= 0){
+  $('#prev').click(function (event) {
+
+    if ($('#prev').attr('value') <= 0) {
       event.preventDefault();
     }
   })
 
-  $('#next').click(function(event){
-    if ($('#next').attr('value') > $('#nPage').attr('value')){
+  $('#next').click(function (event) {
+    if ($('#next').attr('value') > $('#nPage').attr('value')) {
       event.preventDefault();
     }
   })
+
+  $('body').on('click', '[id^=pagination]', function () {
+
+    $.ajax({
+      url: "/course/{{course.name}}?page=" + $(this).attr('value') + '&?ajax=1',
+      type: 'GET',
+      success: function (res) {
+        $('#test').html(res);
+
+      }
+    });
+  })
+  //Chua lam duoc cai pagination comment sau khi doi trang
+
 </script>
