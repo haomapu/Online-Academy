@@ -35,11 +35,23 @@
                 <div class="form-group row justify-content-md-center  my-2">
                     <label class="col-lg-3 fs-4 text-end">Category:</label>
                     <div class="col-lg-7">
-                        <select class="form-select" aria-label="Default select example">
+                        <select class="form-select" id="mainCat" aria-label="Default select example">
                             {{#each categories}}
                             <option value="{{this.name}}">{{this.name}}</option>
                             {{/each}}
                         </select>
+                    </div>
+                </div>
+                <div class="form-group row justify-content-md-center  my-2">
+                    <label class="col-lg-3 fs-4 text-end">Sub Category:</label>
+                    <div class="col-lg-7" id="testtest">
+                        {{#each categories}}
+                        <select id="sub-{{this.name}}" hidden class="form-select" aria-label="Default select example">
+                            {{#each sub_categories}}
+                            <option value="{{this.name}}">{{this.name}}</option>
+                            {{/each}}
+                        </select>
+                        {{/each}}
                     </div>
                 </div>
                 <div class="form-group row justify-content-md-center  my-2">
@@ -170,7 +182,12 @@
     const list =[0,0,0,0,0,0,0,0,0,0];
     var chapter = 0;
 
-    console.log(list);
+    $("body").on('change', '[id^=mainCat]', function(){
+        $('[id^=sub-]').attr('hidden', '').removeClass('show');
+
+        $('#sub-' + $(this).val()).removeAttr('hidden').addClass('show');
+        
+    })
 
     $("body").on("click", "#addChapter" , function () {
         var number = chapter + 1;
@@ -203,6 +220,7 @@
         console.log(list);
         console.log(chapter);
     })
+
     $("body").on("click", "[id*=cancel]" , function () {
         const id = $(this).attr('id').charAt(0);
         const idLesson = $(this).attr('id').slice(-1);
@@ -257,5 +275,7 @@
 
     $("#myform").on("submit",function() {
         $("#hiddenArea").val($("#editor").html());
+        $('#myform').append('<input type="input" hidden value="' + $('[id^=sub-].show').val() + '" name="sub_category"/>');
+
     })
 </script>

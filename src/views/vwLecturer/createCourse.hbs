@@ -35,13 +35,23 @@
                 <div class="form-group row justify-content-md-center  my-2">
                     <label class="col-lg-3 fs-4 text-end">Category:</label>
                     <div class="col-lg-7">
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                        <select class="form-select" id="mainCat" aria-label="Default select example">
+                            {{#each categories}}
+                            <option value="{{this.name}}">{{this.name}}</option>
+                            {{/each}}
                         </select>
-
+                    </div>
+                </div>
+                <div class="form-group row justify-content-md-center  my-2">
+                    <label class="col-lg-3 fs-4 text-end">Sub Category:</label>
+                    <div class="col-lg-7" id="testtest">
+                        {{#each categories}}
+                        <select id="sub-{{this.name}}" hidden class="form-select" aria-label="Default select example">
+                            {{#each sub_categories}}
+                            <option value="{{this.name}}">{{this.name}}</option>
+                            {{/each}}
+                        </select>
+                        {{/each}}
                     </div>
                 </div>
                 <div class="form-group row justify-content-md-center  my-2">
@@ -80,7 +90,7 @@
                 {{!-- <button type="submit" value="Save">Save</button> --}}
             </div>
             <!--end::Form-->
-        </div> 
+        </div>
 
         <!--begin::Card-->
         <div class="card shadow my-3">
@@ -105,7 +115,7 @@
             </div>
         </div>
 
-        
+
         <!--end::Card-->
         <div class="d-flex justify-content-center">
             <button type="submit"
@@ -117,41 +127,46 @@
 
 
 <div id="row" hidden>
-     <div id="row1"> 
-         <div class="card"> 
-             <div class="card-header d-flex justify-content-between"> 
+    <div id="row1">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
                 <div class="d-flex flex-row">
-                    <div class="fs-3 m-0" id="section">Section </div> 
-                    <input class="ms-3" id="titleChap" name="titleChap" placeholder=" Introduce" style="margin-top: 6px; height: 60%">
-                 </div>
-                 <div>  
-                 <button type="button" class="btn btn-secondary text-light fw-bold me-2" id="addLesson">Add new Lesson</button> 
-                         <button class="btn fs-2" id="DeleteRow1" type="button"> 
-                         <i class="bi bi-trash"></i> x</button>  
-                 </div> 
-             </div> 
-             <div class="card-body"> 
-                 <div id="newinput2"></div>  
-             </div> 
-         </div>  
-     </div> 
-     <div id="newinput1"></div> 
+                    <div class="fs-3 m-0" id="section">Section </div>
+                    <input class="ms-3" id="titleChap" name="titleChap" placeholder=" Introduce"
+                        style="margin-top: 6px; height: 60%">
+                </div>
+                <div>
+                    <button type="button" class="btn btn-secondary text-light fw-bold me-2" id="addLesson">Add new
+                        Lesson</button>
+                    <button class="btn fs-2" id="DeleteRow1" type="button">
+                        <i class="bi bi-trash"></i> x</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="newinput2"></div>
+            </div>
+        </div>
+    </div>
+    <div id="newinput1"></div>
 </div>
 
-<div id="row2" hidden>  
-    <div class="card">  
-        <div class="card-header d-flex justify-content-between">  
+<div id="row2" hidden>
+    <div class="card">
+        <div class="card-header d-flex justify-content-between">
             <div class="d-flex flex-row">
-                <div class="fs-3 m-0">Lesson 1:</div>  
-                <input class="ms-3" placeholder=" Introduce" id="titleLes" name="titleLes" style="margin-top: 6px; height: 75%"/>
+                <div class="fs-3 m-0">Lesson 1:</div>
+                <input class="ms-3" placeholder=" Introduce" id="titleLes" name="titleLes"
+                    style="margin-top: 6px; height: 75%" />
             </div>
-            <div>  
-                <button class="btn btn-secondary text-light fw-bold" id="cancel" type="button"><i class="bi bi-trash"></i> Cancel </button>  
-            </div>  
-        </div>  
+            <div>
+                <button class="btn btn-secondary text-light fw-bold" id="cancel" type="button"><i
+                        class="bi bi-trash"></i> Cancel </button>
+            </div>
+        </div>
         <div class="card-body">
-            <input type="file" id="video" name="video" multiple accept="video/*" class="ms-2"></div>  
-    </div> 
+            <input type="file" id="video" name="video" multiple accept="video/*" class="ms-2">
+        </div>
+    </div>
 </div>
 
 
@@ -160,69 +175,76 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 <script>
-    const list =[0,0,0,0,0,0,0,0,0,0];
+    const list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     var chapter = 0;
 
-    $("body").on("click", "#addChapter" , function () {
+    $("body").on('change', '[id^=mainCat]', function(){
+        $('[id^=sub-]').attr('hidden', '').removeClass('show');
+
+        $('#sub-' + $(this).val()).removeAttr('hidden').addClass('show');
+        
+    })
+
+    $("body").on("click", "#addChapter", function () {
         var number = chapter + 1;
-        $('#newinput1').append($('#row').clone().prop('id','chapter' + chapter));
-        $('#DeleteRow1').attr('id','deleteChapter' + chapter);
-        $('#addLesson').attr('id','addLesson' + chapter);
-        $('#section').attr('id','section' + chapter).text("Section " + number + ": ");
+        $('#newinput1').append($('#row').clone().prop('id', 'chapter' + chapter));
+        $('#DeleteRow1').attr('id', 'deleteChapter' + chapter);
+        $('#addLesson').attr('id', 'addLesson' + chapter);
+        $('#section').attr('id', 'section' + chapter).text("Section " + number + ": ");
         $('#newinput2').attr('id', 'newLesson' + chapter)
         $('#titleChap').attr('id', 'titleChap' + chapter)
         $('#chapter' + chapter).removeAttr('hidden')
         chapter++;
 
     })
- 
-    $("body").on("click", "[id^=deleteChapter]" , function () {
+
+    $("body").on("click", "[id^=deleteChapter]", function () {
         const id = $(this).attr('id').slice(-1);
         $(this).parents("#chapter" + id).remove();
         list[id] = 0;
         chapter--;
 
     })
-    
-    $("body").on("click", "[id^=addLesson]" , function () {
+
+    $("body").on("click", "[id^=addLesson]", function () {
         const id = $(this).attr('id').slice(-1);
-        $('#newLesson' + id).append($('#row2').clone().prop('id',id + 'lesson' + list[id]));
-        $('#' + id + 'lesson' +list[id]).removeAttr('hidden');
+        $('#newLesson' + id).append($('#row2').clone().prop('id', id + 'lesson' + list[id]));
+        $('#' + id + 'lesson' + list[id]).removeAttr('hidden');
         $('#cancel').attr('id', id + 'cancel' + list[id]);
         $('#video').attr('id', id + 'video' + list[id]);
         $('#titleLes').attr('id', id + 'titleLes' + list[id]);
         list[id]++;
     })
-    $("body").on("click", "[id*=cancel]" , function () {
+    $("body").on("click", "[id*=cancel]", function () {
         const id = $(this).attr('id').charAt(0);
         const idLesson = $(this).attr('id').slice(-1);
         $(this).parents('#' + id + 'lesson' + idLesson).remove();
         list[id]--;
-    
+
     })
-    
-    $('#myform').on('submit', function(e){
+
+    $('#myform').on('submit', function (e) {
         let data = [];
         let listLesName = [];
         let listLesVideo = [];
         let a = '';
-        for (let i = 0; i < chapter; i++){
+        for (let i = 0; i < chapter; i++) {
             let nameChap = $('#titleChap' + i).val();
-            for (let j = 0; j < list[i]; j++){
+            for (let j = 0; j < list[i]; j++) {
                 let nameLes = $('#' + i + 'titleLes' + j).val()
                 let video = $('#' + i + 'video' + j).val()
                 listLesName.push(nameLes);
                 listLesVideo.push(video);
             }
-            $('#myform').append('<input type="input" value="' + list[i] + '" name="nLesson"/>');
+            $('#myform').append('<input type="input" hidden value="' + list[i] + '" name="nLesson"/>');
         }
         $("#hiddenArea").val($("#editor").html());
+        
+        $('#myform').append('<input type="input" hidden value="' + $('[id^=sub-].show').val() + '" name="sub_category"/>');
 
-        console.log(a.substring(1))
-        {{!-- e.preventDefault(); --}}
-
+        e.preventDefault();
     })
-    
+
 
     var toolbarOptions = [
         ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
