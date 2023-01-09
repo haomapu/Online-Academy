@@ -43,6 +43,8 @@ const mainService = {
     const categoriesID = await Course.aggregate([
       { $sortByCount: "$category" },
     ]);
+    console.log(categoriesID);
+    console.log(categoriesID.length);
     const highlightCategories = [];
     for (let i = 0; i < categoriesID.length; i++) {
       highlightCategories.push(
@@ -261,6 +263,7 @@ const mainService = {
   },
 
   getLoginPage: async (req, res) => {
+    req.session.returnTo = req.headers.referer || "/";
     if (req.isAuthenticated()) {
       res.redirect("/");
     } else {
@@ -285,11 +288,12 @@ const mainService = {
   },
 
   loginService: passport.authenticate("local", {
-    successRedirect: "/",
+    successReturnToOrRedirect: "/",
     failureRedirect: "/login",
     failureFlash: true,
     badRequestMessage: "All Fields Need To Be Filled!",
-  }),
+    keepSessionInfo: true,
+  }), 
 
   // get video
   test: async (req, res) => {
