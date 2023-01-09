@@ -1,9 +1,12 @@
 <form id="formElem" method="post" action="/test" enctype="multipart/form-data">
   <input type="text" name="firstName" value="John">
   Picture: 
-  <input type="file" id="picture" name="picture" accept="video/*">
+  <input type="file" id="picture" multiple name="picture" accept="video/*">
   <button type="submit" id="btn">Submit</button>
 </form>
+
+
+
 
 {{#each video}}
 <video width="500" height="240" controls>

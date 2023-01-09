@@ -1,7 +1,7 @@
 <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
 
 <div class="container">
-    <form id="myform" method="post" action="/postCourse">
+    <form id="myform" method="post" action="/postCourse" enctype="multipart/form-data">
         <!--begin::Card-->
         <div class="card shadow">
             <div class="card-header">
@@ -56,14 +56,14 @@
                 <div class="form-group row justify-content-md-center  my-2">
                     <label class="col-lg-3 text-start py-0 fs-4 text-end">Price:</label>
                     <div class="col-lg-7">
-                        <input type="text" name="price_discount" class="form-control" placeholder="10%">
+                        <input type="text" name="price" class="form-control" placeholder="10%">
                     </div>
                 </div>
 
                 <div class="form-group row justify-content-md-center my-2">
                     <label class="col-lg-3 py-0 fs-4 text-end">Sales:</label>
                     <div class="col-lg-7">
-                        <input type="text" name="price_discount" class="form-control" placeholder="10%">
+                        <input type="text" name="discount" class="form-control" placeholder="10%">
                     </div>
                 </div>
 
@@ -92,9 +92,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <form class="form1">
-                    <div id="newinput1"></div>
-                </form>
+                <div id="newinput1"></div>
             </div>
         </div>
         <!--begin::Form-->
@@ -124,7 +122,7 @@
              <div class="card-header d-flex justify-content-between"> 
                 <div class="d-flex flex-row">
                     <div class="fs-3 m-0" id="section">Section </div> 
-                    <input class="ms-3" placeholder=" Introduce" style="margin-top: 6px; height: 60%">
+                    <input class="ms-3" id="titleChap" name="titleChap" placeholder=" Introduce" style="margin-top: 6px; height: 60%">
                  </div>
                  <div>  
                  <button type="button" class="btn btn-secondary text-light fw-bold me-2" id="addLesson">Add new Lesson</button> 
@@ -145,14 +143,14 @@
         <div class="card-header d-flex justify-content-between">  
             <div class="d-flex flex-row">
                 <div class="fs-3 m-0">Lesson 1:</div>  
-                <input class="ms-3" placeholder=" Introduce" style="margin-top: 6px; height: 75%"/>
+                <input class="ms-3" placeholder=" Introduce" id="titleLes" name="titleLes" style="margin-top: 6px; height: 75%"/>
             </div>
             <div>  
                 <button class="btn btn-secondary text-light fw-bold" id="cancel" type="button"><i class="bi bi-trash"></i> Cancel </button>  
             </div>  
         </div>  
         <div class="card-body">
-            <input type="file" id="picture" name="picture" accept="video/*" class="ms-2"></div>  
+            <input type="file" id="video" name="video" multiple accept="video/*" class="ms-2"></div>  
     </div> 
 </div>
 
@@ -165,8 +163,6 @@
     const list =[0,0,0,0,0,0,0,0,0,0];
     var chapter = 0;
 
-    console.log(list);
-
     $("body").on("click", "#addChapter" , function () {
         var number = chapter + 1;
         $('#newinput1').append($('#row').clone().prop('id','chapter' + chapter));
@@ -174,10 +170,10 @@
         $('#addLesson').attr('id','addLesson' + chapter);
         $('#section').attr('id','section' + chapter).text("Section " + number + ": ");
         $('#newinput2').attr('id', 'newLesson' + chapter)
+        $('#titleChap').attr('id', 'titleChap' + chapter)
         $('#chapter' + chapter).removeAttr('hidden')
         chapter++;
-        console.log(list);
-        console.log(chapter);
+
     })
  
     $("body").on("click", "[id^=deleteChapter]" , function () {
@@ -185,8 +181,7 @@
         $(this).parents("#chapter" + id).remove();
         list[id] = 0;
         chapter--;
-        console.log(chapter);
-        console.log(list)
+
     })
     
     $("body").on("click", "[id^=addLesson]" , function () {
@@ -194,20 +189,41 @@
         $('#newLesson' + id).append($('#row2').clone().prop('id',id + 'lesson' + list[id]));
         $('#' + id + 'lesson' +list[id]).removeAttr('hidden');
         $('#cancel').attr('id', id + 'cancel' + list[id]);
+        $('#video').attr('id', id + 'video' + list[id]);
+        $('#titleLes').attr('id', id + 'titleLes' + list[id]);
         list[id]++;
-        console.log(list);
-        console.log(chapter);
     })
     $("body").on("click", "[id*=cancel]" , function () {
         const id = $(this).attr('id').charAt(0);
         const idLesson = $(this).attr('id').slice(-1);
-        console.log('#' + id + 'lesson' + idLesson)
         $(this).parents('#' + id + 'lesson' + idLesson).remove();
         list[id]--;
-        console.log(list);
-        console.log(chapter);
+    
     })
     
+    $('#myform').on('submit', function(e){
+        let data = [];
+        let listLesName = [];
+        let listLesVideo = [];
+        let a = '';
+        for (let i = 0; i < chapter; i++){
+            let nameChap = $('#titleChap' + i).val();
+            for (let j = 0; j < list[i]; j++){
+                let nameLes = $('#' + i + 'titleLes' + j).val()
+                let video = $('#' + i + 'video' + j).val()
+                listLesName.push(nameLes);
+                listLesVideo.push(video);
+            }
+            $('#myform').append('<input type="input" value="' + list[i] + '" name="nLesson"/>');
+        }
+        $("#hiddenArea").val($("#editor").html());
+
+        console.log(a.substring(1))
+        {{!-- e.preventDefault(); --}}
+
+    })
+    
+
     var toolbarOptions = [
         ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
         ['blockquote', 'code-block'],
@@ -236,7 +252,4 @@
         theme: 'snow'
     });
 
-    $("#myform").on("submit",function() {
-        $("#hiddenArea").val($("#editor").html());
-    })
 </script>

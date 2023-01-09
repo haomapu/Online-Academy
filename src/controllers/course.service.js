@@ -20,15 +20,17 @@ const courseService = {
     var lessons = [];
     if (course && course.chapters) {
       for (let i = 0; i < course.chapters.length; i++){
-        for (let j =0; j < course.chapters[i].lesson.length; j++){
+        for (let j =0; j < course.chapters[i].lessons.length; j++){
         // lesson.push(await Lesson.findById())
-        lessons.push({lessons: await Lesson.findById(course.chapters[i].lesson[j]).populate('video').lean()});
+        lessons.push({lessons: await Lesson.findById(course.chapters[i].lessons[j]).populate('video').lean()});
         }
         chapters.push({chapters: lessons});
         lessons = [];
       }
     }
-    await  Course.updateOne({name: req.params.id}, {totalView: course.totalView + 1})
+    if (course){
+      await Course.updateOne({name: req.params.id}, {totalView: course.totalView + 1})
+    }
     const top5cate = await Course.find({
       name: { $not: { $eq: req.params.id } }}).sort({ register_count: -1 }).lean().limit(top5);
     const feedbacks = [];
@@ -212,15 +214,14 @@ const courseService = {
     var lessons = [];
     if (course) {
       for (let i = 0; i < course.chapters.length; i++){
-        for (let j =0; j < course.chapters[i].lesson.length; j++){
+        for (let j =0; j < course.chapters[i].lessons.length; j++){
         // lesson.push(await Lesson.findById())
-        lessons.push({lessons: await Lesson.findById(course.chapters[i].lesson[j]).populate('video').lean()});
+        lessons.push({lessons: await Lesson.findById(course.chapters[i].lessons[j]).populate('video').lean()});
         }
         chapters.push({chapters: lessons});
         lessons = [];
       }
     }
-
     res.render("vwDetails/courseDetails",{
       course: course,
       chapters: chapters,
