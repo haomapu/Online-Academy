@@ -121,6 +121,18 @@ const settingService = {
         isCurrent: i === +curPage,
       });
     }
+    function removeItemAll(arr) {
+      var i = 0;
+      while (i < arr.length) {
+        if (!arr[i].enable) {
+          arr.splice(i, 1);
+        } else {
+          ++i;
+        }
+      }
+      return arr;
+    }
+    courseLecture = removeItemAll(courseLecture);
     res.render("vwSettingsPage/vwLecturerPage/courseLecture", {
       course: courseLecture,
       pageNumbers: pageNumbers,
@@ -212,7 +224,7 @@ const settingService = {
 
     const limit = 3;
     var nPages;
-    const courses = [];
+    var courses = [];
     const curPage = req.query.page || 1;
     const offset = (curPage - 1) * limit;
     const favourite = await Favorite.find({ student: student._id })
@@ -249,7 +261,18 @@ const settingService = {
         isCurrent: i === +curPage,
       });
     }
-
+    function removeItemAll(arr) {
+      var i = 0;
+      while (i < arr.length) {
+        if (!arr[i].enable) {
+          arr.splice(i, 1);
+        } else {
+          ++i;
+        }
+      }
+      return arr;
+    }
+    courses = removeItemAll(courses);
     res.render("vwSettingsPage/vwStudentPage/favouriteCourse", {
       pageNumbers: pageNumbers,
       courses: courses,
