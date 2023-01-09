@@ -102,6 +102,7 @@ const mainService = {
               category: 1,
               sub_category: 1,
               enable: 1,
+              totalView: 1,
             },
           },
         ]);
