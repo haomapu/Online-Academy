@@ -62,7 +62,7 @@ app.use((req, res, next) => {
 passport.use(new GoogleStrategy({
   clientID: process.env.clientID,
   clientSecret: process.env.clientSecret,
-  callbackURL: 'http://localhost:8080/auth/google/callback'
+  callbackURL: 'https://online-academy-app.herokuapp.com/auth/google/callback'
 },
 (accessToken, refreshToken, profile, done) => {
   done(null, profile); 
