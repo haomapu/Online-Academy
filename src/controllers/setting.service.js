@@ -98,7 +98,7 @@ const settingService = {
     var nPages;
     const curPage = req.query.page || 1;
     const offset = (curPage - 1) * limit;
-    const courseLecture = await Course.find({ author: curUser._id })
+    var courseLecture = await Course.find({ author: curUser._id })
       .lean()
       .skip(offset)
       .limit(limit);

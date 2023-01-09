@@ -33,7 +33,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="/settings/category" class="nav-link active" aria-current="page">
+          <a href="/settings/category" class="nav-link active" style="background-color: #ff6a00 !important;" aria-current="page">
             <i class="fas fa-grip-horizontal"></i>
             <span>Categories</span>
           </a>
@@ -156,7 +156,7 @@
       </ul>
 
       <div class="mt-3 tab-content">
-        <div class="border p-3 tab-pane fade show active" id="one">
+        <div class="border p-3 tab-pane fade show active" style="background-color: white !important;" id="one">
           <form action="/settings/category/add" method="post">
             <div class="mb-3">
               <label for="name" class="form-label">Category</label>
@@ -166,7 +166,7 @@
           </form>
         </div>
 
-        <div class="border p-3 tab-pane fade" id="two">
+        <div class="border p-3 tab-pane fade" style="background-color: white !important;" id="two">
           <form action="/settings/subcategory/add" method="post">
             <label for="category" class="form-label">Category</label><br>
             {{#each categories}}
@@ -181,7 +181,7 @@
           </form>
         </div>
 
-        <div class="border p-3 tab-pane fade" id="three">
+        <div class="border p-3 tab-pane fade" style="background-color: white !important;" id="three">
           <form action="/settings/category/delete" method="post">
             <label for="category" class="form-label">Category</label><br>
             {{#each categories}}
@@ -191,7 +191,7 @@
             <button type="submit" class="btn btn-primary">Remove</button>
           </form>
         </div>
-        <div class="border p-3 tab-pane fade" id="four">
+        <div class="border p-3 tab-pane fade" style="background-color: white !important;" id="four">
           <form action="/settings/subcategory/delete" method="post">
             <label for="category" class="form-label">Sub Category</label><br>
             {{#each categories}}
@@ -203,7 +203,7 @@
             <button type="submit" class="btn btn-primary">Remove</button>
           </form>
         </div>
-        <div class="border p-3 tab-pane fade" id="five">
+        <div class="border p-3 tab-pane fade" style="background-color: white !important;" id="five">
           <form action="/settings/category/update" method="post">
             <label for="category" class="form-label">Category</label><br>
             {{#each categories}}
@@ -217,7 +217,7 @@
             <button type="submit" class="btn btn-primary">Update</button>
           </form>
         </div>
-        <div class="border p-3 tab-pane fade" id="six">
+        <div class="border p-3 tab-pane fade" style="background-color: white !important;" id="six">
           <form action="/settings/subcategory/update" method="post">
             <label for="category" class="form-label">Sub Category</label><br>
             {{#each categories}}

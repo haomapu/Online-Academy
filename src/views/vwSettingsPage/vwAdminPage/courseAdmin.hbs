@@ -1,4 +1,17 @@
 <style>
+  .table-scroll {
+    width: 200px;
+    overflow: auto;
+    max-height: 200px !important;
+  }
+  .my-custom-scrollbar {
+position: relative;
+height: 720px;
+overflow: auto;
+}
+.table-wrapper-scroll-y {
+display: block;
+}
   @media screen and (max-width: 940px) {
     .mainContent li span {
       display: none;
@@ -39,7 +52,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="/settings/courseAdmin" class="nav-link active" aria-current="page">
+          <a href="/settings/courseAdmin" class="nav-link active" style="background-color: #ff6a00 !important;" aria-current="page">
             <i class="fas fa-book"></i>
             <span>Courses</span>
           </a>
@@ -136,7 +149,8 @@
       <form action="" method="post" id="frmDelItem">
         <input type="hidden" id="txtDelProID" name="id">
       </form>
-      <table class="table table-hover">
+      <div class="table-wrapper-scroll-y my-custom-scrollbar">
+        <table class="table table-hover">
         <thead>
           <tr>
             <th class="text-center">#</th>
@@ -185,6 +199,8 @@
           {{/each}}
         </tbody>
       </table>
+      </div>
+      
     </div>
   </div>
 </div>
