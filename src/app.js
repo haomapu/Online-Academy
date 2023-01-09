@@ -150,6 +150,9 @@ app.engine(
       },
       toBase64(string){
         return string.toString('base64');
+      },
+      test(foo, bar){
+        return foo == bar;
       }
     }
   })

@@ -1,7 +1,6 @@
 <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
-
-<div class="container">
-    <form id="myform" method="post" action="/editCourse">
+<form id="myform" method="post" action="/editCourse/{{course.name}}" enctype="multipart/form-data">
+    <div class="container">
         <!--begin::Card-->
         <div class="card shadow">
             <div class="card-header">
@@ -14,22 +13,14 @@
                 <div class="form-group row justify-content-md-center  my-2">
                     <label class="col-lg-3 fs-4 text-end">Course Name:</label>
                     <div class="col-lg-7">
-                        <input type="text" class="form-control" placeholder="{{course.name}}" name="name" >
+                        <input type="text" class="form-control" placeholder="{{course.name}}" name="name" id="name">
                     </div>
                 </div>
                 <div class="form-group row justify-content-md-center  my-2">
                     <label class="col-lg-3 fs-4 py-0 text-end">Cover Image:</label>
                     <div class="col-xl-7">
-                        <div class="image-input image-input-outline" id="kt_image_4"
-                            style="background-image: url(/assets/media/users/blank.png)">
-                            <label class="btn p-0 d-flex" data-action="change" data-toggle="tooltip" title=""
-                                data-original-title="Change avatar">
-                                <input id="thumbnail" name="thumbnail" type="file" class="file btn btn-md px-0 me-auto"
-                                    data-browse-on-zone-click="true" accept="image/*">
-                                <button class="btn btn-outline-secondary" data-action="remove" data-toggle="tooltip"
-                                    title="Remove avatar">Remove
-                                </button>
-                        </div>
+                        <input name="img" type="input" class="form-control w-100" value="{{course.img}}"
+                            placeholder="url">
                     </div>
                 </div>
                 <div class="form-group row justify-content-md-center  my-2">
@@ -57,7 +48,7 @@
                 <div class="form-group row justify-content-md-center  my-2">
                     <label class="col-lg-3 fs-4 text-end">Overall:</label>
                     <div class="col-lg-7">
-                        <textarea name="overview" class="form-control" rows="5"
+                        <textarea id="overview" name="overview" class="form-control" rows="5"
                             placeholder="{{course.overview}}"></textarea>
                     </div>
                 </div>
@@ -66,14 +57,16 @@
                 <div class="form-group row justify-content-md-center  my-2">
                     <label class="col-lg-3 text-start py-0 fs-4 text-end">Price:</label>
                     <div class="col-lg-7">
-                        <input type="text" name="price_discount" class="form-control" placeholder="{{course.price}}$">
+                        <input type="text" id="price" name="price" value="{{course.price}}" class="form-control"
+                            placeholder="{{course.price}}$">
                     </div>
                 </div>
 
                 <div class="form-group row justify-content-md-center my-2">
                     <label class="col-lg-3 py-0 fs-4 text-end">Sales:</label>
                     <div class="col-lg-7">
-                        <input type="text" name="price_discount" class="form-control" placeholder="{{course.discount}}%">
+                        <input type="text" name="discount" id="discount" value="{{course.discount}}"
+                            class="form-control" placeholder="{{course.discount}}%">
                     </div>
                 </div>
 
@@ -83,13 +76,13 @@
         </div>
         <!--end::Card-->
         <div class="card card-custom roseanna shadow my-3">
-            <div class="card-header d-flex justify-content-between"> 
+            <div class="card-header d-flex justify-content-between">
                 <div class="fw-bold m-0">Description</div>
                 <div>
-                    <button type="button" class="btn btn-secondary text-light fw-bold me-2 mt-1" id="Edit">Edit</button> 
+                    <button type="button" class="btn btn-secondary text-light fw-bold me-2 mt-1" id="Edit">Edit</button>
                 </div>
-             </div> 
-            
+            </div>
+
             <div class="card-body">
                 <div id="editor" hidden></div>
                 <p id="courseDes" class="fs-5 px-4 py-1 rounded-bottom rounded-end"></p>
@@ -97,7 +90,7 @@
                 {{!-- <button type="submit" value="Save">Save</button> --}}
             </div>
             <!--end::Form-->
-        </div> 
+        </div>
 
         <!--begin::Card-->
         <div class="card shadow my-3">
@@ -124,113 +117,176 @@
             </div>
         </div>
 
-        
+
         <!--end::Card-->
         <div class="d-flex justify-content-center">
             <button type="submit"
                 class="btn btn-md btn-secondary text-light fw-bold m-2">&emsp;&emsp;Create&emsp;&emsp;</button>
             <a href="/" class="btn btn-md btn-secondary text-light fw-bold m-2">&emsp;&emsp;Cancel&emsp;&emsp;</a>
         </div>
-    </form>
-</div>
+    </div>
+</form>
 
 
 <div id="row" hidden>
-     <div id="row1"> 
-         <div class="card"> 
-             <div class="card-header d-flex justify-content-between"> 
+    <div id="row1">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
                 <div class="d-flex flex-row">
-                    <div class="fs-3 m-0" id="section">Section </div> 
-                    <input class="ms-3" placeholder=" Introduce" style="margin-top: 6px; height: 60%">
-                 </div>
-                 <div>  
-                 <button type="button" class="btn btn-secondary text-light fw-bold me-2" id="addLesson">Add new Lesson</button> 
-                         <button class="btn fs-2" id="DeleteRow1" type="button"> 
-                         <i class="bi bi-trash"></i> x</button>  
-                 </div> 
-             </div> 
-             <div class="card-body"> 
-                 <div id="newinput2"></div>  
-             </div> 
-         </div>  
-     </div> 
-     <div id="newinput1"></div> 
-</div>
-
-<div id="row2" hidden>  
-    <div class="card">  
-        <div class="card-header d-flex justify-content-between">  
-            <div class="d-flex flex-row">
-                <div class="fs-3 m-0">Lesson 1:</div>  
-                <input class="ms-3" placeholder=" Introduce" style="margin-top: 6px; height: 75%"/>
+                    <div class="fs-3 m-0" id="section">Section </div>
+                    <input class="ms-3" id="titleChap" name="titleChap" placeholder=" Introduce"
+                        style="margin-top: 6px; height: 60%">
+                </div>
+                <div>
+                    <button type="button" class="btn btn-secondary text-light fw-bold me-2" id="addLesson">Add new
+                        Lesson</button>
+                    <button class="btn fs-2" id="DeleteRow1" type="button">
+                        <i class="bi bi-trash"></i> x</button>
+                </div>
             </div>
-            <div>  
-                <button class="btn btn-secondary text-light fw-bold" id="cancel" type="button"><i class="bi bi-trash"></i> Cancel </button>  
-            </div>  
-        </div>  
-        <div class="card-body">
-            <input type="file" id="picture" name="picture" accept="video/*" class="ms-2"></div>  
-    </div> 
+            <div class="card-body">
+                <div id="newinput2"></div>
+            </div>
+        </div>
+    </div>
+    <div id="newinput1"></div>
 </div>
 
+<div id="row2" hidden>
+    <div class="card">
+        <div class="card-header d-flex justify-content-between">
+            <div class="d-flex flex-row">
+                <div class="fs-3 m-0" id="lesTitle">Lesson</div>
+                <input class="ms-3" placeholder=" Introduce" id="titleLes" name="titleLes"
+                    style="margin-top: 6px; height: 75%" />
+            </div>
+            <div>
+                <button class="btn btn-secondary text-light fw-bold" id="cancel" type="button"><i
+                        class="bi bi-trash"></i> Cancel </button>
+            </div>
+        </div>
+        <div class="card-body" id="displayVideo">
+            <input type="file" id="video" name="video" multiple accept="video/*" class="ms-2">
+        </div>
+    </div>
+</div>
 
+{{#if (test "chapters.length" "chapters.length")}}
+<p>
+    hello
+</p>
+{{/if}}
 
 <script src="https://cdn.quilljs.com/1.0.0/quill.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-<script>
-    const list =[0,0,0,0,0,0,0,0,0,0];
-    var chapter = 0;
 
-    $("body").on('change', '[id^=mainCat]', function(){
+<script>
+    const list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    var chapter = '{{chapters.length}}';
+    var temp = '{{#each chapters}}{{chapter.length}}{{/each}}'
+    for (let i = 0; i < chapter; i++) {
+        list[i] = temp[i];
+    }
+    const listName = '{{#each chapters}}{{#each chapter}}{{lessons.name}}-{{/each}}{{/each}}'
+    const listMP4 = listName.split('-');
+    let count = 0;
+    $(document).ready(function () {
+        $('#name').val('{{course.name}}');
+        $('#overview').text('{{course.overview}}');
+        $('#price').text('{{course.price}}');
+        $('#discount').text('{{course.discount}}');
+
+        for (let i = 0; i < chapter; i++) {
+            $('#newinput1').append($('#row').clone().prop('id', 'chapter' + i));
+            $('#DeleteRow1').remove();
+            $('#titleChap').remove();
+            $('#addLesson').attr('id', 'addLesson' + i);
+            $('#newinput2').attr('id', 'newLesson' + i);
+            $('#chapter' + i).removeAttr('hidden');
+            for (let j = 0; j < list[i]; j++) {
+                $('#newLesson' + i).append($('#row2').clone().prop('id', i + 'lesson' + j));
+                $('#lesTitle').attr('id', i + 'lesTitle' + j);
+                $('#cancel').attr('id', i + 'cancel' + j);
+                $('#titleLes').attr('id', i + 'titleLes' + j);
+                $('#video').attr('id', i + 'video' + j);
+                $('#' + i + 'lesson' + j).removeAttr('hidden');
+                $('#' + i + 'lesTitle' + j).text('Lesson: ' + listMP4[count]);
+                $('#' + i + 'cancel' + j).remove();
+                $('#' + i + 'titleLes' + j).remove();
+                $('#' + i + 'video' + j).remove();
+                count++;
+            }
+        }
+    })
+
+    $("body").on('change', '[id^=mainCat]', function () {
         $('[id^=sub-]').attr('hidden', '').removeClass('show');
 
         $('#sub-' + $(this).val()).removeAttr('hidden').addClass('show');
-        
+
     })
 
-    $("body").on("click", "#addChapter" , function () {
+    $("body").on("click", "#addChapter", function () {
         var number = chapter + 1;
-        $('#newinput1').append($('#row').clone().prop('id','chapter' + chapter));
-        $('#DeleteRow1').attr('id','deleteChapter' + chapter);
-        $('#addLesson').attr('id','addLesson' + chapter);
-        $('#section').attr('id','section' + chapter).text("Section " + number + ": ");
+        $('#newinput1').append($('#row').clone().prop('id', 'chapter' + chapter));
+        $('#DeleteRow1').attr('id', 'deleteChapter' + chapter);
+        $('#addLesson').attr('id', 'addLesson' + chapter);
+        $('#section').attr('id', 'section' + chapter).text("Section " + number + ": ");
         $('#newinput2').attr('id', 'newLesson' + chapter)
+        $('#titleChap').attr('id', 'titleChap' + chapter)
         $('#chapter' + chapter).removeAttr('hidden')
         chapter++;
-        console.log(list);
-        console.log(chapter);
+
     })
- 
-    $("body").on("click", "[id^=deleteChapter]" , function () {
+
+    $("body").on("click", "[id^=deleteChapter]", function () {
         const id = $(this).attr('id').slice(-1);
         $(this).parents("#chapter" + id).remove();
         list[id] = 0;
         chapter--;
-        console.log(chapter);
-        console.log(list)
-    })
-    
-    $("body").on("click", "[id^=addLesson]" , function () {
-        const id = $(this).attr('id').slice(-1);
-        $('#newLesson' + id).append($('#row2').clone().prop('id',id + 'lesson' + list[id]));
-        $('#' + id + 'lesson' +list[id]).removeAttr('hidden');
-        $('#cancel').attr('id', id + 'cancel' + list[id]);
-        list[id]++;
-        console.log(list);
-        console.log(chapter);
+
     })
 
-    $("body").on("click", "[id*=cancel]" , function () {
+    $("body").on("click", "[id^=addLesson]", function () {
+        const id = $(this).attr('id').slice(-1);
+        $('#newLesson' + id).append($('#row2').clone().prop('id', id + 'lesson' + list[id]));
+        $('#' + id + 'lesson' + list[id]).removeAttr('hidden');
+        $('#cancel').attr('id', id + 'cancel' + list[id]);
+        $('#video').attr('id', id + 'video' + list[id]);
+        $('#titleLes').attr('id', id + 'titleLes' + list[id]);
+        list[id]++;
+    })
+    $("body").on("click", "[id*=cancel]", function () {
         const id = $(this).attr('id').charAt(0);
         const idLesson = $(this).attr('id').slice(-1);
-        console.log('#' + id + 'lesson' + idLesson)
         $(this).parents('#' + id + 'lesson' + idLesson).remove();
         list[id]--;
-        console.log(list);
-        console.log(chapter);
+
     })
-    
+
+    $('#myform').on('submit', function (e) {
+        let data = [];
+        let listLesName = [];
+        let listLesVideo = [];
+        let a = '';
+        for (let i = 0; i < chapter; i++) {
+            let nameChap = $('#titleChap' + i).val();
+            for (let j = 0; j < list[i]; j++) {
+                let nameLes = $('#' + i + 'titleLes' + j).val()
+                let video = $('#' + i + 'video' + j).val()
+                listLesName.push(nameLes);
+                listLesVideo.push(video);
+            }
+            $('#myform').append('<input type="input"  value="' + list[i] + '" name="nLesson"/>');
+        }
+
+        $('#myform').append('<input type="input" hidden value="' + $('[id^=sub-].show').val() + '" name="sub_category"/>');
+        $('#myform').append('<input type="input" hidden value="' + $('#mainCat').val() + '" name="category"/>');
+        $("#hiddenArea").val($("#editor").html());
+    })
+
+
     var toolbarOptions = [
         ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
         ['blockquote', 'code-block'],
@@ -251,7 +307,7 @@
         ['clean']                                         // remove formatting button
     ];
     var quill = new Quill('#editor', {
-        
+
         placeholder: "Editing about your course",
         theme: 'snow',
         modules: {
@@ -261,21 +317,15 @@
     });
 
     var $des = $("#courseDes"),
-    // {{course.description}}
-    html = $.parseHTML('{{{course.description}}}');
+        // {{course.description}}
+        html = $.parseHTML('{{{course.description}}}');
     $des.append(html);
 
-    $("body").on("click", "#Edit" , function () {
+    $("body").on("click", "#Edit", function () {
         $('#editor').removeAttr('hidden')
         $des.remove();
     })
-    
 
-    
 
-    $("#myform").on("submit",function() {
-        $("#hiddenArea").val($("#editor").html());
-        $('#myform').append('<input type="input" hidden value="' + $('[id^=sub-].show').val() + '" name="sub_category"/>');
 
-    })
 </script>

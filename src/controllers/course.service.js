@@ -12,6 +12,8 @@ const courseService = {
     var buy;
     var avatar;
 
+
+
     const course = await Course.findOne({ name: req.params.id })
       .populate("author")
       .populate("chapters")
@@ -95,6 +97,14 @@ const courseService = {
       }
     }
 
+    // var student;
+    // if (curUser.hasOwnProperty("_json")) {
+    //   student = await User.findOne({
+    //     username: curUser._json.given_name + curUser._json.family_name,
+    //   }).lean();
+    // } else {
+    //   student = await User.findById(curUser._id);
+    // }
     if (req.isAuthenticated()) {
       curUser = req.user;
       buy = await Register.find({
@@ -104,6 +114,7 @@ const courseService = {
         ? curUser.photos[0].value
         : curUser.avatar;
     }
+    
 
     if (req.query.ajax) {
       res.render("vwDetails/details", {
