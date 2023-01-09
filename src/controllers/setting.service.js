@@ -13,6 +13,28 @@ let userMail;
 let newInfo;
 
 const settingService = {
+  postDesAuthor: async (req, res) => {
+    try {
+      var curUser;
+
+      if (req.isAuthenticated()) {
+        curUser = req.user;
+      } else {
+        res.redirect("/login");
+        return;
+      }
+      const description = req.body.text.replace(
+        '<div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>',
+        ""
+      );
+
+      await User.updateOne({ _id: curUser._id }, { description: description });
+      res.redirect("/settings");
+    } catch (e) {
+      res.send(e);
+    }
+  },
+
   getSettingsPage: async (req, res) => {
     try {
       var curUser;
@@ -82,7 +104,7 @@ const settingService = {
       .limit(limit);
     const total = await Course.find({ author: curUser._id }).count();
 
-    for(let i = 0; i < courseLecture.length; i++){
+    for (let i = 0; i < courseLecture.length; i++) {
       var author = await User.findById(courseLecture[i].author).lean();
       courseLecture[i].author = author.username;
     }
@@ -354,7 +376,7 @@ const settingService = {
   getDashboardPage: async (req, res) => {
     try {
       if (req.isAuthenticated()) {
-        const curUser = req.user; 
+        const curUser = req.user;
       } else {
         res.redirect("/login");
         return;
@@ -370,15 +392,15 @@ const settingService = {
         .sort({ lastUpdate: -1 })
         .limit(5)
         .lean();
-        res.render("vwSettingsPage/vwAdminPage/dashboardPage", {
-          students: students,
-          lecturers: lecturers,
-          courses: courses,
-          newStudents: newStudents,
-          newCourses: newCourses,
-          admin: true,
-          cats: cats,
-        });
+      res.render("vwSettingsPage/vwAdminPage/dashboardPage", {
+        students: students,
+        lecturers: lecturers,
+        courses: courses,
+        newStudents: newStudents,
+        newCourses: newCourses,
+        admin: true,
+        cats: cats,
+      });
     } catch (e) {
       res.send(e);
     }
@@ -624,7 +646,9 @@ const settingService = {
 
   getCategorySetting: async (req, res) => {
     try {
-      const categories = await Category.find().populate("sub_categories").lean();
+      const categories = await Category.find()
+        .populate("sub_categories")
+        .lean();
       req.session.categories = categories;
       var curUser;
       if (req.isAuthenticated()) {
@@ -664,15 +688,15 @@ const settingService = {
       res.send(e);
     }
   },
-  addSubCategory: async (req,res) => {
+  addSubCategory: async (req, res) => {
     try {
       const newSubCat = new SubCategory(req.body);
       const savedSubCat = await newSubCat.save();
       if (req.body.mainCategory) {
-        const mainCat  = await Category.findOne({name: req.body.mainCategory});
-        await mainCat.updateOne({$push: {sub_categories: savedSubCat._id}});
-        await savedSubCat.updateOne({$set: {main_category: mainCat._id}});
-      }  
+        const mainCat = await Category.findOne({ name: req.body.mainCategory });
+        await mainCat.updateOne({ $push: { sub_categories: savedSubCat._id } });
+        await savedSubCat.updateOne({ $set: { main_category: mainCat._id } });
+      }
       res.redirect("/settings/category");
     } catch (e) {
       res.send(e);
@@ -680,43 +704,48 @@ const settingService = {
   },
   deleteMainCategory: async (req, res) => {
     try {
-      const Cat = await Category.findOne({name: req.body.mainCategory});
-      const courses = await Course.find({category: Cat._id});
+      const Cat = await Category.findOne({ name: req.body.mainCategory });
+      const courses = await Course.find({ category: Cat._id });
       if (courses == 0) {
-        await SubCategory.deleteMany({main_category: Cat._id});
-        await Category.deleteOne({name: req.body.mainCategory});
+        await SubCategory.deleteMany({ main_category: Cat._id });
+        await Category.deleteOne({ name: req.body.mainCategory });
       }
       res.redirect("/settings/category");
     } catch (e) {
       res.send(e);
     }
   },
-  deleteSubCategory: async (req,res) => {
+  deleteSubCategory: async (req, res) => {
     try {
-      const tempSubCat = await SubCategory.findOne({name: req.body.subCategory});
-      const courses = await Course.find({sub_category: tempSubCat._id});
+      const tempSubCat = await SubCategory.findOne({
+        name: req.body.subCategory,
+      });
+      const courses = await Course.find({ sub_category: tempSubCat._id });
       if (courses == 0) {
-        const mainCat = await Category.updateOne({_id: tempSubCat.main_category},{$pull: {sub_categories: tempSubCat._id}});
-        await SubCategory.deleteOne({name: req.body.subCategory});
+        const mainCat = await Category.updateOne(
+          { _id: tempSubCat.main_category },
+          { $pull: { sub_categories: tempSubCat._id } }
+        );
+        await SubCategory.deleteOne({ name: req.body.subCategory });
       }
       res.redirect("/settings/category");
     } catch (e) {
       res.send(e);
     }
   },
-  updateCategory: async (req,res) => {
+  updateCategory: async (req, res) => {
     try {
-      const Cat = await Category.findOne({name: req.body.mainCategory});
-      await Cat.updateOne({ $set: {name: req.body.name}});
+      const Cat = await Category.findOne({ name: req.body.mainCategory });
+      await Cat.updateOne({ $set: { name: req.body.name } });
       res.redirect("/settings/category");
     } catch (e) {
       res.send(e);
     }
   },
-  updateSubCategory: async (req,res) => {
+  updateSubCategory: async (req, res) => {
     try {
-      const Cat = await SubCategory.findOne({name: req.body.subCategory});
-      await Cat.updateOne({ $set: {name: req.body.name}});
+      const Cat = await SubCategory.findOne({ name: req.body.subCategory });
+      await Cat.updateOne({ $set: { name: req.body.name } });
       res.redirect("/settings/category");
     } catch (e) {
       res.send(e);
