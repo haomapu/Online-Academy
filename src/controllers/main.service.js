@@ -8,10 +8,7 @@ import Lesson from "../models/lesson.js";
 import Chapter from "../models/chapter.js";
 import bcrypt from "bcrypt";
 import passport from "passport";
-import authenticationMiddleware from "../middlewares/authentication.js";
 import mailer from "../utils/mailer.js";
-import userAuthorization from "../middlewares/authorization.js";
-import mongoose from "mongoose";
 
 import fs from "fs";
 import multer from "multer";
@@ -358,14 +355,11 @@ const mainService = {
   },
 
   addCourse: async (req, res) => {
-    const description = req.body.text.replace(
+    const description = req.body.nLesson.replace(
       '<div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>',
       ""
     );
-    // const course = await Course.updateOne(
-    //   { _id: "63980cb86e1bc00df84cd545" },
-    //   { description: description }
-    // );
+
     let curUser;
     if (!req.isAuthenticated()) {
       res.redirect("/login");
@@ -391,28 +385,13 @@ const mainService = {
       //xu ly o day
       let count = 0;
       console.log(req.body);
-      // console.log(req.files)
       let chapters = [];
-      // console.log(req.body)
-      // let image = fs.readFileSync(req.files.thumbnail[0]);
-      // let image_enc = image.toString("base64");
-      // let obj = {
-      //   name: req.body.firstName,
-      //   img: {
-      //     contentType: "video/mp4",
-      //     image: new Buffer.from(video_enc, "base64"),
-      //   },
-      // };
 
       if(req.body.titleChap !== undefined && req.body.titleChap !== null) {
         for (let i = 0; i < req.body.titleChap.length; i++){
           let lessons = [];
-          // console.log(req.body.titleChap[i]);
   
           for (let j = 0; j < req.body.nLesson[i]; j++){
-            // console.log(req.body.titleLes[count]);
-            // console.log(req.files[count].path)
-  
             //Video----------------------------
               let video = fs.readFileSync(req.files[count].path);
               let video_enc = video.toString("base64");
@@ -472,8 +451,6 @@ const mainService = {
       const saveCourse = await newCourse.save();
       res.redirect("/course/" + saveCourse.name);
     });
-
-    //res.redirect("/postCourse");
   },
 
   editCoursePage: async (req, res) => {
