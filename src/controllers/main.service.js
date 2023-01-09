@@ -43,8 +43,6 @@ const mainService = {
     const categoriesID = await Course.aggregate([
       { $sortByCount: "$category" },
     ]);
-    console.log(categoriesID);
-    console.log(categoriesID.length);
     const highlightCategories = [];
     for (let i = 0; i < categoriesID.length; i++) {
       highlightCategories.push(
