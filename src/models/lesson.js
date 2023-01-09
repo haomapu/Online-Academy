@@ -5,10 +5,6 @@ const lessonSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-
-    overview: {
-        type: String,
-    },
     video: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Video',

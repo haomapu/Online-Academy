@@ -39,6 +39,7 @@ const courseSchema = new mongoose.Schema({
 
   lastUpdate: {
     type: Date,
+    default: Date.now(),
   },
   totalView: {
     type: Number,

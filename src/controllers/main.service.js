@@ -4,6 +4,8 @@ import Category from "../models/category.js";
 import Sub_Category from "../models/sub_category.js";
 import User from "../models/user.js";
 import Video from "../models/video.js";
+import Lesson from "../models/lesson.js";
+import Chapter from "../models/chapter.js";
 import bcrypt from "bcrypt";
 import passport from "passport";
 import authenticationMiddleware from "../middlewares/authentication.js";
@@ -12,6 +14,7 @@ import userAuthorization from "../middlewares/authorization.js";
 import mongoose from "mongoose";
 
 import fs from "fs";
+import multer from "multer";
 
 let userMail;
 
@@ -298,19 +301,17 @@ const mainService = {
 
   //post video
   testUpload: async (req, res) => {
-    console.log(req.file.path);
-
-    const img = fs.readFileSync(req.file.path);
-    const img_enc = img.toString("base64");
-    const obj = {
-      name: req.body.firstName,
-      img: {
-        contentType: "video/mp4",
-        image: new Buffer.from(img_enc, "base64"),
-      },
-    };
-    const newVideo = new Video(obj);
-    await newVideo.save();
+    // const img = fs.readFileSync(req.file.path);
+    // const img_enc = img.toString("base64");
+    // const obj = {
+    //   name: req.body.firstName,
+    //   img: {
+    //     contentType: "video/mp4",
+    //     image: new Buffer.from(img_enc, "base64"),
+    //   },
+    // };
+    // const newVideo = new Video(obj);
+    // await newVideo.save();
     res.redirect("/test");
   },
 
@@ -347,15 +348,103 @@ const mainService = {
   },
 
   addCourse: async (req, res) => {
-    const description = req.body.text.replace(
-      '<div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>',
-      ""
-    );
-    const course = await Course.updateOne(
-      { _id: "63980cb86e1bc00df84cd545" },
-      { description: description }
-    );
-    res.redirect("/postCourse");
+    // const description = req.body.text.replace(
+    //   '<div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>',
+    //   ""
+    // );
+    // const course = await Course.updateOne(
+    //   { _id: "63980cb86e1bc00df84cd545" },
+    //   { description: description }
+    // );
+
+
+    const storage = multer.diskStorage({
+      filename: function (req, file, cb) {
+        cb(null, file.originalname);
+      }
+      
+      
+      })
+  
+    const upload = multer({ storage: storage });
+    upload.array('video')(req, res, async function (err) {
+      if (err instanceof multer.MulterError) {
+        console.error(err);
+      } else if (err) {
+        console.error(err);
+      }
+      //xu ly o day
+      let count = 0;
+    
+      console.log(req.body)
+      let chapters = [];
+
+      for (let i = 0; i < req.body.titleChap.length; i++){
+        let lessons = [];
+        // console.log(req.body.titleChap[i]);
+
+        for (let j = 0; j < req.body.nLesson[i]; j++){
+          // console.log(req.body.titleLes[count]);
+          // console.log(req.files[count].path)
+
+          //Video----------------------------
+            let video = fs.readFileSync(req.files[count].path);
+            let video_enc = video.toString("base64");
+            let obj = {
+              name: req.body.firstName,
+              img: {
+                contentType: "video/mp4",
+                image: new Buffer.from(video_enc, "base64"),
+              },
+            };
+            let newVideo = new Video(obj);
+            let savedVideo = await newVideo.save();
+            
+          //Lesson-----------------------------
+          let lesson = {
+            name: req.body.titleLes[count],
+            video: savedVideo,
+          }
+          let newLesson = new Lesson(lesson);
+          let saveLesson = await newLesson.save();
+          lessons.push(saveLesson);
+
+          count++;
+        }
+        //Chapter--------------------
+        let chapter = {
+          name: req.body.titleChap[i],
+          lessons: lessons,
+        }
+        let newChapter = new Chapter(chapter);
+        let saveChapter = await newChapter.save();
+        chapters.push(saveChapter);
+      }
+    
+      const user = await User.findById('63b2df7144f8ffde25ebc376')
+      const category = await Category.findById('639c36f03c3fecc4e8d810ff')
+      const sub_category = await Sub_Category.findById('639c355129d7e750b5666d37')
+      const course = {
+        name: req.body.name,
+        img: 'https://cdn.hackr.io/uploads/posts/large/1607606304WC62rziUJw.png',
+        overview: req.body.overview,
+        description: req.body.text,
+        rating: 5,
+        rating_count: 0,
+        register_count: 0,
+        price: req.body.price,
+        discount: req.body.discount,
+        chapters: chapters,
+        author: user,
+        category: category,
+        sub_category: sub_category,
+      }
+      const newCourse = new Course(course);
+      const saveCourse = await newCourse.save();
+      res.redirect('/course/' + saveCourse.name);
+    });
+
+    //res.redirect("/postCourse");
   },
 
   otpService: async (req, res) => {
