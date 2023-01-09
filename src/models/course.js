@@ -19,14 +19,17 @@ const courseSchema = new mongoose.Schema({
 
   rating: {
     type: Number,
+    default: 5,
   },
 
   rating_count: {
     type: Number,
+    default: 0,
   },
 
   register_count: {
     type: Number,
+    default: 0,
   },
 
   price: {
@@ -35,6 +38,7 @@ const courseSchema = new mongoose.Schema({
 
   discount: {
     type: Number,
+    default: 0,
   },
 
   lastUpdate: {

@@ -36,7 +36,7 @@ const courseService = {
     const feedbacks = [];
     const curPage = req.query.page || 1;
     var offset = (curPage - 1) * limit;
-
+    
     const total = await Feedback.find({course: course._id}).count();
     var nPages;
 

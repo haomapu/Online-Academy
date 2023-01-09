@@ -363,8 +363,14 @@ const mainService = {
     //   { _id: "63980cb86e1bc00df84cd545" },
     //   { description: description }
     // );
-
-
+    let curUser;
+    if (!req.isAuthenticated()){
+      res.redirect('/login')
+      return;
+    } else {
+      curUser = req.user
+    }
+    
     const storage = multer.diskStorage({
       filename: function (req, file, cb) {
         cb(null, file.originalname);
@@ -382,9 +388,19 @@ const mainService = {
       }
       //xu ly o day
       let count = 0;
-    
-      console.log(req.body)
+      console.log(req.body);
+      // console.log(req.files)
       let chapters = [];
+      // console.log(req.body)
+      // let image = fs.readFileSync(req.files.thumbnail[0]);
+      // let image_enc = image.toString("base64");
+      // let obj = {
+      //   name: req.body.firstName,
+      //   img: {
+      //     contentType: "video/mp4",
+      //     image: new Buffer.from(video_enc, "base64"),
+      //   },
+      // };
 
       for (let i = 0; i < req.body.titleChap.length; i++){
         let lessons = [];
@@ -427,13 +443,13 @@ const mainService = {
         let saveChapter = await newChapter.save();
         chapters.push(saveChapter);
       }
-    
-      const user = await User.findById('63b2df7144f8ffde25ebc376')
-      const category = await Category.findById('639c36f03c3fecc4e8d810ff')
-      const sub_category = await Sub_Category.findById('639c355129d7e750b5666d37')
+      
+      const user = await User.findById(curUser._id)
+      const category = await Category.findOne({name: req.body.category})
+      const sub_category = await Sub_Category.findOne({name: req.body.sub_category})
       const course = {
         name: req.body.name,
-        img: 'https://cdn.hackr.io/uploads/posts/large/1607606304WC62rziUJw.png',
+        img: req.body.img,
         overview: req.body.overview,
         description: req.body.text,
         rating: 5,
@@ -449,6 +465,7 @@ const mainService = {
       const newCourse = new Course(course);
       const saveCourse = await newCourse.save();
       res.redirect('/course/' + saveCourse.name);
+      
     });
 
     //res.redirect("/postCourse");
