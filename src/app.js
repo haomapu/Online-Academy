@@ -39,7 +39,7 @@ mongoose.connect(process.env.MONGODB_URL, () => {
   console.log("Connected to MongoDB");
 });
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 const store = session.MemoryStore();
 app.use(session({

@@ -262,25 +262,24 @@ const mainService = {
     badRequestMessage: 'All Fields Need To Be Filled!'
   }),
 
-  // done
-  test: async (req, res) => {
-    const video = await Video.find().lean(); 
-    const list = [];
-    for(let i = 0; i < video.length; i++){
-      list.push({
-        video: video[i].img.image.toString('base64'),
-      });
-    }
-
-    res.render("vwHomepage/test", {
-        video: list,
+  // get video
+test: async (req, res) => {
+  const video = await Video.find().lean(); 
+  const list = [];
+  for(let i = 0; i < video.length; i++){
+    list.push({
+      video: video[i].img.image.toString('base64'),
     });
-  },
+  }
 
+  res.render("vwHomepage/test", {
+      video: list,
+  });
+},
 
-  //done
-  testUpload: async (req, res) => {
-    console.log(req.file.path);
+  //post video
+testUpload: async (req, res) => {
+  console.log(req.file.path);
 
   const img = fs.readFileSync(req.file.path);
   const img_enc = img.toString('base64');
@@ -295,16 +294,6 @@ const mainService = {
   await newVideo.save();
   res.redirect('/test');
   },
-
-
-// **RETRIEVE**
-// route.get('/sad',(req,res)=>{
-//      img.find({}).then((img)=>{
-//        res.json(img)      
-// //How do decode my buffer to show an image in Postman?
-// })
-// }
-// )
 
   signupService: async (req, res) => {
     try {
@@ -334,8 +323,15 @@ const mainService = {
   }
 },
 
+
   createCoursePage: async (req, res) => {
     res.render("vwLecturer/createCourse");
+  },
+
+  addCourse: async (req, res) => {
+    const description = req.body.text.replace('<div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>', '');
+    const course = await Course.updateOne({_id: "63980cb86e1bc00df84cd545"}, {description: description});
+    res.redirect("/postCourse");
   },
 
   otpService: async (req, res) => {
