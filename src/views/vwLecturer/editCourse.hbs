@@ -13,7 +13,7 @@
                 <div class="form-group row justify-content-md-center  my-2">
                     <label class="col-lg-3 fs-4 text-end">Course Name:</label>
                     <div class="col-lg-7">
-                        <input type="text" class="form-control" placeholder="{{course.name}}" name="name" id="name">
+                        <input type="text" class="form-control" placeholder="{{course.name}}" value="{{course.name}}" name="name" id="name">
                     </div>
                 </div>
                 <div class="form-group row justify-content-md-center  my-2">
@@ -48,8 +48,7 @@
                 <div class="form-group row justify-content-md-center  my-2">
                     <label class="col-lg-3 fs-4 text-end">Overall:</label>
                     <div class="col-lg-7">
-                        <textarea id="overview" name="overview" class="form-control" rows="5"
-                            placeholder="{{course.overview}}"></textarea>
+                        <textarea id="overview" name="overview" class="form-control" rows="5" >{{course.overview}}</textarea>
                     </div>
                 </div>
 
@@ -171,15 +170,12 @@
     </div>
 </div>
 
-{{#if (test "chapters.length" "chapters.length")}}
-<p>
-    hello
-</p>
-{{/if}}
 
 <script src="https://cdn.quilljs.com/1.0.0/quill.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
+{{#each course.chapters}}
+{{this}}
+{{/each}}
 
 <script>
     const list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -188,21 +184,25 @@
     for (let i = 0; i < chapter; i++) {
         list[i] = temp[i];
     }
+    const listChapName = '{{#each course.chapters}}{{name}}-{{/each}}'
+    const listChapName1 = listChapName.split('-')
+    console.log(listChapName)
     const listName = '{{#each chapters}}{{#each chapter}}{{lessons.name}}-{{/each}}{{/each}}'
     const listMP4 = listName.split('-');
     let count = 0;
     $(document).ready(function () {
-        $('#name').val('{{course.name}}');
-        $('#overview').text('{{course.overview}}');
-        $('#price').text('{{course.price}}');
-        $('#discount').text('{{course.discount}}');
 
         for (let i = 0; i < chapter; i++) {
             $('#newinput1').append($('#row').clone().prop('id', 'chapter' + i));
             $('#DeleteRow1').remove();
-            $('#titleChap').remove();
+            $('#newinput2').attr('id', 'newLesson' + i)
+
             $('#addLesson').attr('id', 'addLesson' + i);
-            $('#newinput2').attr('id', 'newLesson' + i);
+            $('#section').attr('id', 'section' + i);
+            $('#titleChap').attr('id', 'titleChap' + i);
+            $('#titleChap' + i).remove();
+            $('#section' + i).text('Chapter'+listChapName1[i]);
+
             $('#chapter' + i).removeAttr('hidden');
             for (let j = 0; j < list[i]; j++) {
                 $('#newLesson' + i).append($('#row2').clone().prop('id', i + 'lesson' + j));

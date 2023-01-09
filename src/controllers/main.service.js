@@ -447,6 +447,7 @@ const mainService = {
         lessons = [];
       }
     }
+    console.log(course);
     res.render("vwLecturer/editCourse", {
         course: course,
         chapters: chapters,
@@ -481,16 +482,23 @@ const mainService = {
       let count = 0;
       console.log(req.body);
       console.log(req.files[0].path);
-      console.log(course.chapters[0].lessons.length)
+      let nChap;
+
       let chapters = [];
       
       for (let i = 0; i < req.body.nLesson.length; i++){
         let lessons = [];
         // console.log(req.body.titleChap[i]);
-        if (course.chapters[i].lessons.length >= req.body.nLesson[i]){
-          continue;
+        if (course.chapters){
+          nChap = course.chapters[i].lessons.length;
+          if (course.chapters[i].lessons.length >= req.body.nLesson[i]){
+            continue;
+          }
+        } else {
+          nChap = 0;
         }
-        for (let j = 0; j < req.body.nLesson[i] - course.chapters[i].lessons.length; j++){
+        
+        for (let j = 0; j < req.body.nLesson[i] - nChap; j++){
           // console.log(req.body.titleLes[count]);
           // console.log(req.files[count].path)
           //Video----------------------------
@@ -519,12 +527,13 @@ const mainService = {
           count++;
         }
         //Chapter--------------------
-        const newChap = await Chapter.findByIdAndUpdate(course.chapters[i]._id, {$push: {lessons: {$each: lessons }}}  );
-        console.log(newChap);
-        if (i < course.chapters.length){
-          
-          // await Chapter.updateOne({id: course.chapters[i]._id}, {name: req.body.titleChap[i]});
-        } else {
+        if (course.chapters){
+          if (i < course.chapters.length){
+            const newChap = await Chapter.findByIdAndUpdate(course.chapters[i]._id, {$push: {lessons: {$each: lessons }}}  );
+            console.log(newChap);
+            // await Chapter.updateOne({id: course.chapters[i]._id}, {name: req.body.titleChap[i]});
+          } 
+        }else {
           console.log('123213')
           let chapter = {
             name: '123',
@@ -539,10 +548,14 @@ const mainService = {
       const category = await Category.findOne({name: req.body.category})
       const sub_category = await Sub_Category.findOne({name: req.body.sub_category})
 
-
-      if (req.body.nLesson.length > course.chapters.length){
-        await Course.updateOne({id: course._id},{ $push: { chapters: { $each: chapters } } })
+      if (course.chapters){
+        if (req.body.nLesson.length > course.chapters.length){
+          await Course.findByIdAndUpdate(course._id,{ $push: { chapters: { $each: chapters } } })
+        }
+      } else {
+        await Course.findByIdAndUpdate(course._id, {chapters:  chapters })
       }
+      
       const description = req.body.text.replace(
         '<div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>',
         ""
