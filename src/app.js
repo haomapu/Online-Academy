@@ -62,7 +62,8 @@ app.use((req, res, next) => {
 passport.use(new GoogleStrategy({
   clientID: process.env.clientID,
   clientSecret: process.env.clientSecret,
-  callbackURL: '/auth/google/callback'
+  callbackURL: '/auth/google/callback',
+  proxy: true
 },
 (accessToken, refreshToken, profile, done) => {
   done(null, profile); 
