@@ -162,7 +162,7 @@
               <label for="name" class="form-label">Category</label>
               <input type="text" class="w-25 form-control" name="name">
             </div>
-            <button type="submit" class="btn btn-primary">Add</button>
+            <button type="submit" class="btn btn-secondary text-white">Add</button>
           </form>
         </div>
 
@@ -177,7 +177,7 @@
               <label for="category" class="form-label">Sub Category</label>
               <input type="text" class="w-25 form-control" name="name">
             </div>
-            <button type="submit" class="btn btn-primary">Add</button>
+            <button type="submit" class="btn btn-secondary text-white">Add</button>
           </form>
         </div>
 
@@ -188,19 +188,20 @@
             <input class="ms-5" type="radio" name="mainCategory" value="{{this.name}}">
             <label class="fs-5">{{this.name}}</label><br>
             {{/each}}
-            <button type="submit" class="btn btn-primary">Remove</button>
+            <button type="submit" class="btn btn-secondary text-white">Remove</button>
           </form>
         </div>
         <div class="border p-3 tab-pane fade" style="background-color: white !important;" id="four">
           <form action="/settings/subcategory/delete" method="post">
             <label for="category" class="form-label">Sub Category</label><br>
             {{#each categories}}
+            <p class="fs-5 fw-bold">{{this.name}}</p> 
             {{#each this.sub_categories}}
             <input class="ms-5" type="radio" name="subCategory" value="{{this.name}}">
             <label class="fs-5">{{this.name}}</label><br>
             {{/each}}
             {{/each}}
-            <button type="submit" class="btn btn-primary">Remove</button>
+            <button type="submit" class="btn btn-secondary text-white">Remove</button>
           </form>
         </div>
         <div class="border p-3 tab-pane fade" style="background-color: white !important;" id="five">
@@ -214,13 +215,14 @@
               <label for="category" class="form-label">Enter name to change</label>
               <input type="text" class="w-25 form-control" name="name">
             </div>
-            <button type="submit" class="btn btn-primary">Update</button>
+            <button type="submit" class="btn btn-secondary text-white">Update</button>
           </form>
         </div>
         <div class="border p-3 tab-pane fade" style="background-color: white !important;" id="six">
           <form action="/settings/subcategory/update" method="post">
             <label for="category" class="form-label">Sub Category</label><br>
             {{#each categories}}
+            <p class="fs-5 fw-bold">{{this.name}}</p>
             {{#each this.sub_categories}}
             <input class="ms-5" type="radio" name="subCategory" value="{{this.name}}">
             <label class="fs-5">{{this.name}}</label><br>
@@ -230,7 +232,7 @@
               <label for="category" class="form-label">Enter name to change</label>
               <input type="text" class="w-25 form-control" name="name">
             </div>
-            <button type="submit" class="btn btn-primary">Update</button>
+            <button type="submit" class="btn btn-secondary text-white">Update</button>
           </form>
         </div>
       </div>
