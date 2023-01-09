@@ -364,6 +364,25 @@ const mainService = {
     res.redirect("/postCourse");
   },
 
+  editCoursePage: async (req, res) => {
+    var curUser;
+    if (req.isAuthenticated()) {
+      curUser = req.user;
+    } else {
+      res.redirect("/login");
+      return;
+    }
+
+    const course = await Course.findOne({name: req.params.id}).lean();
+    res.render("vwLecturer/editCourse", {
+        course: course,
+    });
+  },
+
+  updateCourse: async (req, res) => {
+    res.render("vwLecturer/editCourse");
+  },
+
   otpService: async (req, res) => {
     const { first, second, third, fourth, fifth, sixth } = req.body;
     const userOtp = `${first}${second}${third}${fourth}${fifth}${sixth}`;

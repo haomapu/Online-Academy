@@ -28,6 +28,10 @@ router.get("/postCourse", mainService.createCoursePage);
 
 router.post("/postCourse", mainService.addCourse);
 
+router.get("/editCourse/:id", mainService.editCoursePage);
+
+router.post("/editCourse/:id", mainService.updateCourse);
+
 router.get('/is-available', mainService.checkEmail);
 
 export default router;
