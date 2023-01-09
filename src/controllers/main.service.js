@@ -232,6 +232,12 @@ const mainService = {
         pageNumbers.push({
           value: i,
           isCurrent: i === +curPage,
+          text: req.query.search,
+          main_cat: req.query.main_cat,
+          cat: req.query.cat,
+          sort: req.query.sort,
+          cost: req.query.cost,
+          rating: req.query.rating,
         });
       }
 
