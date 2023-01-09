@@ -28,7 +28,6 @@ const app = express();
 app.use("/public", express.static("public"));
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const PORT = 8080;
 
 // Connect MongoDB
 dotenv.config();
@@ -186,6 +185,5 @@ app.get('/auth/google/callback', passport.authenticate('google'), async (req, re
   res.redirect('/');
 });
 //Start App
-app.listen(PORT, function () {
-  console.log(`Online Academy listening at http://localhost:${PORT}`);
+app.listen(process.env.PORT, function () {
 });
