@@ -47,7 +47,7 @@ const mainService = {
         await Category.findById(categoriesID[i]._id).lean()
       );
     }
-    // console.log(highlightCategories);
+    
     res.render("home", {
       categories: categories,
       newCourse: newCourse,
@@ -290,37 +290,6 @@ const mainService = {
     badRequestMessage: "All Fields Need To Be Filled!",
     keepSessionInfo: true,
   }),
-
-  // get video
-  test: async (req, res) => {
-    const video = await Video.find().lean();
-    const list = [];
-    for (let i = 0; i < video.length; i++) {
-      list.push({
-        video: video[i].img.image.toString("base64"),
-      });
-    }
-
-    res.render("vwHomepage/test", {
-      video: list,
-    });
-  },
-
-  //post video
-  testUpload: async (req, res) => {
-    // const img = fs.readFileSync(req.file.path);
-    // const img_enc = img.toString("base64");
-    // const obj = {
-    //   name: req.body.firstName,
-    //   img: {
-    //     contentType: "video/mp4",
-    //     image: new Buffer.from(img_enc, "base64"),
-    //   },
-    // };
-    // const newVideo = new Video(obj);
-    // await newVideo.save();
-    res.redirect("/test");
-  },
 
   signupService: async (req, res) => {
     try {
