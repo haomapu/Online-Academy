@@ -1,242 +1,68 @@
 <style>
-    
-@media only screen and (max-device-width : 480px) {
-    .table-reponsive {
-        height: 300px !important;
+    @media only screen and (max-device-width : 480px) {
+        .table-reponsive {
+            height: 300px !important;
+        }
     }
-}
-.table-responsive {
-  overflow-y:scroll;
-  height:500px;
-}
+
+    .table-responsive {
+        overflow-y: scroll;
+        height: 500px;
+    }
 </style>
 
 <div class="container">
-  <div class="row">
-    <div class="col-8">
-      <div class="ratio ratio-16x9">
-        <iframe class="" src="//www.youtube.com/embed/zB4I68XVPzQ"></iframe>
-      </div>
-    <h4>Course Name</h4>
+    <div class="row">
+        <div class="col-8">
+            <div class="ratio ratio-16x9">
+                <iframe id="video" class="" src=""></iframe>
+            </div>
+            <h4>Course Name</h4>
+        </div>
+        <div class="border col-sm-4 table-responsive" id="content">
+            <div class="accordion open rounded-end rounded-bottom" id="accordionExample"
+                style="margin-left: 5%; width: 90%;">
+                <p class="h2 fw-bold">
+                    Course Details</p>
+                {{#if course.chapters}}
+                {{#each course.chapters}}
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading-{{@index}}">
+                        <button class="accordion-button fw-bold fs-5 py-2" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse-{{@index}}" aria-expanded="true"
+                            aria-controls="collapse-{{@index}}">
+                            Chapter 1: {{this.name}}
+                        </button>
+                    </h2>
+
+
+                    <div id="collapse-{{@index}}" class="accordion-collapse fs-5 collapse"
+                        aria-labelledby="heading-{{@index}}" data-bs-parent="#accordionExample">
+                        {{#each (lookup ../chapters @index)}}
+                        {{#each this}}
+                        {{#each this}}
+                        <div class="accordion-body py-2">
+                            <button id="lesson-{{@index}}" class="w-100 btn btn-outline-secondary" value="{{toBase64 this.video.img.image}}">{{this.name}}</button>
+                        </div>
+                        {{/each}}
+                        {{/each}}
+                        {{/each}}
+                    </div>
+                </div>
+                {{/each}}
+                {{else}}
+                <div class="h4 text-secondary">Updating...</div>
+
+                {{/if}}
+            </div>
+
+        </div>
     </div>
-    <div class="border col-sm-4 table-responsive">
-        <table class="table align-middle mb-0 bg-white table-hover">
-            <thead class="bg-light">
-                <tr>
-                    <th>Course Content</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="d-flex align-items-center">
-                        <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                        </label>
-                        </div>
-                        <div class="ms-3">
-                            <p class="fw-bold mb-1 h5">What is flexbox</p>
-                            <div>
-                                <i class="fa-solid fa-play text-m"></i>
-                                <span class="text-muted mb-0 h6"> 5 mins</span>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="d-flex align-items-center">
-                        <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                        </label>
-                        </div>
-                        <div class="ms-3">
-                            <p class="fw-bold mb-1 h5">What is flexbox</p>
-                            <div>
-                                <i class="fa-solid fa-play text-m"></i>
-                                <span class="text-muted mb-0 h6"> 5 mins</span>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="d-flex align-items-center">
-                        <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                        </label>
-                        </div>
-                        <div class="ms-3">
-                            <p class="fw-bold mb-1 h5">What is flexbox</p>
-                            <div>
-                                <i class="fa-solid fa-play text-m"></i>
-                                <span class="text-muted mb-0 h6"> 5 mins</span>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="d-flex align-items-center">
-                        <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                        </label>
-                        </div>
-                        <div class="ms-3">
-                            <p class="fw-bold mb-1 h5">What is flexbox</p>
-                            <div>
-                                <i class="fa-solid fa-play text-m"></i>
-                                <span class="text-muted mb-0 h6"> 5 mins</span>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="d-flex align-items-center">
-                        <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                        </label>
-                        </div>
-                        <div class="ms-3">
-                            <p class="fw-bold mb-1 h5">What is flexbox</p>
-                            <div>
-                                <i class="fa-solid fa-play text-m"></i>
-                                <span class="text-muted mb-0 h6"> 5 mins</span>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="d-flex align-items-center">
-                        <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                        </label>
-                        </div>
-                        <div class="ms-3">
-                            <p class="fw-bold mb-1 h5">What is flexbox</p>
-                            <div>
-                                <i class="fa-solid fa-play text-m"></i>
-                                <span class="text-muted mb-0 h6"> 5 mins</span>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="d-flex align-items-center">
-                        <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                        </label>
-                        </div>
-                        <div class="ms-3">
-                            <p class="fw-bold mb-1 h5">What is flexbox</p>
-                            <div>
-                                <i class="fa-solid fa-play text-m"></i>
-                                <span class="text-muted mb-0 h6"> 5 mins</span>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="d-flex align-items-center">
-                        <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                        </label>
-                        </div>
-                        <div class="ms-3">
-                            <p class="fw-bold mb-1 h5">What is flexbox</p>
-                            <div>
-                                <i class="fa-solid fa-play text-m"></i>
-                                <span class="text-muted mb-0 h6"> 5 mins</span>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="d-flex align-items-center">
-                        <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                        </label>
-                        </div>
-                        <div class="ms-3">
-                            <p class="fw-bold mb-1 h5">What is flexbox</p>
-                            <div>
-                                <i class="fa-solid fa-play text-m"></i>
-                                <span class="text-muted mb-0 h6"> 5 mins</span>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="d-flex align-items-center">
-                        <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                        </label>
-                        </div>
-                        <div class="ms-3">
-                            <p class="fw-bold mb-1 h5">What is flexbox</p>
-                            <div>
-                                <i class="fa-solid fa-play text-m"></i>
-                                <span class="text-muted mb-0 h6"> 5 mins</span>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="d-flex align-items-center">
-                        <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                        </label>
-                        </div>
-                        <div class="ms-3">
-                            <p class="fw-bold mb-1 h5">What is flexbox</p>
-                            <div>
-                                <i class="fa-solid fa-play text-m"></i>
-                                <span class="text-muted mb-0 h6"> 5 mins</span>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="d-flex align-items-center">
-                        <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                        </label>
-                        </div>
-                        <div class="ms-3">
-                            <p class="fw-bold mb-1 h5">What is flexbox</p>
-                            <div>
-                                <i class="fa-solid fa-play text-m"></i>
-                                <span class="text-muted mb-0 h6"> 5 mins</span>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="d-flex align-items-center">
-                        <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                        </label>
-                        </div>
-                        <div class="ms-3">
-                            <p class="fw-bold mb-1 h5">What is flexbox</p>
-                            <div>
-                                <i class="fa-solid fa-play text-m"></i>
-                                <span class="text-muted mb-0 h6"> 5 mins</span>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-  </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $('#content').on('click', '[id^=lesson]', function(){
+        $('#video').attr('src', 'data:video/mp4;base64,' + $(this).attr('value'))
+    })
+</script>

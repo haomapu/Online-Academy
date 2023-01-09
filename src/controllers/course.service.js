@@ -18,7 +18,6 @@ const courseService = {
     const course = await Course.findOne({ name: req.params.id }).populate('author').populate('chapters').lean();
     const chapters = [];
     var lessons = [];
-    console.log(course);
     if (course) {
       for (let i = 0; i < course.chapters.length; i++){
         for (let j =0; j < course.chapters[i].lesson.length; j++){
@@ -208,7 +207,24 @@ const courseService = {
   },
   
   viewCourse: async (req,res) => {
-    res.render("vwDetails/courseDetails");
+    const course = await Course.findOne({ name: req.params.id }).populate('author').populate('chapters').lean();
+    const chapters = [];
+    var lessons = [];
+    if (course) {
+      for (let i = 0; i < course.chapters.length; i++){
+        for (let j =0; j < course.chapters[i].lesson.length; j++){
+        // lesson.push(await Lesson.findById())
+        lessons.push({lessons: await Lesson.findById(course.chapters[i].lesson[j]).populate('video').lean()});
+        }
+        chapters.push({chapters: lessons});
+        lessons = [];
+      }
+    }
+
+    res.render("vwDetails/courseDetails",{
+      course: course,
+      chapters: chapters,
+    });
   },
 }
 export default courseService;
