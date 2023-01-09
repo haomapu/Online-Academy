@@ -232,6 +232,12 @@ const mainService = {
         pageNumbers.push({
           value: i,
           isCurrent: i === +curPage,
+          text: req.query.search,
+          main_cat: req.query.main_cat,
+          cat: req.query.cat,
+          sort: req.query.sort,
+          cost: req.query.cost,
+          rating: req.query.rating,
         });
       }
 
@@ -356,6 +362,25 @@ const mainService = {
       { description: description }
     );
     res.redirect("/postCourse");
+  },
+
+  editCoursePage: async (req, res) => {
+    var curUser;
+    if (req.isAuthenticated()) {
+      curUser = req.user;
+    } else {
+      res.redirect("/login");
+      return;
+    }
+
+    const course = await Course.findOne({name: req.params.id}).lean();
+    res.render("vwLecturer/editCourse", {
+        course: course,
+    });
+  },
+
+  updateCourse: async (req, res) => {
+    res.render("vwLecturer/editCourse");
   },
 
   otpService: async (req, res) => {
