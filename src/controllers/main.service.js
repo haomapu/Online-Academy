@@ -402,53 +402,55 @@ const mainService = {
       //   },
       // };
 
-      for (let i = 0; i < req.body.titleChap.length; i++) {
-        let lessons = [];
-        // console.log(req.body.titleChap[i]);
-
-        for (let j = 0; j < req.body.nLesson[i]; j++) {
-          // console.log(req.body.titleLes[count]);
-          // console.log(req.files[count].path)
-
-          //Video----------------------------
-          let video = fs.readFileSync(req.files[count].path);
-          let video_enc = video.toString("base64");
-          let obj = {
-            name: req.body.firstName,
-            img: {
-              contentType: "video/mp4",
-              image: new Buffer.from(video_enc, "base64"),
-            },
-          };
-          let newVideo = new Video(obj);
-          let savedVideo = await newVideo.save();
-
-          //Lesson-----------------------------
-          let lesson = {
-            name: req.body.titleLes[count],
-            video: savedVideo,
-          };
-          let newLesson = new Lesson(lesson);
-          let saveLesson = await newLesson.save();
-          lessons.push(saveLesson);
-
-          count++;
-        }
-        //Chapter--------------------
-        let chapter = {
-          name: req.body.titleChap[i],
-          lessons: lessons,
-        };
-        let newChapter = new Chapter(chapter);
-        let saveChapter = await newChapter.save();
-        chapters.push(saveChapter);
+      if(req.body.titleChap !== undefined && req.body.titleChap !== null) {
+        for (let i = 0; i < req.body.titleChap.length; i++){
+          let lessons = [];
+          // console.log(req.body.titleChap[i]);
+  
+          for (let j = 0; j < req.body.nLesson[i]; j++){
+            // console.log(req.body.titleLes[count]);
+            // console.log(req.files[count].path)
+  
+            //Video----------------------------
+              let video = fs.readFileSync(req.files[count].path);
+              let video_enc = video.toString("base64");
+              let obj = {
+                name: req.body.firstName,
+                img: {
+                  contentType: "video/mp4",
+                  image: new Buffer.from(video_enc, "base64"),
+                },
+              };
+              let newVideo = new Video(obj);
+              let savedVideo = await newVideo.save();
+              
+            //Lesson-----------------------------
+            let lesson = {
+              name: req.body.titleLes[count],
+              video: savedVideo,
+            }
+            let newLesson = new Lesson(lesson);
+            let saveLesson = await newLesson.save();
+            lessons.push(saveLesson);
+  
+            count++;
+          }
+          //Chapter--------------------
+          let chapter = {
+            name: req.body.titleChap[i],
+            lessons: lessons,
+          }
+          let newChapter = new Chapter(chapter);
+          let saveChapter = await newChapter.save();
+          chapters.push(saveChapter);
+        }  
       }
+      
+      
+      const user = await User.findById(curUser._id)
+      const category = await Category.findOne({name: req.body.category})
+      const sub_category = await Sub_Category.findOne({name: req.body.sub_category})
 
-      const user = await User.findById(curUser._id);
-      const category = await Category.findOne({ name: req.body.category });
-      const sub_category = await Sub_Category.findOne({
-        name: req.body.sub_category,
-      });
       const course = {
         name: req.body.name,
         img: req.body.img,
