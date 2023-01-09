@@ -43,7 +43,7 @@
         <li class="nav-item">
           <a href="/settings/courseAdmin" class="nav-link link-dark">
             <i class="fas fa-book"></i>
-            <span>CoursesA</span>
+            <span>Courses</span>
           </a>
         </li>
         <div class="dropdown">
@@ -78,7 +78,7 @@
         <li class="nav-item">
           <a href="/settings/courseStudent" class="nav-link link-dark">
             <i class="fas fa-book"></i>
-            <span>CoursesS</span>
+            <span>Courses</span>
           </a>
         </li>
         {{/if}}
@@ -86,7 +86,7 @@
         <li class="nav-item">
           <a href="/settings/courseLecture" class="nav-link link-dark">
             <i class="fas fa-book"></i>
-            <span>CoursesL</span>
+            <span>Courses</span>
           </a>
         </li>
         {{/if}}
@@ -172,7 +172,7 @@
             </div>
           </div>
         </form>
-        <form id ="changePassForm" method="post" class="mt-3" action="/settings/changePass">
+        <form id="changePassForm" method="post" class="mt-3" action="/settings/changePass">
           <div class="card">
             <div class="card-body">
               <div class="row mb-3">
@@ -180,7 +180,7 @@
                   <h6 class="mb-0">Old Password</h6>
                 </div>
                 <div class="col-sm-9 text-secondary">
-                  <input type="password" class="form-control" name="oldPass" id="oldPass"/>
+                  <input type="password" class="form-control" name="oldPass" id="oldPass" />
                 </div>
               </div>
               <div class="row mb-3">
@@ -188,7 +188,7 @@
                   <h6 class="mb-0">New Password</h6>
                 </div>
                 <div class="col-sm-9 text-secondary">
-                  <input type="password" class="form-control" name="newPass" id="newPass"/>
+                  <input type="password" class="form-control" name="newPass" id="newPass" />
                 </div>
               </div>
               <div class="row mb-3">
@@ -196,7 +196,7 @@
                   <h6 class="mb-0">Confirm Password</h6>
                 </div>
                 <div class="col-sm-9 text-secondary">
-                  <input type="password" class="form-control" name="confirmPass" id="confirmPass"/>
+                  <input type="password" class="form-control" name="confirmPass" id="confirmPass" />
                 </div>
               </div>
               <div class="row">
@@ -205,21 +205,26 @@
                   <button id="btnChange" type="submit" class="btn btn-secondary text-white px-4">
                     Save Changes
                   </button>
-                    <div id="empty" hidden style="display:inline-block; font-size:12px;"class="alert alert-danger" role="alert">
-                      All Fields Need To Be Filled!
-                    </div>
-                     <div id="minLength" hidden style="display:inline-block; font-size:12px;"class="alert alert-danger" role="alert">
-                      The Password Must Be At Least 5 Characters!
-                    </div>
-                    <div id="notEqual" hidden style="display:inline-block; font-size:12px;"class="alert alert-danger" role="alert">
-                      New Password and Confirm Password Can't Be Different!
-                    </div>
-                    <div id="notEqual1" hidden style="display:inline-block; font-size:12px;"class="alert alert-danger" role="alert">
-                      Old Password and New Password Can't Be The Same!
-                    </div>
-                    <div id="unsuccess" hidden style="display:inline-block; font-size:12px;"class="alert alert-danger" role="alert">
-                      Old Password Is Not Correct!
-                    </div>
+                  <div id="empty" hidden style="display:inline-block; font-size:12px;" class="alert alert-danger"
+                    role="alert">
+                    All Fields Need To Be Filled!
+                  </div>
+                  <div id="minLength" hidden style="display:inline-block; font-size:12px;" class="alert alert-danger"
+                    role="alert">
+                    The Password Must Be At Least 5 Characters!
+                  </div>
+                  <div id="notEqual" hidden style="display:inline-block; font-size:12px;" class="alert alert-danger"
+                    role="alert">
+                    New Password and Confirm Password Can't Be Different!
+                  </div>
+                  <div id="notEqual1" hidden style="display:inline-block; font-size:12px;" class="alert alert-danger"
+                    role="alert">
+                    Old Password and New Password Can't Be The Same!
+                  </div>
+                  <div id="unsuccess" hidden style="display:inline-block; font-size:12px;" class="alert alert-danger"
+                    role="alert">
+                    Old Password Is Not Correct!
+                  </div>
                 </div>
               </div>
             </div>
@@ -230,37 +235,37 @@
   </div>
 </div>
 
-<script type="text/javascript">  
-$('#btnChange').click(function(e){
-  var check = false;
-  $('#unsuccess').attr('hidden','');
-  $('#empty').attr('hidden','');
-  $('#minLength').attr('hidden','');
-  $('#notEqual').attr('hidden','');
-  $('#notEqual1').attr('hidden','');
-  const oldPass = $('#oldPass').val();
-  const newPass = $('#newPass').val();
-  const confirmPass = $('#confirmPass').val();
-  if (oldPass.length === 0 || newPass.length === 0 || confirmPass.length === 0){  
-    $('#empty').removeAttr('hidden');
-    e.preventDefault();
-  } else if (newPass.length < 5 || confirmPass.length < 5) {
-    $('#minLength').removeAttr('hidden');
-    e.preventDefault();
-  } else if(newPass != confirmPass) {
-    $('#notEqual').removeAttr('hidden');
-    e.preventDefault();
-  } else if(newPass == oldPass) {
-    $('#notEqual1').removeAttr('hidden');
-    e.preventDefault();
-  } else {
-    $.getJSON(`/settings/isSamePass?oldPass=${oldPass}`, function (data) {
-    if (data === false) {
-      $('#unsuccess').removeAttr('hidden');
-      data.preventDefault();
+<script type="text/javascript">
+  $('#btnChange').click(function (e) {
+    var check = false;
+    $('#unsuccess').attr('hidden', '');
+    $('#empty').attr('hidden', '');
+    $('#minLength').attr('hidden', '');
+    $('#notEqual').attr('hidden', '');
+    $('#notEqual1').attr('hidden', '');
+    const oldPass = $('#oldPass').val();
+    const newPass = $('#newPass').val();
+    const confirmPass = $('#confirmPass').val();
+    if (oldPass.length === 0 || newPass.length === 0 || confirmPass.length === 0) {
+      $('#empty').removeAttr('hidden');
       e.preventDefault();
+    } else if (newPass.length < 5 || confirmPass.length < 5) {
+      $('#minLength').removeAttr('hidden');
+      e.preventDefault();
+    } else if (newPass != confirmPass) {
+      $('#notEqual').removeAttr('hidden');
+      e.preventDefault();
+    } else if (newPass == oldPass) {
+      $('#notEqual1').removeAttr('hidden');
+      e.preventDefault();
+    } else {
+      $.getJSON(`/settings/isSamePass?oldPass=${oldPass}`, function (data) {
+        if (data === false) {
+          $('#unsuccess').removeAttr('hidden');
+          data.preventDefault();
+          e.preventDefault();
+        }
+      });
     }
-  }); 
-  }
-});  
-</script>  
+  });
+</script>
