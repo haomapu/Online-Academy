@@ -65,8 +65,7 @@
         <div class="d-flex flex-column justify-content-center align-items-center">
           <p class="text-secondary m-0 fs-5">{{format_number course.price}} VND</p>
           {{#if buy}}
-          <button class="btn btn-md btn-secondary text-light fw-bold p-1 w-100" disabled type="button">Already
-            Bought</button>
+          <button class="btn btn-md btn-secondary text-light fw-bold p-1 w-100" type="button"><a href="/course/learn/{{course.name}}">Learn</a></button>
           {{else}}
           <form method="post" class="w-100">
             <button class="btn btn-md btn-secondary text-light fw-bold p-1 w-100"

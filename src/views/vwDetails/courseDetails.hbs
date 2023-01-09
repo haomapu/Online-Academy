@@ -40,9 +40,10 @@
                         {{#each this}}
                         {{#each this}}
 
-                        <button class="btn btn-primary" id="btn-lesson-{{this.name}}-{{@index}}" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#lesson-{{this.name}}-{{@index}}" aria-expanded="false"
-                            aria-controls="#lesson-{{this.name}}-{{@index}}">Toggle second element</button>
+                        <button class="btn btn-primary m-2" id="btn-lesson-{{this.name}}-{{@index}}" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#lesson-{{this.name}}-{{@index}}"
+                            aria-expanded="false"
+                            aria-controls="#lesson-{{this.name}}-{{@index}}">{{this.name}}</button>
                         {{/each}}
                         {{/each}}
                         {{/each}}
@@ -53,8 +54,9 @@
                     <div class="collapse multi-collapse" id="lesson-{{this.name}}-{{@index}}">
                         <div class="card card-body">
                             <div class="ratio ratio-16x9">
-                                <iframe id="video" class=""
-                                    src="data:video/mp4;base64,{{toBase64 this.video.img.image}}"></iframe>
+                                <video src="data:video/mp4;base64,{{toBase64 this.video.img.image}}" controls>
+
+                                </video>
                             </div>
                         </div>
                     </div>
@@ -75,7 +77,8 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-    $('body').on('click', '[id^=btn-lesson]', function{
+    $('body').on('click', '[id^=btn-lesson]', function () {
+        console.log('123');
         $('[id^=lesson].show').removeClass('show');
     })
 </script>
