@@ -1,9 +1,7 @@
 <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
-<script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
-    </script>
 
 <div class="container">
-    <form method="POST">
+    <form id="myform" method="post" action="/postCourse">
         <!--begin::Card-->
         <div class="card shadow">
             <div class="card-header">
@@ -47,13 +45,6 @@
                     </div>
                 </div>
                 <div class="form-group row justify-content-md-center  my-2">
-                    <label class="col-lg-3 fs-4 text-end">Description:</label>
-                    <div class="col-lg-7">
-                        <input name="shortDescription" class="form-control"
-                            placeholder="Introduction shorted to the course"></input>
-                    </div>
-                </div>
-                <div class="form-group row justify-content-md-center  my-2">
                     <label class="col-lg-3 fs-4 text-end">Overall:</label>
                     <div class="col-lg-7">
                         <textarea name="overview" class="form-control" rows="5"
@@ -81,6 +72,16 @@
             <!--end::Form-->
         </div>
         <!--end::Card-->
+        <div class="card card-custom roseanna shadow my-3">
+            <div class="card-header fw-bold m-0">Description</div>
+            <div class="card-body">
+                <div id="editor"></div>
+                <input name="text" style="display:none" id="hiddenArea"></input>
+                {{!-- <button type="submit" value="Save">Save</button> --}}
+            </div>
+            <!--end::Form-->
+        </div> 
+
         <!--begin::Card-->
         <div class="card shadow my-3">
             <div class="card-header">
@@ -98,7 +99,7 @@
         </div>
         <!--begin::Form-->
 
-        {{!-- <div class="card-body">
+        <div class="card-body">
             <div class="chap-container accordion accordion-light accordion-svg-toggle" numChapter="0">
 
                 <!--begin::Card Chapter-->
@@ -106,13 +107,7 @@
             </div>
         </div>
 
-        <div class="card card-custom roseanna px-10">
-            <div id="toolbar" class="h1">
-            </div>
-            <div id="editor"></div>
-
-            <!--end::Form-->
-        </div> --}}
+        
         <!--end::Card-->
         <div class="d-flex justify-content-center">
             <button type="submit"
@@ -127,8 +122,10 @@
      <div id="row1"> 
          <div class="card"> 
              <div class="card-header d-flex justify-content-between"> 
-             <div class="fs-3 m-0" id="section">Section </div> 
-                 <input type="">
+                <div class="d-flex flex-row">
+                    <div class="fs-3 m-0" id="section">Section </div> 
+                    <input class="ms-3" placeholder=" Introduce" style="margin-top: 6px; height: 60%">
+                 </div>
                  <div>  
                  <button type="button" class="btn btn-secondary text-light fw-bold me-2" id="addLesson">Add new Lesson</button> 
                          <button class="btn fs-2" id="DeleteRow1" type="button"> 
@@ -146,19 +143,23 @@
 <div id="row2" hidden>  
     <div class="card">  
         <div class="card-header d-flex justify-content-between">  
-        <div class="fs-3 m-0">Lesson 1: Introduce about course</div>  
+            <div class="d-flex flex-row">
+                <div class="fs-3 m-0">Lesson 1:</div>  
+                <input class="ms-3" placeholder=" Introduce" style="margin-top: 6px; height: 75%"/>
+            </div>
             <div>  
-                <button type="button" class="btn btn-secondary text-light fw-bold me-2" id="accept">Accept</button>  
                 <button class="btn btn-secondary text-light fw-bold" id="cancel" type="button"><i class="bi bi-trash"></i> Cancel </button>  
             </div>  
         </div>  
-        <div class="card-body"> alo</div>  
+        <div class="card-body">
+            <input type="file" id="picture" name="picture" accept="video/*" class="ms-2"></div>  
     </div> 
 </div>
 
 
 
 <script src="https://cdn.quilljs.com/1.0.0/quill.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 <script>
     const list =[0,0,0,0,0,0,0,0,0,0];
@@ -167,10 +168,11 @@
     console.log(list);
 
     $("body").on("click", "#addChapter" , function () {
+        var number = chapter + 1;
         $('#newinput1').append($('#row').clone().prop('id','chapter' + chapter));
         $('#DeleteRow1').attr('id','deleteChapter' + chapter);
         $('#addLesson').attr('id','addLesson' + chapter);
-        $('#section').attr('id','section' + chapter).text("Section " + chapter);
+        $('#section').attr('id','section' + chapter).text("Section " + number + ": ");
         $('#newinput2').attr('id', 'newLesson' + chapter)
         $('#chapter' + chapter).removeAttr('hidden')
         chapter++;
@@ -225,7 +227,6 @@
 
         ['clean']                                         // remove formatting button
     ];
-
     var quill = new Quill('#editor', {
         placeholder: 'Compose an epic...',
         theme: 'snow',
@@ -234,4 +235,8 @@
         },
         theme: 'snow'
     });
+
+    $("#myform").on("submit",function() {
+        $("#hiddenArea").val($("#editor").html());
+    })
 </script>

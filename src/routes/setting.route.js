@@ -1,4 +1,5 @@
 import express from "express";
+import { set } from "mongoose";
 import settingService from "../controllers/setting.service.js";
 
 const router = express.Router();
@@ -53,4 +54,13 @@ router.post("/lecturerAdmin/unlock/:id", settingService.unlockLecturer);
 
 router.post("/category/add", settingService.addCategory);
 
+router.post("/subcategory/add", settingService.addSubCategory);
+
+router.post("/category/delete", settingService.deleteMainCategory);
+
+router.post("/subcategory/delete", settingService.deleteSubCategory);
+
+router.post("/category/update", settingService.updateCategory);
+
+router.post("/subcategory/update", settingService.updateSubCategory);
 export default router;

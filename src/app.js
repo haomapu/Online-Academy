@@ -34,11 +34,12 @@ const PORT = 8080;
 // Connect MongoDB
 dotenv.config();
 mongoose.set("strictQuery", false);
+mongoose.set("strictPopulate", false);
 mongoose.connect(process.env.MONGODB_URL, () => {
   console.log("Connected to MongoDB");
 });
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 const store = session.MemoryStore();
 app.use(session({
@@ -141,8 +142,8 @@ app.engine(
   "hbs",
   engine({
     defaultLayout: "main.handlebars",
-    section: hbs_sections(),
     helpers:{
+      section: hbs_sections(),
       format_number(val) {
         return numeral(val).format('0,0');
       },
@@ -158,6 +159,12 @@ app.engine(
       add_one(val) {
         return val + 1;
       },
+      check_first(val){
+        return val == 0;
+      },
+      toBase64(string){
+        return string.toString('base64');
+      }
     }
   })
 );

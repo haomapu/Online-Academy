@@ -6,6 +6,7 @@ import bcrypt from "bcrypt";
 import mailer from "../utils/mailer.js";
 import Category from "../models/category.js";
 import Sub_Category from "../models/sub_category.js";
+import SubCategory from "../models/sub_category.js";
 
 let userMail;
 let newInfo;
@@ -611,6 +612,8 @@ const settingService = {
 
   getCategorySetting: async (req, res) => {
     try {
+      const categories = await Category.find().populate("sub_categories").lean();
+      req.session.categories = categories;
       var curUser;
       if (req.isAuthenticated()) {
         curUser = req.user;
@@ -642,7 +645,69 @@ const settingService = {
   },
   addCategory: async (req, res) => {
     try {
+      //console.log(req.body);
+      const newCat = new Category(req.body);
+      console.log(newCat);
+      const savedCategory = await newCat.save();
+      res.redirect("/settings/category");
+    } catch (e) {
+      res.send(e);
+    }
+  },
+  addSubCategory: async (req,res) => {
+    try {
       console.log(req.body);
+      const newSubCat = new SubCategory(req.body);
+      const savedSubCat = await newSubCat.save();
+      if (req.body.mainCategory) {
+        const mainCat  = await Category.findOne({name: req.body.mainCategory});
+        await mainCat.updateOne({$push: {sub_categories: savedSubCat._id}});
+        await savedSubCat.updateOne({$set: {main_category: mainCat._id}});
+      }  
+      res.redirect("/settings/category");
+    } catch (e) {
+      res.send(e);
+    }
+  },
+  deleteMainCategory: async (req, res) => {
+    try {
+      const Cat = await Category.findOne({name: req.body.mainCategory});
+      const courses = await Course.find({category: Cat._id});
+      if (courses == 0) {
+        await SubCategory.deleteMany({main_category: Cat._id});
+        await Category.deleteOne({name: req.body.mainCategory});
+      }
+      res.redirect("/settings/category");
+    } catch (e) {
+      res.send(e);
+    }
+  },
+  deleteSubCategory: async (req,res) => {
+    try {
+      const tempSubCat = await SubCategory.findOne({name: req.body.subCategory});
+      const courses = await Course.find({sub_category: tempSubCat._id});
+      if (courses == 0) {
+        const mainCat = await Category.updateOne({_id: tempSubCat.main_category},{$pull: {sub_categories: tempSubCat._id}});
+        await SubCategory.deleteOne({name: req.body.subCategory});
+      }
+      res.redirect("/settings/category");
+    } catch (e) {
+      res.send(e);
+    }
+  },
+  updateCategory: async (req,res) => {
+    try {
+      const Cat = await Category.findOne({name: req.body.mainCategory});
+      await Cat.updateOne({ $set: {name: req.body.name}});
+      res.redirect("/settings/category");
+    } catch (e) {
+      res.send(e);
+    }
+  },
+  updateSubCategory: async (req,res) => {
+    try {
+      const Cat = await SubCategory.findOne({name: req.body.subCategory});
+      await Cat.updateOne({ $set: {name: req.body.name}});
       res.redirect("/settings/category");
     } catch (e) {
       res.send(e);
