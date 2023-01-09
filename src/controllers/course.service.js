@@ -18,7 +18,7 @@ const courseService = {
     const course = await Course.findOne({ name: req.params.id }).populate('author').populate('chapters').lean();
     const chapters = [];
     var lessons = [];
-    if (course) {
+    if (course && course.chapters) {
       for (let i = 0; i < course.chapters.length; i++){
         for (let j =0; j < course.chapters[i].lesson.length; j++){
         // lesson.push(await Lesson.findById())
