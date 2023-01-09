@@ -120,23 +120,23 @@
         <tbody>
           {{#each this.students}}
           <tr>
-            <td scope="row" class="text-center">{{id}}</td>
+            <td scope="row" class="py-3">{{id}}</td>
             <td><img src={{avatar}} alt="" class="rounded-circle p-1 bg-secondary" width="50" /></td>
-            <td>{{username}}</td>
-            <td>{{role}}</td>
+            <td><div class="py-3">{{username}}</div></td>
+            <td><div class="py-3">{{role}}</div></td>
             <td>
               <form method="post">
-                <button class=" btn btn-sm btn-secondary delItem"
+                <button class=" btn btn-sm btn-secondary delItem mt-3"
                   formaction="/settings/studentAdmin/updateRole/{{_id}}">
                   <i class="fa-solid fa-chalkboard-user"></i>
                 </button>
                 {{#if verified}}
-                <button class=" btn btn-sm btn-danger delItem" formaction="/settings/studentAdmin/lock/{{_id}}">
+                <button class=" btn btn-sm btn-danger delItem mt-3" formaction="/settings/studentAdmin/lock/{{_id}}">
                   <i class="fa-solid fa-unlock"></i>
                 </button>
                 {{else}}
-                <button class=" btn btn-sm btn-danger delItem" formaction="/settings/studentAdmin/unlock/{{_id}}">
-                  <i class="fa-solid fa-lock"></i>
+                <button class=" btn btn-sm btn-danger delItem mt-3" formaction="/settings/studentAdmin/unlock/{{_id}}">
+                  <i class="fa-solid fa-lock "></i>
                 </button>
                 {{/if}}
               </form>
@@ -146,26 +146,39 @@
         </tbody>
       </table>
       <div class="d-flex justify-content-center pt-4">
-        <nav aria-label="Page navigation example">
-          <ul class="pagination">
-            <li class="page-item" style="color: se;">
-              <a class="page-link text-dark fs-5" href="?page=" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span></a>
-            </li>
+        <nav aria-label="Page navigation example" >
+          <ul id="nPage" value="{{pageNumbers.length}}" class="pagination pagination-md justify-content-center" >
             {{#each pageNumbers}}
             {{#if isCurrent}}
-            <li class="page-item active" aria-current="page">
-              <span class="page-link bg-light border-secondary text-dark fs-5">{{value}}</span>
-            </li>
-            {{else}}
             <li class="page-item">
-              <a class="page-link text-dark fs-5" href="?page={{value}}">{{value}}</a>
+              <a class="page-link text-secondary border-secondary fw-bold" id="prev" href="?page={{minus_one value}}"
+                value="{{minus_one value}}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
             </li>
             {{/if}}
             {{/each}}
-            <a class="page-link text-dark fs-5" href="?page=" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span></a>
+            {{#each pageNumbers}}
+            {{#if isCurrent}}
+            <li class="page-item active" aria-current="page">
+              <span class="page-link text-secondary border-secondary fw-bold bg-secondary text-light">{{value}}</span>
             </li>
+            {{else}}
+            <li class="page-item">
+              <a class="page-link text-secondary border-secondary fw-bold " href="?page={{value}}">{{value}}</a>
+            </li>
+            {{/if}}
+            {{/each}}
+            {{#each pageNumbers}}
+            {{#if isCurrent}}
+            <li class="page-item">
+              <a class="page-link text-secondary fw-bold border-secondary" id="next" href="?page={{add_one value}}"
+                value="{{add_one value}}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+            {{/if}}
+            {{/each}}
           </ul>
         </nav>
       </div>

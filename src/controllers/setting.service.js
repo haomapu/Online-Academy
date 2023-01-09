@@ -81,6 +81,11 @@ const settingService = {
       .limit(limit);
     const total = await Course.find({ author: curUser._id }).count();
 
+    for(let i = 0; i < courseLecture.length; i++){
+      var author = await User.findById(courseLecture[i].author).lean();
+      courseLecture[i].author = author.username;
+    }
+
     total % limit != 0
       ? (nPages = Math.ceil(total / limit))
       : (nPages = total / limit);
