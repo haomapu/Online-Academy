@@ -1,26 +1,21 @@
 import express from "express";
 import mainService from "../controllers/main.service.js";
-import multer from "multer"
-
+import multer from "multer";
+import authWithRequiredPermission from "../middlewares/auth.mdw.js";
 
 const router = express.Router();
 
-
 const storage = multer.diskStorage({
-    filename: function (req, file, cb) {
-        cb(null, file.originalname);
-        console.log(file.originalname);
-        console.log('123');
-    }
-})
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+    console.log(file.originalname);
+    console.log("123");
+  },
+});
 
-var upload = multer({ storage: storage})
+var upload = multer({ storage: storage });
 
 router.get("/", mainService.getHomePage);
-
-router.get("/test", mainService.test);
-
-router.post("/test", upload.array('picture'), mainService.testUpload);
 
 router.get("/search", mainService.getSearchCourses);
 
@@ -36,14 +31,22 @@ router.post("/signup", mainService.signupService);
 
 router.get("/logout", mainService.logoutService);
 
-router.get("/postCourse", mainService.createCoursePage);
+router.get(
+  "/postCourse",
+  authWithRequiredPermission(2),
+  mainService.createCoursePage
+);
 
-router.post("/postCourse",mainService.addCourse);
+router.post(
+  "/postCourse",
+  authWithRequiredPermission(2),
+  mainService.addCourse
+);
 
 router.get("/editCourse/:id", mainService.editCoursePage);
 
 router.post("/editCourse/:id", mainService.updateCourse);
 
-router.get('/is-available', mainService.checkEmail);
+router.get("/is-available", mainService.checkEmail);
 
 export default router;

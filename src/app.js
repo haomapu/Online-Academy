@@ -28,7 +28,6 @@ const app = express();
 app.use("/public", express.static("public"));
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const PORT = 8080;
 
 // Connect MongoDB
 dotenv.config();
@@ -63,7 +62,8 @@ app.use((req, res, next) => {
 passport.use(new GoogleStrategy({
   clientID: process.env.clientID,
   clientSecret: process.env.clientSecret,
-  callbackURL: 'http://localhost:8080/auth/google/callback'
+  callbackURL: '/auth/google/callback',
+  proxy: true
 },
 (accessToken, refreshToken, profile, done) => {
   done(null, profile); 
@@ -86,7 +86,7 @@ passport.use(
       return done(null, false, {message: "Wrong Password!" });
     }
     if(!user.verified) {
-      return done(null, false, {message: "OTP Isn't Verified!"});
+      return done(null, false, {message: "Your Account Has Been Banned!"});
     }
     return done(null, user);
   })
@@ -189,6 +189,5 @@ app.get('/auth/google/callback', passport.authenticate('google'), async (req, re
   res.redirect('/');
 });
 //Start App
-app.listen(PORT, function () {
-  console.log(`Online Academy listening at http://localhost:${PORT}`);
+app.listen(process.env.PORT, function () {
 });

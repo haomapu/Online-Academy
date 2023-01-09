@@ -8,10 +8,7 @@ import Lesson from "../models/lesson.js";
 import Chapter from "../models/chapter.js";
 import bcrypt from "bcrypt";
 import passport from "passport";
-import authenticationMiddleware from "../middlewares/authentication.js";
 import mailer from "../utils/mailer.js";
-import userAuthorization from "../middlewares/authorization.js";
-import mongoose from "mongoose";
 
 import fs from "fs";
 import multer from "multer";
@@ -22,21 +19,22 @@ const mainService = {
   getHomePage: async (req, res) => {
     const categories = await Category.find().populate("sub_categories").lean();
     req.session.categories = categories;
-    const course = await Course.find().sort({ lastUpdate: 1 }).lean().limit(12);
+    const course = await Course.find({enable: true}).sort({ lastUpdate: 1 }).lean().limit(12);
     const newCourse = [];
     while (course.length) newCourse.push(course.splice(0, 4));
 
-    const querryCourse = await Course.find()
-      .sort({ totalView: 1 })
+    const querryCourse = await Course.find({enable: true})
+      .sort({ totalView: -1 })
       .lean()
       .limit(12);
     const mostViewCourse = [];
     while (querryCourse.length) mostViewCourse.push(querryCourse.splice(0, 4));
 
     const highlightCourse = await Course.find()
-      .sort({ rating: 1 })
+      .sort({ rating: -1 })
       .lean()
       .limit(3);
+    console.log(highlightCourse);
     const highlightCourse_active = highlightCourse.slice(0, 1);
     const highlightCourse_inactive = highlightCourse.slice(1);
 
@@ -49,7 +47,7 @@ const mainService = {
         await Category.findById(categoriesID[i]._id).lean()
       );
     }
-    // console.log(highlightCategories);
+    
     res.render("home", {
       categories: categories,
       newCourse: newCourse,
@@ -261,6 +259,7 @@ const mainService = {
   },
 
   getLoginPage: async (req, res) => {
+    req.session.returnTo = req.headers.referer || "/";
     if (req.isAuthenticated()) {
       res.redirect("/");
     } else {
@@ -285,42 +284,12 @@ const mainService = {
   },
 
   loginService: passport.authenticate("local", {
-    successRedirect: "/",
+    successReturnToOrRedirect: "/",
     failureRedirect: "/login",
     failureFlash: true,
     badRequestMessage: "All Fields Need To Be Filled!",
+    keepSessionInfo: true,
   }),
-
-  // get video
-  test: async (req, res) => {
-    const video = await Video.find().lean();
-    const list = [];
-    for (let i = 0; i < video.length; i++) {
-      list.push({
-        video: video[i].img.image.toString("base64"),
-      });
-    }
-
-    res.render("vwHomepage/test", {
-      video: list,
-    });
-  },
-
-  //post video
-  testUpload: async (req, res) => {
-    // const img = fs.readFileSync(req.file.path);
-    // const img_enc = img.toString("base64");
-    // const obj = {
-    //   name: req.body.firstName,
-    //   img: {
-    //     contentType: "video/mp4",
-    //     image: new Buffer.from(img_enc, "base64"),
-    //   },
-    // };
-    // const newVideo = new Video(obj);
-    // await newVideo.save();
-    res.redirect("/test");
-  },
 
   signupService: async (req, res) => {
     try {
@@ -355,32 +324,28 @@ const mainService = {
   },
 
   addCourse: async (req, res) => {
-    // const description = req.body.text.replace(
-    //   '<div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>',
-    //   ""
-    // );
-    // const course = await Course.updateOne(
-    //   { _id: "63980cb86e1bc00df84cd545" },
-    //   { description: description }
-    // );
+    const description = req.body.nLesson.replace(
+      '<div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>',
+      ""
+    );
+
     let curUser;
-    if (!req.isAuthenticated()){
-      res.redirect('/login')
+    if (!req.isAuthenticated()) {
+      res.redirect("/login");
       return;
     } else {
-      curUser = req.user
+      curUser = req.user;
     }
-    
+
+
     const storage = multer.diskStorage({
       filename: function (req, file, cb) {
         cb(null, file.originalname);
-      }
-      
-      
-      })
-  
+      },
+    });
+
     const upload = multer({ storage: storage });
-    upload.array('video')(req, res, async function (err) {
+    upload.array("video")(req, res, async function (err) {
       if (err instanceof multer.MulterError) {
         console.error(err);
       } else if (err) {
@@ -389,59 +354,46 @@ const mainService = {
       //xu ly o day
       let count = 0;
       console.log(req.body);
-      // console.log(req.files)
       let chapters = [];
-      // console.log(req.body)
-      // let image = fs.readFileSync(req.files.thumbnail[0]);
-      // let image_enc = image.toString("base64");
-      // let obj = {
-      //   name: req.body.firstName,
-      //   img: {
-      //     contentType: "video/mp4",
-      //     image: new Buffer.from(video_enc, "base64"),
-      //   },
-      // };
 
-      for (let i = 0; i < req.body.titleChap.length; i++){
-        let lessons = [];
-        // console.log(req.body.titleChap[i]);
-
-        for (let j = 0; j < req.body.nLesson[i]; j++){
-          // console.log(req.body.titleLes[count]);
-          // console.log(req.files[count].path)
-
-          //Video----------------------------
-            let video = fs.readFileSync(req.files[count].path);
-            let video_enc = video.toString("base64");
-            let obj = {
-              name: req.body.firstName,
-              img: {
-                contentType: "video/mp4",
-                image: new Buffer.from(video_enc, "base64"),
-              },
-            };
-            let newVideo = new Video(obj);
-            let savedVideo = await newVideo.save();
-            
-          //Lesson-----------------------------
-          let lesson = {
-            name: req.body.titleLes[count],
-            video: savedVideo,
+      if(req.body.titleChap !== undefined && req.body.titleChap !== null) {
+        for (let i = 0; i < req.body.titleChap.length; i++){
+          let lessons = [];
+  
+          for (let j = 0; j < req.body.nLesson[i]; j++){
+            //Video----------------------------
+              let video = fs.readFileSync(req.files[count].path);
+              let video_enc = video.toString("base64");
+              let obj = {
+                name: req.body.firstName,
+                img: {
+                  contentType: "video/mp4",
+                  image: new Buffer.from(video_enc, "base64"),
+                },
+              };
+              let newVideo = new Video(obj);
+              let savedVideo = await newVideo.save();
+              
+            //Lesson-----------------------------
+            let lesson = {
+              name: req.body.titleLes[count],
+              video: savedVideo,
+            }
+            let newLesson = new Lesson(lesson);
+            let saveLesson = await newLesson.save();
+            lessons.push(saveLesson);
+  
+            count++;
           }
-          let newLesson = new Lesson(lesson);
-          let saveLesson = await newLesson.save();
-          lessons.push(saveLesson);
-
-          count++;
-        }
-        //Chapter--------------------
-        let chapter = {
-          name: req.body.titleChap[i],
-          lessons: lessons,
-        }
-        let newChapter = new Chapter(chapter);
-        let saveChapter = await newChapter.save();
-        chapters.push(saveChapter);
+          //Chapter--------------------
+          let chapter = {
+            name: req.body.titleChap[i],
+            lessons: lessons,
+          }
+          let newChapter = new Chapter(chapter);
+          let saveChapter = await newChapter.save();
+          chapters.push(saveChapter);
+        }  
       }
       const description = req.body.text.replace(
         '<div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>',
@@ -450,6 +402,7 @@ const mainService = {
       const user = await User.findById(curUser._id)
       const category = await Category.findOne({name: req.body.category})
       const sub_category = await Sub_Category.findOne({name: req.body.sub_category})
+
       const course = {
         name: req.body.name,
         img: req.body.img,
@@ -464,14 +417,11 @@ const mainService = {
         author: user,
         category: category,
         sub_category: sub_category,
-      }
+      };
       const newCourse = new Course(course);
       const saveCourse = await newCourse.save();
-      res.redirect('/course/' + saveCourse.name);
-      
+      res.redirect("/course/" + saveCourse.name);
     });
-
-    //res.redirect("/postCourse");
   },
 
   editCoursePage: async (req, res) => {

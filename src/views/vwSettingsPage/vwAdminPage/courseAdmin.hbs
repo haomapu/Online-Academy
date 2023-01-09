@@ -1,4 +1,17 @@
 <style>
+  .table-scroll {
+    width: 200px;
+    overflow: auto;
+    max-height: 200px !important;
+  }
+  .my-custom-scrollbar {
+position: relative;
+height: 720px;
+overflow: auto;
+}
+.table-wrapper-scroll-y {
+display: block;
+}
   @media screen and (max-width: 940px) {
     .mainContent li span {
       display: none;
@@ -39,7 +52,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="/settings/courseAdmin" class="nav-link active" aria-current="page">
+          <a href="/settings/courseAdmin" class="nav-link active" style="background-color: #ff6a00 !important;" aria-current="page">
             <i class="fas fa-book"></i>
             <span>Courses</span>
           </a>
@@ -69,7 +82,7 @@
         {{#if student}}
         <li class="nav-item">
           <a href="/settings/favourite" class="nav-link link-dark">
-            <i class="fas fa-book"></i>
+            <i class="fas fa-heart"></i>
             <span>Favorite</span>
           </a>
         </li>
@@ -136,7 +149,8 @@
       <form action="" method="post" id="frmDelItem">
         <input type="hidden" id="txtDelProID" name="id">
       </form>
-      <table class="table table-hover">
+      <div class="table-wrapper-scroll-y my-custom-scrollbar">
+        <table class="table table-hover">
         <thead>
           <tr>
             <th class="text-center">#</th>
@@ -152,7 +166,7 @@
           {{#if enable}}
           <tr>
             <td scope="row" class="text-center">{{id}}</td>
-            <td>{{name}}</td>
+            <td><a class="text-decoration-none text-black" href="/course/{{name}}">{{name}}</a></td>
             <td>{{format_number price}}VND</td>
             <td class="text-center">{{round_number rating}}<i class="fa fa-star" style="color:rgba(228, 228, 22, 0.675)"
                 aria-hidden="true"></i></td>
@@ -185,6 +199,8 @@
           {{/each}}
         </tbody>
       </table>
+      </div>
+      
     </div>
   </div>
 </div>
