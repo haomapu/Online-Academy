@@ -228,12 +228,12 @@
             {{#each pageNumbers}}
             {{#if isCurrent}}
             <li class="page-item active" aria-current="page">
-              <input class="page-link bg-light border-secondary text-dark fs-5" name="page" value="{{value}}"
-                form="filter" type="submit" />
+              <span class="page-link bg-light border-secondary text-dark fs-5">{{value}}</span>
             </li>
             {{else}}
             <li class="page-item">
-              <input class="page-link text-dark fs-5" name="page" value="{{value}}" form="filter" type="submit">
+              <a class="page-link text-dark fs-5"
+                href="/search?main_cat={{main_cat}}&search={{text}}&cat={{cat}}&sort={{sort}}&cost={{cost}}&rating={{rating}}&page={{value}}">{{value}}</a>
             </li>
             {{/if}}
             {{/each}}
