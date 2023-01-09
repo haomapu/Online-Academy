@@ -27,16 +27,17 @@ const mainService = {
     while (course.length) newCourse.push(course.splice(0, 4));
 
     const querryCourse = await Course.find({enable: true})
-      .sort({ totalView: 1 })
+      .sort({ totalView: -1 })
       .lean()
       .limit(12);
     const mostViewCourse = [];
     while (querryCourse.length) mostViewCourse.push(querryCourse.splice(0, 4));
 
     const highlightCourse = await Course.find()
-      .sort({ rating: 1 })
+      .sort({ rating: -1 })
       .lean()
       .limit(3);
+    console.log(highlightCourse);
     const highlightCourse_active = highlightCourse.slice(0, 1);
     const highlightCourse_inactive = highlightCourse.slice(1);
 
