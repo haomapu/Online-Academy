@@ -1,5 +1,5 @@
 <div class="container">
-  <h3>{{this.total}} results for "{{this.text}}"</h3>
+  <h3>{{this.total}} results</h3>
   <div style="display: flex; flex-wrap: wrap; row-gap: .8rem;">
     <div class="dropdown ms-0">
       <form id="filter" method="get">
@@ -173,7 +173,7 @@
         </a>
         <div style="display: flex; flex-direction: column; flex: 2">
           <span class="fs-6 fw-bold">{{name}}</span>
-          <span style="font-size: 14px">{{overview}}</span>
+          <span style="font-size: 14px; width: 80%">{{overview}}</span>
           <span class="text-muted" ; style="font-size: 14px">Total views: {{totalView}}</span>
           <span class="text-muted" ; style="font-size: 14px">{{round_number rating}}&nbsp;<i class="fa fa-star fa-xs text-secondary" style="line-height: unset"></i></span>
           <span class="text-muted" ; style="font-size: 14px">{{register_count}} students</span>
@@ -181,9 +181,9 @@
         <div style="text-align: right; display: flex; flex-direction: column; gap: 5px;">
           <span class="fs-6 fw-bold">{{format_number price}}VND</span>
           {{#if discount}}
-          <div class="bg-secondary rounded">
-            <i class="bg-secondary fa-solid fa-fire"></i>
-            <span>Sale {{discount}}%</span>
+          <div class="bg-secondary   rounded p-1">
+            <i class="bg-secondary fa-solid fa-fire fa-xs"></i>
+            <span class="fs-6">Sale {{discount}}%</span>
           </div>
           {{/if}}
         </div>
@@ -201,7 +201,7 @@
         </a>
         <div style="display: flex; flex-direction: column; flex: 2">
           <span class="fs-6 fw-bold">{{name}}</span>
-          <span style="font-size: 14px">{{overview}}</span>
+          <span style="font-size: 14px; width: 80%">{{overview}}</span>
           <span class="text-muted" ; style="font-size: 14px">Total views: {{totalView}}</span>
           <span class="text-muted" ; style="font-size: 14px">{{round_number rating}}&nbsp;<i class="fa fa-star fa-xs text-secondary" style="line-height: unset"></i></span>
           <span class="text-muted" ; style="font-size: 14px">{{register_count}} students</span>

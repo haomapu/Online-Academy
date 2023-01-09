@@ -7,37 +7,55 @@ import Lesson from "../models/lesson.js";
 import Video from "../models/video.js";
 import User from "../models/user.js";
 const courseService = {
-
-  getCourseDetail: async function(req, res){
+  getCourseDetail: async function (req, res) {
     const top5 = 5;
     const limit = 4;
     var curUser;
     var buy;
     var avatar;
 
-    const course = await Course.findOne({ name: req.params.id }).populate('author').populate('chapters').lean();
+    const course = await Course.findOne({ name: req.params.id })
+      .populate("author")
+      .populate("chapters")
+      .lean();
+    if (!course.enable) {
+      res.render("403", { layout: false });
+      return;
+    }
     const chapters = [];
     var lessons = [];
     if (course && course.chapters) {
-      for (let i = 0; i < course.chapters.length; i++){
-        for (let j =0; j < course.chapters[i].lessons.length; j++){
-        // lesson.push(await Lesson.findById())
-        lessons.push({lessons: await Lesson.findById(course.chapters[i].lessons[j]).populate('video').lean()});
+      for (let i = 0; i < course.chapters.length; i++) {
+        for (let j = 0; j < course.chapters[i].lessons.length; j++) {
+          // lesson.push(await Lesson.findById())
+          lessons.push({
+            lessons: await Lesson.findById(course.chapters[i].lessons[j])
+              .populate("video")
+              .lean(),
+          });
         }
-        chapters.push({chapters: lessons});
+        chapters.push({ chapters: lessons });
         lessons = [];
       }
     }
-    if (course){
-      await Course.updateOne({name: req.params.id}, {totalView: course.totalView + 1})
+    if (course) {
+      await Course.updateOne(
+        { name: req.params.id },
+        { totalView: course.totalView + 1 }
+      );
     }
     const top5cate = await Course.find({
-      name: { $not: { $eq: req.params.id } }}).sort({ register_count: -1 }).lean().limit(top5);
+      name: { $not: { $eq: req.params.id } },
+      enable: true,
+    })
+      .sort({ register_count: -1 })
+      .lean()
+      .limit(top5);
     const feedbacks = [];
     const curPage = req.query.page || 1;
     var offset = (curPage - 1) * limit;
-    
-    const total = await Feedback.find({course: course._id}).count();
+
+    const total = await Feedback.find({ course: course._id }).count();
     var nPages;
 
     total % limit != 0
@@ -53,10 +71,13 @@ const courseService = {
       });
     }
     if ((curPage > nPages || curPage <= 0) && nPages != 0) {
-      res.redirect('/course/' + course.name);
+      res.redirect("/course/" + course.name);
       return;
     }
-    const queryFeedback = await Feedback.find({ course: course._id }).sort({ time: -1 }).skip(offset).limit(limit);
+    const queryFeedback = await Feedback.find({ course: course._id })
+      .sort({ time: -1 })
+      .skip(offset)
+      .limit(limit);
 
     if (queryFeedback.length != 0) {
       for (let i = 0; i < queryFeedback.length; i++) {
@@ -76,7 +97,7 @@ const courseService = {
         }
       }
     }
-    
+
     // if (req.query.page){
     //   res.send({
     //     feedbacks: feedbacks,
@@ -87,11 +108,15 @@ const courseService = {
 
     if (req.isAuthenticated()) {
       curUser = req.user;
-      buy = await Register.find({$and:[ {student: curUser._id}, {course: course._id}]}).lean();
-      avatar = curUser.hasOwnProperty("_json")? curUser.photos[0].value : curUser.avatar;
+      buy = await Register.find({
+        $and: [{ student: curUser._id }, { course: course._id }],
+      }).lean();
+      avatar = curUser.hasOwnProperty("_json")
+        ? curUser.photos[0].value
+        : curUser.avatar;
     }
 
-    if (req.query.ajax){
+    if (req.query.ajax) {
       res.render("vwDetails/details", {
         layout: false,
         course: course,
@@ -117,8 +142,6 @@ const courseService = {
     });
   },
 
-
-  
   feedbackService: async (req, res, next) => {
     try {
       var curUser;
@@ -172,15 +195,20 @@ const courseService = {
 
     var student;
     if (curUser.hasOwnProperty("_json")) {
-      student = await User.findOne({username: curUser._json.given_name + curUser._json.family_name,});
+      student = await User.findOne({
+        username: curUser._json.given_name + curUser._json.family_name,
+      });
     } else {
       student = await User.findById(curUser._id);
     }
-  
+
     const course = await Course.findOne({ name: req.params.id });
 
-    const check = await Register.findOne({student: student._id, course: course._id});
-    if(!check){
+    const check = await Register.findOne({
+      student: student._id,
+      course: course._id,
+    });
+    if (!check) {
       newRegister = { ...newRegister, student: student };
       newRegister = { ...newRegister, course: course };
       const createRegister = new Register(newRegister);
@@ -204,14 +232,19 @@ const courseService = {
 
     var student;
     if (curUser.hasOwnProperty("_json")) {
-      student = await User.findOne({username: curUser._json.given_name + curUser._json.family_name,});
+      student = await User.findOne({
+        username: curUser._json.given_name + curUser._json.family_name,
+      });
     } else {
       student = await User.findById(curUser._id);
     }
     const course = await Course.findOne({ name: req.body.nameFav });
 
-    const check = await Favorite.findOne({student: student._id, course: course._id});
-    if(!check){
+    const check = await Favorite.findOne({
+      student: student._id,
+      course: course._id,
+    });
+    if (!check) {
       newFavorite = { ...newFavorite, student: student };
       newFavorite = { ...newFavorite, course: course };
       const createFavorite = new Favorite(newFavorite);
@@ -219,25 +252,32 @@ const courseService = {
     }
     res.redirect("/course/" + req.params.id);
   },
-  
-  viewCourse: async (req,res) => {
-    const course = await Course.findOne({ name: req.params.id }).populate('author').populate('chapters').lean();
+
+  viewCourse: async (req, res) => {
+    const course = await Course.findOne({ name: req.params.id })
+      .populate("author")
+      .populate("chapters")
+      .lean();
     const chapters = [];
     var lessons = [];
     if (course) {
-      for (let i = 0; i < course.chapters.length; i++){
-        for (let j =0; j < course.chapters[i].lessons.length; j++){
-        // lesson.push(await Lesson.findById())
-        lessons.push({lessons: await Lesson.findById(course.chapters[i].lessons[j]).populate('video').lean()});
+      for (let i = 0; i < course.chapters.length; i++) {
+        for (let j = 0; j < course.chapters[i].lessons.length; j++) {
+          // lesson.push(await Lesson.findById())
+          lessons.push({
+            lessons: await Lesson.findById(course.chapters[i].lessons[j])
+              .populate("video")
+              .lean(),
+          });
         }
-        chapters.push({chapters: lessons});
+        chapters.push({ chapters: lessons });
         lessons = [];
       }
     }
-    res.render("vwDetails/courseDetails",{
+    res.render("vwDetails/courseDetails", {
       course: course,
       chapters: chapters,
     });
   },
-}
+};
 export default courseService;
