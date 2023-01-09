@@ -69,7 +69,7 @@
         {{#if student}}
         <li class="nav-item">
           <a href="/settings/favourite" class="nav-link link-dark">
-            <i class="fas fa-book"></i>
+            <i class="fas fa-heart"></i>
             <span>Favorite</span>
           </a>
         </li>
@@ -112,12 +112,11 @@
           <div class="d-flex justify-content-between h-75" style="width: 100%; padding-right: 15px;">
             <div class="d-flex flex-column ps-4 w-50">
               <div>{{name}}</div>
-              <div class="text-secondary text-bold">Status: Done</div>
               <div>Lecture: {{author}}</div>
             </div>
             <div class="d-flex flex-column text-end">
               <div>Update: {{format_date lastUpdate}}</div>
-              <div>Status: Finish</div>
+              <div class="text-secondary text-bold">Status: Done</div>
               <div class="d-flex flex-row-reverse">
                 <a href="/course/learn/{{name}}" class="btn btn-secondary text-light ms-2">View</a>
                 <button class="btn btn-secondary text-light" type="submit" form="myform" name="nameCou"
@@ -133,12 +132,11 @@
           <div class="d-flex justify-content-between h-75" style="width: 100%; padding-right: 15px;">
             <div class="d-flex flex-column ps-4 w-50">
               <div>{{name}}</div>
-              <div class="text-secondary text-bold">Status: Uploading</div>
               <div>Lecture: {{author}}</div>
             </div>
             <div class="d-flex flex-column text-end">
               <div>Update: {{format_date lastUpdate}}</div>
-              <div>Status: Finish</div>
+              <div class="text-secondary text-bold">Status: Uploading</div>
               <div class="d-flex flex-row-reverse">
                 <a href="/course/learn/{{name}}" class="btn btn-secondary text-light ms-2">View</a>
                 <button class="btn btn-secondary text-light" type="submit" form="myform" name="nameCou"
