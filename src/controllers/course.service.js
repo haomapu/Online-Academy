@@ -2,6 +2,9 @@ import Course from "../models/course.js";
 import Feedback from "../models/feedback.js";
 import Register from "../models/register.js";
 import Favorite from "../models/favorite.js";
+import Chapter from "../models/chapter.js";
+import Lesson from "../models/lesson.js";
+import Video from "../models/video.js";
 import User from "../models/user.js";
 const courseService = {
 
@@ -12,10 +15,22 @@ const courseService = {
     var buy;
     var avatar;
 
-    const course = await Course.findOne({ name: req.params.id }).populate('author').lean();
+    const course = await Course.findOne({ name: req.params.id }).populate('author').populate('chapters').lean();
+    const chapters = [];
+    var lessons = [];
+    if (course && course.chapters) {
+      for (let i = 0; i < course.chapters.length; i++){
+        for (let j =0; j < course.chapters[i].lesson.length; j++){
+        // lesson.push(await Lesson.findById())
+        lessons.push({lessons: await Lesson.findById(course.chapters[i].lesson[j]).populate('video').lean()});
+        }
+        chapters.push({chapters: lessons});
+        lessons = [];
+      }
+    }
+    await  Course.updateOne({name: req.params.id}, {totalView: course.totalView + 1})
     const top5cate = await Course.find({
       name: { $not: { $eq: req.params.id } }}).sort({ register_count: -1 }).lean().limit(top5);
-    
     const feedbacks = [];
     const curPage = req.query.page || 1;
     var offset = (curPage - 1) * limit;
@@ -59,7 +74,7 @@ const courseService = {
         }
       }
     }
-
+    
     // if (req.query.page){
     //   res.send({
     //     feedbacks: feedbacks,
@@ -96,6 +111,7 @@ const courseService = {
       buy: buy,
       avatar: avatar,
       author: course.author,
+      chapters: chapters,
     });
   },
 
@@ -191,7 +207,24 @@ const courseService = {
   },
   
   viewCourse: async (req,res) => {
-    res.render("vwDetails/courseDetails");
+    const course = await Course.findOne({ name: req.params.id }).populate('author').populate('chapters').lean();
+    const chapters = [];
+    var lessons = [];
+    if (course) {
+      for (let i = 0; i < course.chapters.length; i++){
+        for (let j =0; j < course.chapters[i].lesson.length; j++){
+        // lesson.push(await Lesson.findById())
+        lessons.push({lessons: await Lesson.findById(course.chapters[i].lesson[j]).populate('video').lean()});
+        }
+        chapters.push({chapters: lessons});
+        lessons = [];
+      }
+    }
+
+    res.render("vwDetails/courseDetails",{
+      course: course,
+      chapters: chapters,
+    });
   },
 }
 export default courseService;

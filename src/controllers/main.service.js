@@ -59,16 +59,10 @@ const mainService = {
 
   getSearchCourses: async (req, res) => {
     try {
-      const sort = req.query.sort;
       const limit = 5;
       var nPages;
       const curPage = req.query.page || 1;
       const offset = (curPage - 1) * limit;
-
-      let cat;
-      if (req.query.cat) {
-        cat = await Sub_Category.findOne({ name: req.query.cat });
-      }
 
       let courses;
       if (req.query.search) {
@@ -100,17 +94,23 @@ const mainService = {
               img: 1,
               name: 1,
               overview: 1,
+              author: 1,
               rating: 1,
               register_count: 1,
               price: 1,
               discount: 1,
+              category: 1,
+              sub_category: 1,
+              enable: 1,
             },
           },
         ]);
+        await Course.populate(courses, { path: "author" });
       } else {
-        courses = await Course.find().lean();
+        courses = await Course.find().populate("author").lean();
       }
 
+      const sort = req.query.sort;
       if (sort === "rating") {
         courses.sort(function (a, b) {
           return parseFloat(b.rating) - parseFloat(a.rating);
@@ -139,6 +139,11 @@ const mainService = {
           return arr;
         }
         courses = removeItemAll(courses, main_cat);
+      }
+
+      let cat;
+      if (req.query.cat) {
+        cat = await Sub_Category.findOne({ name: req.query.cat });
       }
 
       if (cat) {
@@ -196,6 +201,19 @@ const mainService = {
         courses = removeItemAll(courses, req.query.cost);
       }
 
+      function removeItemAll(arr) {
+        var i = 0;
+        while (i < arr.length) {
+          if (!arr[i].enable) {
+            arr.splice(i, 1);
+          } else {
+            ++i;
+          }
+        }
+        return arr;
+      }
+      courses = removeItemAll(courses);
+
       const total = courses.length;
       let curCourses = [];
       for (let i = offset; i < total; i++) {
@@ -221,6 +239,7 @@ const mainService = {
       res.render("vwSearchPage/searchPage", {
         courses: curCourses,
         text: req.query.search,
+        main_cat: req.query.main_cat,
 
         subCategories: subCategories,
         pageNumbers: pageNumbers,
@@ -236,7 +255,7 @@ const mainService = {
       res.redirect("/");
     } else {
       res.render("vwLoginPage/loginPage", {
-        message: req.flash('error')
+        message: req.flash("error"),
       });
     }
   },
@@ -259,48 +278,48 @@ const mainService = {
     successRedirect: "/",
     failureRedirect: "/login",
     failureFlash: true,
-    badRequestMessage: 'All Fields Need To Be Filled!'
+    badRequestMessage: "All Fields Need To Be Filled!",
   }),
 
   // get video
-test: async (req, res) => {
-  const video = await Video.find().lean(); 
-  const list = [];
-  for(let i = 0; i < video.length; i++){
-    list.push({
-      video: video[i].img.image.toString('base64'),
-    });
-  }
+  test: async (req, res) => {
+    const video = await Video.find().lean();
+    const list = [];
+    for (let i = 0; i < video.length; i++) {
+      list.push({
+        video: video[i].img.image.toString("base64"),
+      });
+    }
 
-  res.render("vwHomepage/test", {
+    res.render("vwHomepage/test", {
       video: list,
-  });
-},
+    });
+  },
 
   //post video
-testUpload: async (req, res) => {
-  console.log(req.file.path);
+  testUpload: async (req, res) => {
+    console.log(req.file.path);
 
-  const img = fs.readFileSync(req.file.path);
-  const img_enc = img.toString('base64');
-  const obj = {
-    name: req.body.firstName,
-    img: {
-      contentType: "video/mp4",
-      image: new Buffer.from(img_enc, 'base64'),
-    },
-  };
-  const newVideo = new Video(obj);
-  await newVideo.save();
-  res.redirect('/test');
+    const img = fs.readFileSync(req.file.path);
+    const img_enc = img.toString("base64");
+    const obj = {
+      name: req.body.firstName,
+      img: {
+        contentType: "video/mp4",
+        image: new Buffer.from(img_enc, "base64"),
+      },
+    };
+    const newVideo = new Video(obj);
+    await newVideo.save();
+    res.redirect("/test");
   },
 
   signupService: async (req, res) => {
     try {
       const { username, email, password } = req.body;
       const hashedPassword = await bcrypt.hash(password, 10);
-      const user = await User.findOne({email:email});
-      if(!user) {
+      const user = await User.findOne({ email: email });
+      if (!user) {
         await mailer.sendMail(email);
         const savedUser = new User({
           username: username,
@@ -316,21 +335,26 @@ testUpload: async (req, res) => {
         res.render("vwLoginPage/otpPage", {
           mail: email,
           otpcount: 1,
-        });   
+        });
       }
     } catch (e) {
       res.send(e);
-  }
-},
-
+    }
+  },
 
   createCoursePage: async (req, res) => {
     res.render("vwLecturer/createCourse");
   },
 
   addCourse: async (req, res) => {
-    const description = req.body.text.replace('<div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>', '');
-    const course = await Course.updateOne({_id: "63980cb86e1bc00df84cd545"}, {description: description});
+    const description = req.body.text.replace(
+      '<div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>',
+      ""
+    );
+    const course = await Course.updateOne(
+      { _id: "63980cb86e1bc00df84cd545" },
+      { description: description }
+    );
     res.redirect("/postCourse");
   },
 
@@ -363,10 +387,9 @@ testUpload: async (req, res) => {
 
   checkEmail: async function (req, res) {
     const email = req.query.email;
-    const user = await User.findOne({email:email});
-    if (user === null)
-      return res.json(false);
-  
+    const user = await User.findOne({ email: email });
+    if (user === null) return res.json(false);
+
     res.json(true);
   },
 };

@@ -3,6 +3,8 @@
   <div style="display: flex; flex-wrap: wrap; row-gap: .8rem;">
     <div class="dropdown ms-0">
       <form id="filter" method="get">
+        <input class="d-none rounded-pill form-control me-2 mb-2" type="search" placeholder="Search" aria-label="Search"
+          name="main_cat" value="{{this.main_cat}}" />
         <input class="rounded-pill form-control me-2 mb-2" type="search" placeholder="Search" aria-label="Search"
           name="search" value="{{this.text}}" />
         <button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownMenuButton1"
@@ -172,7 +174,7 @@
         <div style="display: flex; flex-direction: column; flex: 2">
           <span class="fs-6 fw-bold">{{name}}</span>
           <span style="font-size: 14px">{{overview}}</span>
-          <span class="text-muted" ; style="font-size: 14px">Lecturer: {{author}}</span>
+          <span class="text-muted" ; style="font-size: 14px">Lecturer: {{author.username}}</span>
           <span class="text-muted" ; style="font-size: 14px">{{rating}}</span>
           <span class="text-muted" ; style="font-size: 14px">{{register_count}} students</span>
         </div>
@@ -200,7 +202,7 @@
         <div style="display: flex; flex-direction: column; flex: 2">
           <span class="fs-6 fw-bold">{{name}}</span>
           <span style="font-size: 14px">{{overview}}</span>
-          <span class="text-muted" ; style="font-size: 14px">Lecturer: {{author}}</span>
+          <span class="text-muted" ; style="font-size: 14px">Lecturer: {{author.username}}</span>
           <span class="text-muted" ; style="font-size: 14px">{{rating}}</span>
           <span class="text-muted" ; style="font-size: 14px">{{register_count}} students</span>
         </div>
