@@ -9,14 +9,9 @@ const lessonSchema = new mongoose.Schema({
     overview: {
         type: String,
     },
-
-    preview: {
-        type: Boolean,
-        default: false,
-    },
-
     video: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Video',
     },
 });
 
