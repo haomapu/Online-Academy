@@ -375,15 +375,7 @@ const mainService = {
       curUser = req.user
     }
     
-    const storage = multer.diskStorage({
-      filename: function (req, file, cb) {
-        cb(null, file.originalname);
-      }
-      
-      
-      })
-  
-    const upload = multer({ storage: storage });
+    
     upload.array('video')(req, res, async function (err) {
       if (err instanceof multer.MulterError) {
         console.error(err);
