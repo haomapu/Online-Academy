@@ -5,7 +5,7 @@
       <form id="filter" method="get">
         <input class="d-none rounded-pill form-control me-2 mb-2" type="search" placeholder="Search" aria-label="Search"
           name="main_cat" value="{{this.main_cat}}" />
-        <input class="rounded-pill form-control me-2 mb-2" type="search" placeholder="Search" aria-label="Search"
+        <input class="rounded-pill form-control me-2 mb-2 d-none" type="search" placeholder="Search" aria-label="Search"
           name="search" value="{{this.text}}" />
         <button class="btn btn-secondary text-white dropdown-toggle" type="button" id="dropdownMenuButton1"
           data-bs-toggle="dropdown" aria-expanded="false">
@@ -224,7 +224,7 @@
             {{#each pageNumbers}}
             {{#if isCurrent}}
             <li class="page-item" style="color: se;">
-              <a class="page-link text-dark fs-5" href="/search?main_cat={{main_cat}}&search={{text}}&cat={{cat}}&sort={{sort}}&cost={{cost}}&rating={{rating}}&page={{minus_one value}}" aria-label="Previous">
+              <a class="page-link text-secondary fw-bold border-secondary" href="/search?main_cat={{main_cat}}&search={{text}}&cat={{cat}}&sort={{sort}}&cost={{cost}}&rating={{rating}}&page={{minus_one value}}" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span></a>
             </li>
             {{/if}}
@@ -232,11 +232,11 @@
             {{#each pageNumbers}}
             {{#if isCurrent}}
             <li class="page-item active" aria-current="page">
-              <span class="page-link bg-light border-secondary text-dark fs-5">{{value}}</span>
+              <span class="page-link text-secondary border-secondary fw-bold bg-secondary text-light">{{value}}</span>
             </li>
             {{else}}
             <li class="page-item">
-              <a class="page-link text-dark fs-5"
+              <a class="page-link text-secondary fw-bold border-secondary"
                 href="/search?main_cat={{main_cat}}&search={{text}}&cat={{cat}}&sort={{sort}}&cost={{cost}}&rating={{rating}}&page={{value}}">{{value}}</a>
             </li>
             {{/if}}
@@ -244,7 +244,7 @@
             {{#each pageNumbers}}
             {{#if isCurrent}}
             <li class="page-item">
-            <a class="page-link text-dark fs-5" href="/search?main_cat={{main_cat}}&search={{text}}&cat={{cat}}&sort={{sort}}&cost={{cost}}&rating={{rating}}&page={{add_one value}}" aria-label="Next">
+            <a class="page-link text-secondary fw-bold border-secondary" href="/search?main_cat={{main_cat}}&search={{text}}&cat={{cat}}&sort={{sort}}&cost={{cost}}&rating={{rating}}&page={{add_one value}}" aria-label="Next">
               <span aria-hidden="true">&raquo;</span></a>
             </li>
             {{/if}}
