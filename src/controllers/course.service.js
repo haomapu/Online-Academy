@@ -2,9 +2,7 @@ import Course from "../models/course.js";
 import Feedback from "../models/feedback.js";
 import Register from "../models/register.js";
 import Favorite from "../models/favorite.js";
-import Chapter from "../models/chapter.js";
 import Lesson from "../models/lesson.js";
-import Video from "../models/video.js";
 import User from "../models/user.js";
 const courseService = {
   getCourseDetail: async function (req, res) {
@@ -27,7 +25,6 @@ const courseService = {
     if (course && course.chapters) {
       for (let i = 0; i < course.chapters.length; i++) {
         for (let j = 0; j < course.chapters[i].lessons.length; j++) {
-          // lesson.push(await Lesson.findById())
           lessons.push({
             lessons: await Lesson.findById(course.chapters[i].lessons[j])
               .populate("video")
@@ -97,14 +94,6 @@ const courseService = {
         }
       }
     }
-
-    // if (req.query.page){
-    //   res.send({
-    //     feedbacks: feedbacks,
-    //     pageNumbers: pageNumbers,
-    //   })
-    //   return;
-    // }
 
     if (req.isAuthenticated()) {
       curUser = req.user;
@@ -263,7 +252,6 @@ const courseService = {
     if (course) {
       for (let i = 0; i < course.chapters.length; i++) {
         for (let j = 0; j < course.chapters[i].lessons.length; j++) {
-          // lesson.push(await Lesson.findById())
           lessons.push({
             lessons: await Lesson.findById(course.chapters[i].lessons[j])
               .populate("video")
