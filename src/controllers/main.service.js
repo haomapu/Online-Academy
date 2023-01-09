@@ -22,11 +22,11 @@ const mainService = {
   getHomePage: async (req, res) => {
     const categories = await Category.find().populate("sub_categories").lean();
     req.session.categories = categories;
-    const course = await Course.find().sort({ lastUpdate: 1 }).lean().limit(12);
+    const course = await Course.find({enable: true}).sort({ lastUpdate: 1 }).lean().limit(12);
     const newCourse = [];
     while (course.length) newCourse.push(course.splice(0, 4));
 
-    const querryCourse = await Course.find()
+    const querryCourse = await Course.find({enable: true})
       .sort({ totalView: 1 })
       .lean()
       .limit(12);
@@ -43,8 +43,6 @@ const mainService = {
     const categoriesID = await Course.aggregate([
       { $sortByCount: "$category" },
     ]);
-    console.log(categoriesID);
-    console.log(categoriesID.length);
     const highlightCategories = [];
     for (let i = 0; i < categoriesID.length; i++) {
       highlightCategories.push(
@@ -293,7 +291,7 @@ const mainService = {
     failureFlash: true,
     badRequestMessage: "All Fields Need To Be Filled!",
     keepSessionInfo: true,
-  }), 
+  }),
 
   // get video
   test: async (req, res) => {
@@ -359,24 +357,31 @@ const mainService = {
   },
 
   addCourse: async (req, res) => {
-    // const description = req.body.text.replace(
-    //   '<div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>',
-    //   ""
-    // );
+    const description = req.body.text.replace(
+      '<div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>',
+      ""
+    );
     // const course = await Course.updateOne(
     //   { _id: "63980cb86e1bc00df84cd545" },
     //   { description: description }
     // );
     let curUser;
-    if (!req.isAuthenticated()){
-      res.redirect('/login')
+    if (!req.isAuthenticated()) {
+      res.redirect("/login");
       return;
     } else {
-      curUser = req.user
+      curUser = req.user;
     }
-    
-    
-    upload.array('video')(req, res, async function (err) {
+
+
+    const storage = multer.diskStorage({
+      filename: function (req, file, cb) {
+        cb(null, file.originalname);
+      },
+    });
+
+    const upload = multer({ storage: storage });
+    upload.array("video")(req, res, async function (err) {
       if (err instanceof multer.MulterError) {
         console.error(err);
       } else if (err) {
@@ -398,56 +403,60 @@ const mainService = {
       //   },
       // };
 
-      for (let i = 0; i < req.body.titleChap.length; i++){
-        let lessons = [];
-        // console.log(req.body.titleChap[i]);
-
-        for (let j = 0; j < req.body.nLesson[i]; j++){
-          // console.log(req.body.titleLes[count]);
-          // console.log(req.files[count].path)
-
-          //Video----------------------------
-            let video = fs.readFileSync(req.files[count].path);
-            let video_enc = video.toString("base64");
-            let obj = {
-              name: req.body.firstName,
-              img: {
-                contentType: "video/mp4",
-                image: new Buffer.from(video_enc, "base64"),
-              },
-            };
-            let newVideo = new Video(obj);
-            let savedVideo = await newVideo.save();
-            
-          //Lesson-----------------------------
-          let lesson = {
-            name: req.body.titleLes[count],
-            video: savedVideo,
+      if(req.body.titleChap !== undefined && req.body.titleChap !== null) {
+        for (let i = 0; i < req.body.titleChap.length; i++){
+          let lessons = [];
+          // console.log(req.body.titleChap[i]);
+  
+          for (let j = 0; j < req.body.nLesson[i]; j++){
+            // console.log(req.body.titleLes[count]);
+            // console.log(req.files[count].path)
+  
+            //Video----------------------------
+              let video = fs.readFileSync(req.files[count].path);
+              let video_enc = video.toString("base64");
+              let obj = {
+                name: req.body.firstName,
+                img: {
+                  contentType: "video/mp4",
+                  image: new Buffer.from(video_enc, "base64"),
+                },
+              };
+              let newVideo = new Video(obj);
+              let savedVideo = await newVideo.save();
+              
+            //Lesson-----------------------------
+            let lesson = {
+              name: req.body.titleLes[count],
+              video: savedVideo,
+            }
+            let newLesson = new Lesson(lesson);
+            let saveLesson = await newLesson.save();
+            lessons.push(saveLesson);
+  
+            count++;
           }
-          let newLesson = new Lesson(lesson);
-          let saveLesson = await newLesson.save();
-          lessons.push(saveLesson);
-
-          count++;
-        }
-        //Chapter--------------------
-        let chapter = {
-          name: req.body.titleChap[i],
-          lessons: lessons,
-        }
-        let newChapter = new Chapter(chapter);
-        let saveChapter = await newChapter.save();
-        chapters.push(saveChapter);
+          //Chapter--------------------
+          let chapter = {
+            name: req.body.titleChap[i],
+            lessons: lessons,
+          }
+          let newChapter = new Chapter(chapter);
+          let saveChapter = await newChapter.save();
+          chapters.push(saveChapter);
+        }  
       }
+      
       
       const user = await User.findById(curUser._id)
       const category = await Category.findOne({name: req.body.category})
       const sub_category = await Sub_Category.findOne({name: req.body.sub_category})
+
       const course = {
         name: req.body.name,
         img: req.body.img,
         overview: req.body.overview,
-        description: req.body.text,
+        description: description,
         rating: 5,
         rating_count: 0,
         register_count: 0,
@@ -457,11 +466,10 @@ const mainService = {
         author: user,
         category: category,
         sub_category: sub_category,
-      }
+      };
       const newCourse = new Course(course);
       const saveCourse = await newCourse.save();
-      res.redirect('/course/' + saveCourse.name);
-      
+      res.redirect("/course/" + saveCourse.name);
     });
 
     //res.redirect("/postCourse");
@@ -476,9 +484,9 @@ const mainService = {
       return;
     }
 
-    const course = await Course.findOne({name: req.params.id}).lean();
+    const course = await Course.findOne({ name: req.params.id }).lean();
     res.render("vwLecturer/editCourse", {
-        course: course,
+      course: course,
     });
   },
 

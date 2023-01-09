@@ -14,13 +14,13 @@
                 <div class="form-group row justify-content-md-center  my-2">
                     <label class="col-lg-3 fs-4 text-end">Course Name:</label>
                     <div class="col-lg-7">
-                        <input type="text" class="form-control" placeholder="Web development" name="name">
+                        <input id="courseName" type="text" class="form-control" placeholder="Web development" name="name">
                     </div>
                 </div>
                 <div class="form-group row justify-content-md-center  my-2">
                     <label class="col-lg-3 fs-4 py-0 text-end">Cover Image:</label>
                     <div class="col-xl-7">
-                        <input name="img" type="input" class="form-control w-100" placeholder="url">
+                        <input id="courseImg" name="img" type="input" class="form-control w-100" placeholder="url">
                     </div>
                 </div>
                 <div class="form-group row justify-content-md-center  my-2">
@@ -48,21 +48,21 @@
                 <div class="form-group row justify-content-md-center  my-2">
                     <label class="col-lg-3 fs-4 text-end">Overall:</label>
                     <div class="col-lg-7">
-                        <textarea name="overview" class="form-control" rows="5"
+                        <textarea id="overall" name="overview" class="form-control" rows="5"
                             placeholder="Introduction to the course"></textarea>
                     </div>
                 </div>
                 <div class="form-group row justify-content-md-center  my-2">
                     <label class="col-lg-3 text-start py-0 fs-4 text-end">Price:</label>
                     <div class="col-lg-7">
-                        <input type="text" name="price" class="form-control" placeholder="10%">
+                        <input id="price" type="text" name="price" class="form-control" placeholder="10%">
                     </div>
                 </div>
 
                 <div class="form-group row justify-content-md-center my-2">
                     <label class="col-lg-3 py-0 fs-4 text-end">Sales:</label>
                     <div class="col-lg-7">
-                        <input type="text" name="discount" class="form-control" placeholder="10%">
+                        <input id="sales" type="text" name="discount" class="form-control" placeholder="10%">
                     </div>
                 </div>
 
@@ -107,7 +107,7 @@
 
         <!--end::Card-->
         <div class="d-flex justify-content-center">
-            <button type="submit"
+            <button id="createBtn" type="submit"
                 class="btn btn-md btn-secondary text-light fw-bold m-2">&emsp;&emsp;Create&emsp;&emsp;</button>
             <a href="/" class="btn btn-md btn-secondary text-light fw-bold m-2">&emsp;&emsp;Cancel&emsp;&emsp;</a>
         </div>
@@ -156,6 +156,15 @@
             <input type="file" id="video" name="video" multiple accept="video/*" class="ms-2">
         </div>
     </div>
+</div>
+ <div id="empty" hidden style="margin: 0 auto; width:40%; font-size:12px; text-align:center"class="alert alert-danger" role="alert">
+            All Fields Need To Be Filled!
+</div>
+<div id="nan" hidden style="margin: 0 auto; width:40%; font-size:12px; text-align:center"class="alert alert-danger" role="alert">
+            Price And Sales Need To Be Numeric!
+</div>
+<div id="valid" hidden style="margin: 0 auto; width:40%; font-size:12px; text-align:center"class="alert alert-danger" role="alert">
+            Sales Cannot Higher Than 100%
 </div>
 
 
@@ -263,3 +272,30 @@
     });
 
 </script>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">  
+$('#createBtn').click(function(e){
+  $('#nan').attr('hidden','');
+  $('#empty').attr('hidden','');
+  $('#valid').attr('hidden','');
+  const courseName = $('#courseName').val();
+  const courseImage = $('#courseImg').val();
+  const overall = $('#overall').val();
+  const price = $('#price').val();
+  const sale = $('#sales').val();
+  var priceInt = parseInt(price);
+  var saleInt = parseInt(sale);
+  if (courseName.length === 0 || courseImage.length === 0 || overall.length === 0 || price.length === 0 || sale.length === 0){  
+    $('#empty').removeAttr('hidden');
+    e.preventDefault();
+  } else if (isNaN(parseFloat(price)) || isNaN(parseFloat(sale))) {
+    $('#nan').removeAttr('hidden');
+    e.preventDefault();
+  } else if(saleInt > 100) {
+    $('#valid').removeAttr('hidden');
+    e.preventDefault();
+  }
+});  
+</script>  
