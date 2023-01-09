@@ -86,7 +86,7 @@ passport.use(
       return done(null, false, {message: "Wrong Password!" });
     }
     if(!user.verified) {
-      return done(null, false, {message: "OTP Isn't Verified!"});
+      return done(null, false, {message: "Your Account Has Been Banned!"});
     }
     return done(null, user);
   })
