@@ -90,7 +90,7 @@
   <hr class="my-5 text-dark" style="height: 1px;" />
   <div class="container-fluid p-0" style="width: 90%">
     <p class="h2 fw-bold">Course Sumary</p>
-    <p class="fs-5 px-4 py-1 rounded-bottom rounded-end">{{course.description}}</p>
+    <p id="courseDes" class="fs-5 px-4 py-1 rounded-bottom rounded-end"></p>
   </div>
   {{! Accordion }}
   <hr class="my-5 text-dark" style="height: 1px;" />
@@ -317,6 +317,11 @@
       }
     });
   })
+  var $des = $("#courseDes"),
+    // {{course.description}}
+  html = $.parseHTML('{{{course.description}}}');
+  $des.append(html);
+  // Append the parsed HTML
   //Chua lam duoc cai pagination comment sau khi doi trang
 
 </script>

@@ -124,10 +124,13 @@ const settingService = {
     if (favourite.length != 0) {
       for (let i = 0; i < favourite.length; i++) {
         var course;
+        var author;
         if (favourite[i].course) {
           course = await Course.findById(favourite[i].course._id).lean();
+          author = await User.findById(course.author).lean();
         }
         if (course) {
+          course.author = author.username;
           courses.push(course);
         }
       }
@@ -177,10 +180,13 @@ const settingService = {
     if (favourite.length != 0) {
       for (let i = 0; i < favourite.length; i++) {
         var course;
+        var author;
         if (favourite[i].course) {
           course = await Course.findById(favourite[i].course._id).lean();
+          author = await User.findById(course.author).lean();
         }
         if (course) {
+          course.author = author.username;
           courses.push(course);
         }
       }
