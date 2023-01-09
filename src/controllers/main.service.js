@@ -22,11 +22,11 @@ const mainService = {
   getHomePage: async (req, res) => {
     const categories = await Category.find().populate("sub_categories").lean();
     req.session.categories = categories;
-    const course = await Course.find().sort({ lastUpdate: 1 }).lean().limit(12);
+    const course = await Course.find({enable: true}).sort({ lastUpdate: 1 }).lean().limit(12);
     const newCourse = [];
     while (course.length) newCourse.push(course.splice(0, 4));
 
-    const querryCourse = await Course.find()
+    const querryCourse = await Course.find({enable: true})
       .sort({ totalView: 1 })
       .lean()
       .limit(12);

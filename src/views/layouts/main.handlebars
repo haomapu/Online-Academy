@@ -28,7 +28,7 @@
           <!-- Dropdown -->
           <form action="/search" method="get" id="searchCat">
             <li class="nav-item dropdown">
-              <a class="text-primary nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+              <a class="text-secondary nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
                 Categories
               </a>
@@ -53,9 +53,9 @@
         </form>
         {{#if user}}
         {{#if user.username}}
-        <a href="/settings" class="text-primary align-middle me-2 fs-5 links">{{user.username}}</a>
+        <a href="/settings" class="text-secondary align-middle me-2 fs-5 links">{{user.username}}</a>
         {{else}}
-        <a href="/settings" class="text-primary align-middle me-2 fs-5 links">{{user.displayName}}</a>
+        <a href="/settings" class="text-secondary align-middle me-2 fs-5 links">{{user.displayName}}</a>
         {{/if}}
         <a href="/settings" class="me-2"><img src="{{user.avatar}}" class="rounded-circle" alt="" width="35"
             height="35"></a>
