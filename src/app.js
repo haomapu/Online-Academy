@@ -15,7 +15,6 @@ import userAuthorization from "./middlewares/authorization.js";
 import userAuthentication from "./middlewares/authentication.js";
 import cookieSession from "cookie-session"
 import GoogleStrategy from "passport-google-oauth20";
-import FacebookStrategy from "passport-facebook";
 import LocalStrategy from "passport-local";
 import flash from "connect-flash"
 //Inport router
@@ -71,18 +70,6 @@ passport.use(new GoogleStrategy({
 }
 ));
 
-passport.use(new FacebookStrategy({
-  clientID: '470228735287363',
-  clientSecret: '2d46470320ab6bf4dcedcb242d0b4742',
-  callbackURL: "http://localhost:8080/auth/facebook/callback",
-  profileFields: ['email', 'id', 'displayName','name', 'gender', 'picture.type(large)']
-},
-function(accessToken, refreshToken, profile, cb) {
-    cb(null, profile); 
-}
-));
-
-
 passport.use(
   new LocalStrategy(async (username, password, done) => {
     const user = await User.findOne({ username: username });
@@ -108,7 +95,6 @@ passport.serializeUser((user, done) => {
   done(null, user);
 });
 
-// Used to decode the received cookie and persist session
 passport.deserializeUser((user, done) => {
   done(null, user);
 });
