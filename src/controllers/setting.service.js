@@ -136,18 +136,26 @@ const settingService = {
       res.redirect("/login");
       return;
     }
+    var student;
+    if (curUser.hasOwnProperty("_json")) {
+      student = await User.findOne({
+        username: curUser._json.given_name + curUser._json.family_name,
+      }).lean();
+    } else {
+      student = await User.findById(curUser._id);
+    }
 
     const limit = 3;
     var nPages;
     const courses = [];
     const curPage = req.query.page || 1;
     const offset = (curPage - 1) * limit;
-    const favourite = await Register.find({ student: curUser._id })
+    const favourite = await Register.find({ student: student._id })
       .lean()
       .sort({ date: -1 })
       .skip(offset)
       .limit(limit);
-    const total = await Register.find({ student: curUser._id }).count();
+    const total = await Register.find({ student: student._id }).count();
 
     if (favourite.length != 0) {
       for (let i = 0; i < favourite.length; i++) {
@@ -193,17 +201,26 @@ const settingService = {
       return;
     }
 
+    var student;
+    if (curUser.hasOwnProperty("_json")) {
+      student = await User.findOne({
+        username: curUser._json.given_name + curUser._json.family_name,
+      }).lean();
+    } else {
+      student = await User.findById(curUser._id);
+    }
+
     const limit = 3;
     var nPages;
     const courses = [];
     const curPage = req.query.page || 1;
     const offset = (curPage - 1) * limit;
-    const favourite = await Favorite.find({ student: curUser._id })
+    const favourite = await Favorite.find({ student: student._id })
       .lean()
       .sort({ date: -1 })
       .skip(offset)
       .limit(limit);
-    const total = await Favorite.find({ student: curUser._id }).count();
+    const total = await Favorite.find({ student: student._id }).count();
 
     if (favourite.length != 0) {
       for (let i = 0; i < favourite.length; i++) {

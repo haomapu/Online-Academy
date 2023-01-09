@@ -164,12 +164,19 @@ const courseService = {
   createRegister: async (req, res, next) => {
     var newRegister = {};
     if (req.isAuthenticated()) {
-      var user = req.user;
+      var curUser = req.user;
     } else {
       res.redirect("/login/");
       return;
     }
-    const student = await User.findById(user._id);
+
+    var student;
+    if (curUser.hasOwnProperty("_json")) {
+      student = await User.findOne({username: curUser._json.given_name + curUser._json.family_name,});
+    } else {
+      student = await User.findById(curUser._id);
+    }
+  
     const course = await Course.findOne({ name: req.params.id });
 
     const check = await Register.findOne({student: student._id, course: course._id});
@@ -189,13 +196,18 @@ const courseService = {
   createFavorite: async (req, res) => {
     var newFavorite = {};
     if (req.isAuthenticated()) {
-      var user = req.user;
+      var curUser = req.user;
     } else {
       res.redirect("/login");
       return;
     }
 
-    const student = await User.findById(user._id);
+    var student;
+    if (curUser.hasOwnProperty("_json")) {
+      student = await User.findOne({username: curUser._json.given_name + curUser._json.family_name,});
+    } else {
+      student = await User.findById(curUser._id);
+    }
     const course = await Course.findOne({ name: req.body.nameFav });
 
     const check = await Favorite.findOne({student: student._id, course: course._id});
