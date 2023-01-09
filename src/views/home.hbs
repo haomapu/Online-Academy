@@ -14,6 +14,15 @@
   <div class="bg-circle-4 bg-circle"></div>
 </header>
 
+<div class="mt-1 border-top border-bottom container-fluid d-flex justify-content-center">
+      {{#each highlightCategories}}
+      <div class="fs-5 px-2">
+        <h><input class="btn" name="main_cat" value="{{this.name}}" type="submit" form="searchCat" /></h>
+        
+      </div>
+      {{/each}}
+</div>
+
 <section id="scroll">
   <div class="container p-4">
     <span class="lead fs-1 fst-talic f-title">
@@ -234,20 +243,6 @@
           </button>
         </div>
       </div>
-    </div>
-  </div>
-</div>
-<div class="container p-4">
-  <span class="lead fs-1 fst-talic f-title">
-    Most Registered Categories
-  </span>
-  <div class="container">
-    <div class="row">
-      {{#each highlightCategories}}
-      <div class="row">
-        {{this.name}}
-      </div>
-      {{/each}}
     </div>
   </div>
 </div>
