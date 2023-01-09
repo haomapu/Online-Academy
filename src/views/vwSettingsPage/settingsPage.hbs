@@ -133,31 +133,6 @@
             </div>
             <hr />
             <div class="row">
-              <div class="col-sm-3">
-                <h6 class="mb-0">Phone</h6>
-              </div>
-              <div class="col-sm-9 text-secondary">
-                (239) 816-9029
-              </div>
-            </div>
-            <hr />
-            <div class="row">
-              <div class="col-sm-3">
-                <h6 class="mb-0">Mobile</h6>
-              </div>
-              <div class="col-sm-9 text-secondary">
-                (320) 380-4539
-              </div>
-            </div>
-            <hr />
-            <div class="row">
-              <div class="col-sm-3">
-                <h6 class="mb-0">Address</h6>
-              </div>
-              <div class="col-sm-9 text-secondary">Ho Chi Minh, VietNam</div>
-            </div>
-            <hr />
-            <div class="row">
               <div class="col-sm-12">
                 <a class="btn btn-secondary text-white" href="/settings/profile" aria-current="page">Edit</a>
               </div>
@@ -166,6 +141,7 @@
         </div>
       </div>
     </div>
+    {{#if lecturer}}
     <form id="myform" method="post">
       <div class="card card-custom roseanna shadow my-3">
         <div class="card-header fw-bold m-0">Description</div>
@@ -177,6 +153,7 @@
         </div>
       </div>
     </form>
+    {{/if}}
   </div>
 </div>
 
