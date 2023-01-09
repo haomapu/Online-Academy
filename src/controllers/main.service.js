@@ -59,16 +59,10 @@ const mainService = {
 
   getSearchCourses: async (req, res) => {
     try {
-      const sort = req.query.sort;
       const limit = 5;
       var nPages;
       const curPage = req.query.page || 1;
       const offset = (curPage - 1) * limit;
-
-      let cat;
-      if (req.query.cat) {
-        cat = await Sub_Category.findOne({ name: req.query.cat });
-      }
 
       let courses;
       if (req.query.search) {
@@ -100,17 +94,23 @@ const mainService = {
               img: 1,
               name: 1,
               overview: 1,
+              author: 1,
               rating: 1,
               register_count: 1,
               price: 1,
               discount: 1,
+              category: 1,
+              sub_category: 1,
+              enable: 1,
             },
           },
         ]);
+        await Course.populate(courses, { path: "author" });
       } else {
-        courses = await Course.find().lean();
+        courses = await Course.find().populate("author").lean();
       }
 
+      const sort = req.query.sort;
       if (sort === "rating") {
         courses.sort(function (a, b) {
           return parseFloat(b.rating) - parseFloat(a.rating);
@@ -139,6 +139,11 @@ const mainService = {
           return arr;
         }
         courses = removeItemAll(courses, main_cat);
+      }
+
+      let cat;
+      if (req.query.cat) {
+        cat = await Sub_Category.findOne({ name: req.query.cat });
       }
 
       if (cat) {
@@ -196,6 +201,19 @@ const mainService = {
         courses = removeItemAll(courses, req.query.cost);
       }
 
+      function removeItemAll(arr) {
+        var i = 0;
+        while (i < arr.length) {
+          if (!arr[i].enable) {
+            arr.splice(i, 1);
+          } else {
+            ++i;
+          }
+        }
+        return arr;
+      }
+      courses = removeItemAll(courses);
+
       const total = courses.length;
       let curCourses = [];
       for (let i = offset; i < total; i++) {
@@ -221,6 +239,7 @@ const mainService = {
       res.render("vwSearchPage/searchPage", {
         courses: curCourses,
         text: req.query.search,
+        main_cat: req.query.main_cat,
 
         subCategories: subCategories,
         pageNumbers: pageNumbers,
@@ -236,7 +255,7 @@ const mainService = {
       res.redirect("/");
     } else {
       res.render("vwLoginPage/loginPage", {
-        message: req.flash('error')
+        message: req.flash("error"),
       });
     }
   },
@@ -259,59 +278,57 @@ const mainService = {
     successRedirect: "/",
     failureRedirect: "/login",
     failureFlash: true,
-    badRequestMessage: 'All Fields Need To Be Filled!'
+    badRequestMessage: "All Fields Need To Be Filled!",
   }),
 
   // done
   test: async (req, res) => {
-    const video = await Video.find().lean(); 
+    const video = await Video.find().lean();
     const list = [];
-    for(let i = 0; i < video.length; i++){
+    for (let i = 0; i < video.length; i++) {
       list.push({
-        video: video[i].img.image.toString('base64'),
+        video: video[i].img.image.toString("base64"),
       });
     }
 
     res.render("vwHomepage/test", {
-        video: list,
+      video: list,
     });
   },
-
 
   //done
   testUpload: async (req, res) => {
     console.log(req.file.path);
 
-  const img = fs.readFileSync(req.file.path);
-  const img_enc = img.toString('base64');
-  const obj = {
-    name: req.body.firstName,
-    img: {
-      contentType: "video/mp4",
-      image: new Buffer.from(img_enc, 'base64'),
-    },
-  };
-  const newVideo = new Video(obj);
-  await newVideo.save();
-  res.redirect('/test');
+    const img = fs.readFileSync(req.file.path);
+    const img_enc = img.toString("base64");
+    const obj = {
+      name: req.body.firstName,
+      img: {
+        contentType: "video/mp4",
+        image: new Buffer.from(img_enc, "base64"),
+      },
+    };
+    const newVideo = new Video(obj);
+    await newVideo.save();
+    res.redirect("/test");
   },
 
-
-// **RETRIEVE**
-// route.get('/sad',(req,res)=>{
-//      img.find({}).then((img)=>{
-//        res.json(img)      
-// //How do decode my buffer to show an image in Postman?
-// })
-// }
-// )
+  // **RETRIEVE**
+  // route.get('/sad',(req,res)=>{
+  //      img.find({}).then((img)=>{
+  //        res.json(img)
+  // //How do decode my buffer to show an image in Postman?
+  // })
+  // }
+  // )
 
   signupService: async (req, res) => {
     try {
       const { username, email, password } = req.body;
       const hashedPassword = await bcrypt.hash(password, 10);
-      const user = await User.findOne({email:email});
-      if(!user) {
+      const user = await User.findOne({ email: email });
+      if (!user) {
         await mailer.sendMail(email);
         const savedUser = new User({
           username: username,
@@ -327,12 +344,12 @@ const mainService = {
         res.render("vwLoginPage/otpPage", {
           mail: email,
           otpcount: 1,
-        });   
+        });
       }
     } catch (e) {
       res.send(e);
-  }
-},
+    }
+  },
 
   createCoursePage: async (req, res) => {
     res.render("vwLecturer/createCourse");
@@ -367,10 +384,9 @@ const mainService = {
 
   checkEmail: async function (req, res) {
     const email = req.query.email;
-    const user = await User.findOne({email:email});
-    if (user === null)
-      return res.json(false);
-  
+    const user = await User.findOne({ email: email });
+    if (user === null) return res.json(false);
+
     res.json(true);
   },
 };

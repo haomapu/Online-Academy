@@ -388,8 +388,8 @@ const settingService = {
           { _id: curUser._id },
           { password: newHashPassword }
         );
-        res.redirect('/settings');
-      } 
+        res.redirect("/settings");
+      }
     } catch (e) {
       res.send(e);
     }
@@ -484,6 +484,11 @@ const settingService = {
 
   disableCourse: async (req, res) => {
     await Course.updateOne({ _id: req.params.id }, { enable: false });
+    res.redirect("/settings/courseAdmin");
+  },
+
+  enableCourse: async (req, res) => {
+    await Course.updateOne({ _id: req.params.id }, { enable: true });
     res.redirect("/settings/courseAdmin");
   },
 
@@ -603,7 +608,7 @@ const settingService = {
     }
     res.json(true);
   },
-  
+
   getCategorySetting: async (req, res) => {
     try {
       var curUser;
@@ -642,6 +647,6 @@ const settingService = {
     } catch (e) {
       res.send(e);
     }
-  }
+  },
 };
 export default settingService;

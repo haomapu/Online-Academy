@@ -33,6 +33,8 @@ router.get("/courseAdmin", settingService.getCourseAdmin);
 
 router.post("/courseAdmin/disable/:id", settingService.disableCourse);
 
+router.post("/courseAdmin/enable/:id", settingService.enableCourse);
+
 router.get("/studentAdmin", settingService.getStudentAdmin);
 
 router.post("/studentAdmin/updateRole/:id", settingService.updateRole);
