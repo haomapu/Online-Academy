@@ -7,6 +7,7 @@ import mailer from "../utils/mailer.js";
 import Category from "../models/category.js";
 import Sub_Category from "../models/sub_category.js";
 import SubCategory from "../models/sub_category.js";
+import authWithRequiredPermission from "../middlewares/auth.mdw.js";
 
 let userMail;
 let newInfo;
@@ -347,13 +348,13 @@ const settingService = {
 
   getDashboardPage: async (req, res) => {
     try {
-      var curUser;
       if (req.isAuthenticated()) {
-        curUser = req.user;
+        const curUser = req.user; 
       } else {
         res.redirect("/login");
         return;
       }
+
       const cats = await Category.find().lean();
       const students = await User.find({ role: 1 }).lean();
       const lecturers = await User.find({ role: 2 }).lean();
@@ -364,15 +365,15 @@ const settingService = {
         .sort({ lastUpdate: -1 })
         .limit(5)
         .lean();
-      res.render("vwSettingsPage/vwAdminPage/dashboardPage", {
-        students: students,
-        lecturers: lecturers,
-        courses: courses,
-        newStudents: newStudents,
-        newCourses: newCourses,
-        admin: true,
-        cats: cats,
-      });
+        res.render("vwSettingsPage/vwAdminPage/dashboardPage", {
+          students: students,
+          lecturers: lecturers,
+          courses: courses,
+          newStudents: newStudents,
+          newCourses: newCourses,
+          admin: true,
+          cats: cats,
+        });
     } catch (e) {
       res.send(e);
     }
@@ -651,9 +652,7 @@ const settingService = {
   },
   addCategory: async (req, res) => {
     try {
-      //console.log(req.body);
       const newCat = new Category(req.body);
-      console.log(newCat);
       const savedCategory = await newCat.save();
       res.redirect("/settings/category");
     } catch (e) {
@@ -662,7 +661,6 @@ const settingService = {
   },
   addSubCategory: async (req,res) => {
     try {
-      console.log(req.body);
       const newSubCat = new SubCategory(req.body);
       const savedSubCat = await newSubCat.save();
       if (req.body.mainCategory) {

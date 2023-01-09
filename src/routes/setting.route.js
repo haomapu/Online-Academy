@@ -1,12 +1,13 @@
 import express from "express";
 import { set } from "mongoose";
 import settingService from "../controllers/setting.service.js";
+import authWithRequiredPermission from "../middlewares/auth.mdw.js";
 
 const router = express.Router();
 
 router.get("/", settingService.getSettingsPage);
 
-router.get("/courseLecture", settingService.getCoursePage);
+router.get("/courseLecture",authWithRequiredPermission(2), settingService.getCoursePage);
 
 router.get("/courseStudent", settingService.getCourseStudentPage);
 
@@ -24,43 +25,43 @@ router.post("/otp", settingService.otpService);
 
 router.get("/isSamePass", settingService.isSamePass);
 
-router.get("/dashboard", settingService.getDashboardPage);
+router.get("/dashboard", authWithRequiredPermission(3), settingService.getDashboardPage);
 
-router.get("/category", settingService.getCategorySetting);
+router.get("/category", authWithRequiredPermission(3), settingService.getCategorySetting);
 
 router.post("/changePass", settingService.changePasswordService);
 
-router.get("/courseAdmin", settingService.getCourseAdmin);
+router.get("/courseAdmin", authWithRequiredPermission(3),settingService.getCourseAdmin);
 
-router.post("/courseAdmin/disable/:id", settingService.disableCourse);
+router.post("/courseAdmin/disable/:id", authWithRequiredPermission(3),settingService.disableCourse);
 
-router.post("/courseAdmin/enable/:id", settingService.enableCourse);
+router.post("/courseAdmin/enable/:id", authWithRequiredPermission(3),settingService.enableCourse);
 
-router.get("/studentAdmin", settingService.getStudentAdmin);
+router.get("/studentAdmin", authWithRequiredPermission(3),settingService.getStudentAdmin);
 
-router.post("/studentAdmin/updateRole/:id", settingService.updateRole);
+router.post("/studentAdmin/updateRole/:id", authWithRequiredPermission(3),settingService.updateRole);
 
-router.post("/studentAdmin/lock/:id", settingService.lockStudent);
+router.post("/studentAdmin/lock/:id", authWithRequiredPermission(3),settingService.lockStudent);
 
-router.post("/studentAdmin/unlock/:id", settingService.unlockStudent);
+router.post("/studentAdmin/unlock/:id", authWithRequiredPermission(3),settingService.unlockStudent);
 
-router.get("/lecturerAdmin", settingService.getLecturerAdmin);
+router.get("/lecturerAdmin", authWithRequiredPermission(3),settingService.getLecturerAdmin);
 
-router.post("/lecturerAdmin/studentRole/:id", settingService.studentRole);
+router.post("/lecturerAdmin/studentRole/:id", authWithRequiredPermission(3),settingService.studentRole);
 
-router.post("/lecturerAdmin/lock/:id", settingService.lockLecturer);
+router.post("/lecturerAdmin/lock/:id", authWithRequiredPermission(3),settingService.lockLecturer);
 
-router.post("/lecturerAdmin/unlock/:id", settingService.unlockLecturer);
+router.post("/lecturerAdmin/unlock/:id", authWithRequiredPermission(3),settingService.unlockLecturer);
 
-router.post("/category/add", settingService.addCategory);
+router.post("/category/add", authWithRequiredPermission(3), settingService.addCategory);
 
-router.post("/subcategory/add", settingService.addSubCategory);
+router.post("/subcategory/add",authWithRequiredPermission(3), settingService.addSubCategory);
 
-router.post("/category/delete", settingService.deleteMainCategory);
+router.post("/category/delete", authWithRequiredPermission(3),settingService.deleteMainCategory);
 
-router.post("/subcategory/delete", settingService.deleteSubCategory);
+router.post("/subcategory/delete", authWithRequiredPermission(3),settingService.deleteSubCategory);
 
-router.post("/category/update", settingService.updateCategory);
+router.post("/category/update", authWithRequiredPermission(3),settingService.updateCategory);
 
-router.post("/subcategory/update", settingService.updateSubCategory);
+router.post("/subcategory/update", authWithRequiredPermission(3),settingService.updateSubCategory);
 export default router;
