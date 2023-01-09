@@ -166,5 +166,53 @@
         </div>
       </div>
     </div>
+    <form id="myform" method="post">
+      <div class="card card-custom roseanna shadow my-3">
+        <div class="card-header fw-bold m-0">Description</div>
+        <div class="card-body">
+          <div id="editor"></div>
+          <input name="text" style="display:none" id="hiddenArea"></input>
+          <button type="submit" class="btn btn-md btn-secondary text-light fw-bold m-2"
+            formaction="/settings/postDesAuthor">&emsp;&emsp;Save&emsp;&emsp;</button>
+        </div>
+      </div>
+    </form>
   </div>
 </div>
+
+<link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
+
+<script src="https://cdn.quilljs.com/1.0.0/quill.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  var toolbarOptions = [
+    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+    ['blockquote', 'code-block'],
+
+    [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+    [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
+    [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
+    [{ 'direction': 'rtl' }],                         // text direction
+
+    [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+    [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+    [{ 'font': [] }],
+    [{ 'align': [] }],
+
+    ['clean']                                         // remove formatting button
+  ];
+  var quill = new Quill('#editor', {
+    placeholder: 'Compose an epic...',
+    theme: 'snow',
+    modules: {
+      toolbar: toolbarOptions
+    },
+    theme: 'snow'
+  });
+  $("#myform").on("submit", function () {
+    $("#hiddenArea").val($("#editor").html());
+  })
+</script>

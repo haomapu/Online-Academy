@@ -65,7 +65,8 @@
         <div class="d-flex flex-column justify-content-center align-items-center">
           <p class="text-secondary m-0 fs-5">{{format_number course.price}} VND</p>
           {{#if buy}}
-          <button class="btn btn-md btn-secondary text-light fw-bold p-1 w-100" type="button"><a href="/course/learn/{{course.name}}">Learn</a></button>
+          <button class="btn btn-md btn-secondary text-light fw-bold p-1 w-100" type="button"><a
+              href="/course/learn/{{course.name}}">Learn</a></button>
           {{else}}
           <form method="post" class="w-100">
             <button class="btn btn-md btn-secondary text-light fw-bold p-1 w-100"
@@ -118,7 +119,7 @@
         <div class="accordion-body py-2">
           {{this.name}}
           <video width="500" height="240" controls>
-            <source src="data:video/mp4;base64,{{toBase64 this.video.img.image}}" >
+            <source src="data:video/mp4;base64,{{toBase64 this.video.img.image}}">
           </video>
         </div>
         {{/each}}
@@ -281,8 +282,7 @@
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
-    <div>
-      Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+    <div id="desAuthor">
     </div>
   </div>
 </div>
@@ -351,11 +351,16 @@
       }
     });
   })
-  
+
   var $des = $("#courseDes"),
     // {{course.description}}
-  html = $.parseHTML('{{{course.description}}}');
+    html = $.parseHTML('{{{course.description}}}');
   $des.append(html);
+
+  var $desAuthor = $("#desAuthor"),
+    // {{course.description}}
+    htmlAuthor = $.parseHTML('{{{author.description}}}');
+  $desAuthor.append(htmlAuthor);
   // Append the parsed HTML
   //Chua lam duoc cai pagination comment sau khi doi trang
 
