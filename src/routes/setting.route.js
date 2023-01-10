@@ -14,6 +14,12 @@ router.get(
   settingService.getCoursePage
 );
 
+router.post(
+  "/courseLecture/done/:id",
+  authWithRequiredPermission(2),
+  settingService.doneCourses
+);
+
 router.get("/courseStudent", settingService.getCourseStudentPage);
 
 router.post("/courseStudent/remove", settingService.removeCourseStudentPage);

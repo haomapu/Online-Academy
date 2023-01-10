@@ -675,6 +675,11 @@ const settingService = {
     res.redirect("/settings/studentAdmin");
   },
 
+  doneCourses: async (req, res) => {
+    await Course.updateOne({ _id: req.params.id }, { finish: true });
+    res.redirect("/settings/courseLecture");
+  },
+
   isSamePass: async function (req, res) {
     const oldPass = req.query.oldPass;
     const equal = await bcrypt.compareSync(oldPass, req.user.password);

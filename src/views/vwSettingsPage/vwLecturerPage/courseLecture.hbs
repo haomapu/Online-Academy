@@ -82,7 +82,8 @@
         {{/if}}
         {{#if lecturer}}
         <li class="nav-item">
-          <a href="/settings/courseLecture" class="nav-link active" style="background-color: #ff6a00 !important;" aria-current="page">
+          <a href="/settings/courseLecture" class="nav-link active" style="background-color: #ff6a00 !important;"
+            aria-current="page">
             <i class="fas fa-book"></i>
             <span>Courses</span>
           </a>
@@ -111,30 +112,55 @@
       </div>
       <div class="d-flex flex-column pt-3">
         {{#each this.course}}
+        {{#if this.finish}}
+        <div class="d-flex flex-row shadow py-3" style="height: 200px; border: 4px solid orange;">
+          <a href="/course/{{name}}" class="w-25"><img src={{img}} alt="imageCourse" class="py-2 ms-2"
+              style="width: 100%; height: 100%" /></a>
+          <div class="d-flex justify-content-between h-75" style="width: 100%; padding-right: 15px;">
+            <div class="d-flex flex-column ps-4 w-50">
+              <div>{{name}}</div>
+              <div>Lecture: {{author}}</div>
+            </div>
+            <div class="d-flex flex-column text-end">
+              <div>Update: {{format_date lastUpdate}}</div>
+              <div class="text-secondary text-bold">Status: Done</div>
+              <div class="d-flex flex-row-reverse">
+                <a href="/course/learn/{{name}}" class="btn btn-secondary text-light ms-2">View</a>
+                <a href="/editCourse/{{name}}" class="btn btn-secondary text-light me-2">Edit</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {{else}}
         <div class="d-flex flex-row shadow py-3" style="height: 200px">
           <a href="/course/{{name}}" class="w-25"><img src={{img}} alt="imageCourse" class="py-2 ms-2"
               style="width: 100%; height: 100%" /></a>
           <div class="d-flex justify-content-between h-75" style="width: 100%; padding-right: 15px;">
             <div class="d-flex flex-column ps-4 w-50">
               <div>{{name}}</div>
-              <div>Students: {{register_count}}</div>
               <div>Lecture: {{author}}</div>
             </div>
             <div class="d-flex flex-column text-end">
               <div>Update: {{format_date lastUpdate}}</div>
+              <div class="text-secondary text-bold">Status: Uploading</div>
               <div class="d-flex flex-row-reverse">
-                <a href="/course/learn/{{name}}" class="btn btn-secondary text-light ms-2" >View</a>
-                <a href="/editCourse/{{name}}" class="btn btn-secondary text-light me-2" >Edit</a>
+                <a href="/course/learn/{{name}}" class="btn btn-secondary text-light ms-2">View</a>
+                <a href="/editCourse/{{name}}" class="btn btn-secondary text-light me-2">Edit</a>
               </div>
+              <form method="post">
+                <button class=" btn btn-secondary delItem mt-3" formaction="/settings/courseLecture/done/{{_id}}">
+                  <i class="fa-solid fa-check"></i>
+                </button>
+              </form>
             </div>
           </div>
         </div>
+        {{/if}}
         {{/each}}
-
 
         <div class="d-flex justify-content-center pt-4">
           <nav aria-label="Page navigation example">
-            <ul id="nPage" value="{{pageNumbers.length}}" class="pagination pagination-md justify-content-center" >
+            <ul id="nPage" value="{{pageNumbers.length}}" class="pagination pagination-md justify-content-center">
               {{#each pageNumbers}}
               {{#if isCurrent}}
               <li class="page-item">
