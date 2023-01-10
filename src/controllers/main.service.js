@@ -34,7 +34,6 @@ const mainService = {
       .sort({ rating: -1 })
       .lean()
       .limit(3);
-    console.log(highlightCourse);
     const highlightCourse_active = highlightCourse.slice(0, 1);
     const highlightCourse_inactive = highlightCourse.slice(1);
 
@@ -447,7 +446,6 @@ const mainService = {
         lessons = [];
       }
     }
-    console.log(course);
     res.render("vwLecturer/editCourse", {
         course: course,
         chapters: chapters,
@@ -464,8 +462,6 @@ const mainService = {
     const storage = multer.diskStorage({
       filename: function (req, file, cb) {
         cb(null, file.originalname);
-        console.log(file.originalname)
-        console.log("12312312")
       }
     })
   
@@ -480,15 +476,12 @@ const mainService = {
       let course = await Course.findOne({ name: req.params.id }).populate('chapters').lean();
 
       let count = 0;
-      console.log(req.body);
-      console.log(req.files[0].path);
       let nChap;
 
       let chapters = [];
       
       for (let i = 0; i < req.body.nLesson.length; i++){
         let lessons = [];
-        // console.log(req.body.titleChap[i]);
         if (course.chapters){
           nChap = course.chapters[i].lessons.length;
           if (course.chapters[i].lessons.length >= req.body.nLesson[i]){
@@ -499,8 +492,6 @@ const mainService = {
         }
         
         for (let j = 0; j < req.body.nLesson[i] - nChap; j++){
-          // console.log(req.body.titleLes[count]);
-          // console.log(req.files[count].path)
           //Video----------------------------
             let video = fs.readFileSync(req.files[count].path);
             let video_enc = video.toString("base64");
@@ -522,21 +513,18 @@ const mainService = {
           let newLesson = new Lesson(lesson);
           let saveLesson = await newLesson.save();
           lessons.push(saveLesson);
-          // const newChap = await Chapter.updateOne({id: course.chapters[i]._id}, { $push: { lessons: saveLesson } });
-          // console.log(newChap);
+
           count++;
         }
         //Chapter--------------------
         if (course.chapters){
           if (i < course.chapters.length){
             const newChap = await Chapter.findByIdAndUpdate(course.chapters[i]._id, {$push: {lessons: {$each: lessons }}}  );
-            console.log(newChap);
             // await Chapter.updateOne({id: course.chapters[i]._id}, {name: req.body.titleChap[i]});
           } 
         }else {
-          console.log('123213')
           let chapter = {
-            name: '123',
+            name: req.body.titleChap[i],
             lessons: lessons,
           }
           let newChapter = new Chapter(chapter);
@@ -560,6 +548,8 @@ const mainService = {
         '<div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>',
         ""
       );
+      var myDate = new Date();
+      const b = await Course.findByIdAndUpdate(course._id, {lastUpdate: myDate})
       const a = await Course.findByIdAndUpdate(course._id, {
         name: req.body.name,
         img: req.body.img,
@@ -570,7 +560,6 @@ const mainService = {
         category: category,
         sub_category: sub_category,
       });
-      console.log(a);
       res.redirect('/course/' + course.name);
       
     });

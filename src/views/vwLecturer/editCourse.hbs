@@ -173,9 +173,6 @@
 
 <script src="https://cdn.quilljs.com/1.0.0/quill.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-{{#each course.chapters}}
-{{this}}
-{{/each}}
 
 <script>
     const list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -186,12 +183,11 @@
     }
     const listChapName = '{{#each course.chapters}}{{name}}-{{/each}}'
     const listChapName1 = listChapName.split('-')
-    console.log(listChapName)
     const listName = '{{#each chapters}}{{#each chapter}}{{lessons.name}}-{{/each}}{{/each}}'
     const listMP4 = listName.split('-');
     let count = 0;
     $(document).ready(function () {
-
+        
         for (let i = 0; i < chapter; i++) {
             $('#newinput1').append($('#row').clone().prop('id', 'chapter' + i));
             $('#DeleteRow1').remove();
@@ -202,7 +198,6 @@
             $('#titleChap').attr('id', 'titleChap' + i);
             $('#titleChap' + i).remove();
             $('#section' + i).text('Chapter'+listChapName1[i]);
-
             $('#chapter' + i).removeAttr('hidden');
             for (let j = 0; j < list[i]; j++) {
                 $('#newLesson' + i).append($('#row2').clone().prop('id', i + 'lesson' + j));
@@ -218,7 +213,10 @@
                 count++;
             }
         }
+        $('#sub-' + $('#mainCat').val()).removeAttr('hidden').addClass('show');
     })
+
+
 
     $("body").on('change', '[id^=mainCat]', function () {
         $('[id^=sub-]').attr('hidden', '').removeClass('show');
