@@ -166,6 +166,10 @@
     const list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     var chapter = 0;
 
+    $(document).ready(function(){
+        $('#sub-' + $('#mainCat').val()).removeAttr('hidden').addClass('show');
+
+    })
     $("body").on('change', '[id^=mainCat]', function () {
         $('[id^=sub-]').attr('hidden', '').removeClass('show');
 

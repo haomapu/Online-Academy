@@ -18,7 +18,11 @@ const courseService = {
       .populate("author")
       .populate("chapters")
       .lean();
-    if (!course.enable) {
+    if (!course){
+      res.render("403", { layout: false });
+      return;
+    }
+    if (!course.enable ) {
       res.render("403", { layout: false });
       return;
     }
@@ -165,6 +169,8 @@ const courseService = {
       const course = await Course.findOne({ name: req.params.id });
 
       req.body = { ...req.body, course: course };
+      var myDate = new Date();
+      req.body = { ...req.body, time: myDate};
       const feedback = new Feedback(req.body);
       await feedback.save();
 

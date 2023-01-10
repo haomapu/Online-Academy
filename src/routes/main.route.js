@@ -43,9 +43,9 @@ router.post(
   mainService.addCourse
 );
 
-router.get("/editCourse/:id", mainService.editCoursePage);
+router.get("/editCourse/:id", authWithRequiredPermission(2),mainService.editCoursePage);
 
-router.post("/editCourse/:id", mainService.updateCourse);
+router.post("/editCourse/:id", authWithRequiredPermission(2), mainService.updateCourse);
 
 router.get("/is-available", mainService.checkEmail);
 
