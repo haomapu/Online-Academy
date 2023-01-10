@@ -323,10 +323,10 @@ const mainService = {
   },
 
   addCourse: async (req, res) => {
-    const description = req.body.nLesson.replace(
-      '<div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>',
-      ""
-    );
+    // const description = req.body.text.replace(
+    //   '<div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>',
+    //   ""
+    // );
 
     let curUser;
     if (!req.isAuthenticated()) {
